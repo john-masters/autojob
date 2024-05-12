@@ -7,7 +7,11 @@ import (
 
 func main() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, "Hello World")
+		http.ServeFile(w, r, "templates/index.html")
+	})
+
+	http.HandleFunc("/sign-up", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "templates/sign-up.html")
 	})
 
 	fmt.Println("Server running on http://localhost:8080")
