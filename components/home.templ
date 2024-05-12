@@ -1,0 +1,30 @@
+package components
+
+templ Home() {
+	@layout("Home") {
+		<main>
+			<fieldset>
+				<legend>Log in</legend>
+				<form method="post" action="/api/login">
+					<div>
+						<label for="email">Email:</label>
+						<input type="email" required/>
+					</div>
+					<div>
+						<label for="password">Password:</label>
+						<input type="password" required/>
+					</div>
+					<button type="submit">
+						<span>Submit</span>
+					</button>
+				</form>
+				<p>
+					<span>
+						Don't have an account? Sign up
+						<a href="/sign-up">here</a>.
+					</span>
+				</p>
+			</fieldset>
+		</main>
+	}
+}
