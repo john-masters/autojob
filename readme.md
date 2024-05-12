@@ -10,10 +10,9 @@
 
 ## TECH
 
-- Templ for the html templating.
-  - Further info [here](https://templ.guide/)
-- Go for the backend.
-- Colly for web scraping
+- Built with Go.
+  - [Templ](https://templ.guide/) for html templating.
+  - [Colly](https://go-colly.org/) for web scraping.
 
 ## COMMANDS
 
