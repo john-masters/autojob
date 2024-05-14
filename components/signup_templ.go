@@ -29,7 +29,7 @@ func Signup() templ.Component {
 				templ_7745c5c3_Buffer = templ.GetBuffer()
 				defer templ.ReleaseBuffer(templ_7745c5c3_Buffer)
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<main><h2>Sign up</h2><form><div><label for=\"first-name\">First name:</label> <input id=\"first-name\" type=\"text\" required></div><div><label for=\"last-name\">Last name:</label> <input id=\"last-name\" type=\"text\" required></div><div><label for=\"email\">Email:</label> <input id=\"email\" type=\"email\" required></div><div><label for=\"password\">Password:</label> <input id=\"password\" type=\"password\" required></div><button type=\"submit\"><span>Submit</span></button></form><p><span>Already have an account? Log in <a href=\"/\">here</a>.</span></p></main>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<main><h2>Sign up</h2><form method=\"post\" action=\"/auth/signup\"><div><label for=\"first_name\">First name:</label> <input name=\"first_name\" id=\"first_name\" type=\"text\" required></div><div><label for=\"last_name\">Last name:</label> <input name=\"last_name\" id=\"last_name\" type=\"text\" required></div><div><label for=\"email\">Email:</label> <input name=\"email\" id=\"email\" type=\"email\" required></div><div><label for=\"password\">Password:</label> <input name=\"password\" id=\"password\" type=\"password\" required></div><button type=\"submit\"><span>Submit</span></button></form><p><span>Already have an account? Log in <a href=\"/\">here</a>.</span></p></main>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
