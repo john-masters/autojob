@@ -4,7 +4,7 @@ templ Signup() {
 	@Layout("Home") {
 		<main>
 			<h2>Sign up</h2>
-			<form hx-post="/auth/signup">
+			<form hx-post="/auth/signup" hx-target="#response" hx-swap="innerHTML">
 				<div>
 					<label for="first_name">First name:</label>
 					<input name="first_name" id="first_name" type="text" required/>
@@ -24,6 +24,7 @@ templ Signup() {
 				<button type="submit">
 					<span>Submit</span>
 				</button>
+				<span id="response"></span>
 			</form>
 			<p>
 				<span>

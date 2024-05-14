@@ -1,7 +1,9 @@
 package handlers
 
 import (
+	"autojob/models"
 	"autojob/utils"
+	"database/sql"
 	"fmt"
 	"net/http"
 )
@@ -23,18 +25,38 @@ func AuthRoutes() *http.ServeMux {
 
 		switch {
 		case email == "":
-			fmt.Println("Email is empty")
-			w.WriteHeader(http.StatusBadRequest)
+			fmt.Fprint(w, "Email is required")
 			return
 		case password == "":
-			fmt.Println("Password is empty")
-			w.WriteHeader(http.StatusBadRequest)
+			fmt.Fprint(w, "Password is required")
 			return
 		}
 
-		fmt.Printf("Email: %s,\nPassword: %s\n", email, password)
+		db, err := utils.DbConnection()
+		if err != nil {
+			fmt.Println("Error initializing database")
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+		defer db.Close()
 
-		// TODO: Add your authentication logic here
+		var user models.User
+		err = db.QueryRow("SELECT id, email, password FROM users WHERE email = ?", email).Scan(&user.ID, &user.Email, &user.Password)
+		if err != nil {
+			if err == sql.ErrNoRows {
+				fmt.Fprint(w, "Invalid email address or password")
+			} else {
+				fmt.Println("Database query error:", err)
+				w.WriteHeader(http.StatusInternalServerError)
+			}
+			return
+		}
+
+		if user.Password != password {
+			w.WriteHeader(http.StatusUnauthorized)
+			fmt.Fprint(w, "Invalid email address or password")
+			return
+		}
 
 		fmt.Fprintf(w, "Login successful for email: %s", email)
 
@@ -56,20 +78,16 @@ func AuthRoutes() *http.ServeMux {
 
 		switch {
 		case firstName == "":
-			fmt.Println("First Name is empty")
-			w.WriteHeader(http.StatusBadRequest)
+			fmt.Fprint(w, "First Name is required")
 			return
 		case lastName == "":
-			fmt.Println("Last Name is empty")
-			w.WriteHeader(http.StatusBadRequest)
+			fmt.Fprint(w, "Last Name is required")
 			return
 		case email == "":
-			fmt.Println("Email is empty")
-			w.WriteHeader(http.StatusBadRequest)
+			fmt.Fprint(w, "Email is required")
 			return
 		case password == "":
-			fmt.Println("Password is empty")
-			w.WriteHeader(http.StatusBadRequest)
+			fmt.Fprint(w, "Password is required")
 			return
 		}
 
@@ -81,41 +99,33 @@ func AuthRoutes() *http.ServeMux {
 		}
 		defer db.Close()
 
+		var userCount int
+		err = db.QueryRow("SELECT COUNT(*) FROM users WHERE email = ?", email).Scan(&userCount)
+		if err != nil {
+			fmt.Println("Error querying database:", err)
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
+		if userCount > 0 {
+			fmt.Fprint(w, "An account with this email already exists")
+			return
+		}
+
 		insertUserSQL := `INSERT INTO users (first_name, last_name, email, password) VALUES (?, ?, ?, ?)`
 		statement, err := db.Prepare(insertUserSQL)
 		if err != nil {
-			fmt.Println(err)
+			fmt.Println("Error preparing SQL statement:", err)
+			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
 		defer statement.Close()
 
 		_, err = statement.Exec(firstName, lastName, email, password)
 		if err != nil {
-			fmt.Println(err)
+			fmt.Println("Error executing SQL statement:", err)
+			w.WriteHeader(http.StatusInternalServerError)
 			return
-		}
-		fmt.Println("Inserted sample data successfully")
-
-		rows, err := db.Query("SELECT id, first_name, last_name, email FROM users")
-		if err != nil {
-			fmt.Println(err)
-			return
-		}
-		defer rows.Close()
-
-		fmt.Println("Querying data...")
-
-		for rows.Next() {
-			var id int
-			var firstName string
-			var lastName string
-			var email string
-			err = rows.Scan(&id, &firstName, &lastName, &email)
-			if err != nil {
-				fmt.Println(err)
-				return
-			}
-			fmt.Printf("ID: %d, First Name: %s, Last Name: %s, Email: %s\n", id, firstName, lastName, email)
 		}
 
 		fmt.Fprintf(w, "Signup successful for email: %s", email)
