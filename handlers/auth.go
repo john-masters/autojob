@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"autojob/utils"
 	"fmt"
 	"net/http"
 )
@@ -72,9 +73,50 @@ func AuthRoutes() *http.ServeMux {
 			return
 		}
 
-		fmt.Printf("First Name: %s,\nLast Name: %s,\nEmail: %s,\nPassword: %s\n", firstName, lastName, email, password)
+		db, err := utils.DbConnection()
+		if err != nil {
+			fmt.Println("Error initializing database")
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+		defer db.Close()
 
-		// TODO: Add your authentication logic here
+		insertUserSQL := `INSERT INTO users (first_name, last_name, email, password) VALUES (?, ?, ?, ?)`
+		statement, err := db.Prepare(insertUserSQL)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		defer statement.Close()
+
+		_, err = statement.Exec(firstName, lastName, email, password)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		fmt.Println("Inserted sample data successfully")
+
+		rows, err := db.Query("SELECT id, first_name, last_name, email FROM users")
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		defer rows.Close()
+
+		fmt.Println("Querying data...")
+
+		for rows.Next() {
+			var id int
+			var firstName string
+			var lastName string
+			var email string
+			err = rows.Scan(&id, &firstName, &lastName, &email)
+			if err != nil {
+				fmt.Println(err)
+				return
+			}
+			fmt.Printf("ID: %d, First Name: %s, Last Name: %s, Email: %s\n", id, firstName, lastName, email)
+		}
 
 		fmt.Fprintf(w, "Signup successful for email: %s", email)
 	})

@@ -2,11 +2,14 @@ package main
 
 import (
 	"autojob/handlers"
+	// "autojob/utils"
 	"fmt"
 	"net/http"
 )
 
 func main() {
+	// utils.DbInit()
+
 	mux := http.NewServeMux()
 
 	mux.Handle("/", handlers.HomeRoutes())
