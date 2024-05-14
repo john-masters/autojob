@@ -25,3 +25,10 @@
   ```
 
 - Build the binary: `go build .`
+
+## TODO
+
+- Add db to store user data.
+  - SQLite?
+- Add user auth
+- Add user resume and cover letter upload
