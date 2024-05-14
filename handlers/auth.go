@@ -19,6 +19,18 @@ func AuthRoutes() *http.ServeMux {
 
 		email := r.FormValue("email")
 		password := r.FormValue("password")
+
+		switch {
+		case email == "":
+			fmt.Println("Email is empty")
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		case password == "":
+			fmt.Println("Password is empty")
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+
 		fmt.Printf("Email: %s,\nPassword: %s\n", email, password)
 
 		// TODO: Add your authentication logic here
@@ -40,6 +52,26 @@ func AuthRoutes() *http.ServeMux {
 		lastName := r.FormValue("last_name")
 		email := r.FormValue("email")
 		password := r.FormValue("password")
+
+		switch {
+		case firstName == "":
+			fmt.Println("First Name is empty")
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		case lastName == "":
+			fmt.Println("Last Name is empty")
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		case email == "":
+			fmt.Println("Email is empty")
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		case password == "":
+			fmt.Println("Password is empty")
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+
 		fmt.Printf("First Name: %s,\nLast Name: %s,\nEmail: %s,\nPassword: %s\n", firstName, lastName, email, password)
 
 		// TODO: Add your authentication logic here
