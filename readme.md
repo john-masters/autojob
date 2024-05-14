@@ -10,9 +10,10 @@
 
 ## TECH
 
-- Built with Go.
-  - [Templ](https://templ.guide/) for html templating.
-  - [Colly](https://go-colly.org/) for web scraping.
+- Built with Go
+  - [Templ](https://templ.guide/) for html templating
+  - [Colly](https://go-colly.org/) for web scraping
+- SQLite for the database
 
 ## COMMANDS
 
@@ -26,9 +27,14 @@
 
 - Build the binary: `go build .`
 
+## SETUP
+
+1. Install dependencies: `go mod tidy`
+2. Run the server: `go run .`
+    - Optional: uncomment the `// utils.DbInit()` line in `main.go` to initialise the db
+3. Visit `http://localhost:8080`
+
 ## TODO
 
-- Add db to store user data.
-  - SQLite?
 - Add user auth
 - Add user resume and cover letter upload
