@@ -1,17 +1,24 @@
 package main
 
 import (
-	"autojob/handlers"
+	"autojob/components"
 	"fmt"
 	"net/http"
 )
 
 func main() {
-	router := http.NewServeMux()
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		component := components.Home()
 
-	router.Handle("/", handlers.HomeRoutes())
-	router.Handle("/api", handlers.ApiRoutes())
+		component.Render(r.Context(), w)
+	})
+
+	http.HandleFunc("/sign-up", func(w http.ResponseWriter, r *http.Request) {
+		component := components.Signup()
+
+		component.Render(r.Context(), w)
+	})
 
 	fmt.Println("Server running on http://localhost:8080")
-	http.ListenAndServe(":8080", router)
+	http.ListenAndServe(":8080", nil)
 }
