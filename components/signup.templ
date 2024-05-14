@@ -4,7 +4,7 @@ templ Signup() {
 	@Layout("Home") {
 		<main>
 			<h2>Sign up</h2>
-			<form method="post" action="/auth/signup">
+			<form hx-post="/auth/signup">
 				<div>
 					<label for="first_name">First name:</label>
 					<input name="first_name" id="first_name" type="text" required/>
