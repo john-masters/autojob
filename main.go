@@ -7,19 +7,24 @@ import (
 )
 
 func main() {
-	http.HandleFunc("GET /", func(w http.ResponseWriter, r *http.Request) {
+	mux := http.NewServeMux()
+
+	homeMux := http.NewServeMux()
+	authMux := http.NewServeMux()
+
+	homeMux.HandleFunc("GET /", func(w http.ResponseWriter, r *http.Request) {
 		component := components.Home()
 
 		component.Render(r.Context(), w)
 	})
 
-	http.HandleFunc("GET /sign-up", func(w http.ResponseWriter, r *http.Request) {
+	homeMux.HandleFunc("GET /sign-up", func(w http.ResponseWriter, r *http.Request) {
 		component := components.Signup()
 
 		component.Render(r.Context(), w)
 	})
 
-	http.HandleFunc("POST /auth/login", func(w http.ResponseWriter, r *http.Request) {
+	authMux.HandleFunc("POST /login", func(w http.ResponseWriter, r *http.Request) {
 		err := r.ParseForm()
 
 		if err != nil {
@@ -38,7 +43,7 @@ func main() {
 
 	})
 
-	http.HandleFunc("POST /auth/signup", func(w http.ResponseWriter, r *http.Request) {
+	authMux.HandleFunc("POST /signup", func(w http.ResponseWriter, r *http.Request) {
 		err := r.ParseForm()
 
 		if err != nil {
@@ -58,6 +63,9 @@ func main() {
 		fmt.Fprintf(w, "Signup successful for email: %s", email)
 	})
 
+	mux.Handle("/", homeMux)
+	mux.Handle("/auth/", http.StripPrefix("/auth", authMux))
+
 	fmt.Println("Server running on http://localhost:8080")
-	http.ListenAndServe(":8080", nil)
+	http.ListenAndServe(":8080", mux)
 }
