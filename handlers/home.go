@@ -4,7 +4,6 @@ import (
 	"autojob/components"
 	"autojob/middleware"
 	"autojob/models"
-	"fmt"
 	"net/http"
 )
 
@@ -24,8 +23,7 @@ func AccountPage(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "User not found in context", http.StatusUnauthorized)
 		return
 	}
-	fmt.Println("I'm logged in as", user.FirstName, user.LastName)
 
-	component := components.Account()
+	component := components.Account(user)
 	component.Render(r.Context(), w)
 }
