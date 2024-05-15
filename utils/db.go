@@ -15,8 +15,6 @@ func DbConnection() (*sql.DB, error) {
 		return db, err
 	}
 
-	fmt.Println("Successfully connected to database")
-
 	return db, err
 }
 

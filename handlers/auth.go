@@ -6,6 +6,8 @@ import (
 	"database/sql"
 	"fmt"
 	"net/http"
+
+	"golang.org/x/crypto/bcrypt"
 )
 
 func AuthRoutes() *http.ServeMux {
@@ -53,12 +55,11 @@ func AuthRoutes() *http.ServeMux {
 		}
 
 		if user.Password != password {
-			w.WriteHeader(http.StatusUnauthorized)
 			fmt.Fprint(w, "Invalid email address or password")
 			return
 		}
 
-		fmt.Fprintf(w, "Login successful for email: %s", email)
+		fmt.Fprint(w, "Log in successful. Go to <a href='/account'>my account</a>.")
 
 	})
 
@@ -112,6 +113,14 @@ func AuthRoutes() *http.ServeMux {
 			return
 		}
 
+		hash, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+
+		if err != nil {
+			fmt.Println("Error generating hash from password:", err)
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
 		insertUserSQL := `INSERT INTO users (first_name, last_name, email, password) VALUES (?, ?, ?, ?)`
 		statement, err := db.Prepare(insertUserSQL)
 		if err != nil {
@@ -121,16 +130,15 @@ func AuthRoutes() *http.ServeMux {
 		}
 		defer statement.Close()
 
-		_, err = statement.Exec(firstName, lastName, email, password)
+		_, err = statement.Exec(firstName, lastName, email, string(hash))
 		if err != nil {
 			fmt.Println("Error executing SQL statement:", err)
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
 
-		fmt.Fprintf(w, "Signup successful for email: %s", email)
+		fmt.Fprint(w, "Sign up successful, please <a href='/'>log in</a>.")
 	})
 
 	return router
-
 }
