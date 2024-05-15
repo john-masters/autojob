@@ -65,8 +65,8 @@ func AuthRoutes() *http.ServeMux {
 		}
 
 		token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-			"user_id": user.ID,
-			"expiry":  time.Now().Add(time.Hour * 24).Unix(),
+			"sub": user.ID,
+			"exp": time.Now().Add(time.Hour * 24).Unix(),
 		})
 
 		tokenString, err := token.SignedString([]byte(os.Getenv("JWT_SECRET")))
@@ -167,6 +167,14 @@ func AuthRoutes() *http.ServeMux {
 
 	router.HandleFunc("GET /validate", middleware.RequireAuth(func(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("Hello from da router")
+
+		user, ok := r.Context().Value(middleware.UserContextKey).(models.User)
+		if !ok {
+			http.Error(w, "User not found in context", http.StatusUnauthorized)
+			return
+		}
+		fmt.Fprintf(w, "I'm logged in as %s %s", user.FirstName, user.LastName)
+
 		// fmt.Fprint(w, "Hello from router")
 	}))
 	return router
