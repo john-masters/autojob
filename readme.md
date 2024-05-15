@@ -14,6 +14,8 @@
   - [Templ](https://templ.guide/) for html templating
   - [Colly](https://go-colly.org/) for web scraping
 - SQLite for the database
+- BCrypt for password hashing
+- JWT for authentication
 
 ## COMMANDS
 
@@ -40,5 +42,8 @@
 
 ## TODO
 
-- Add user auth
-- Add user resume and cover letter upload
+- [ ] Add user auth
+- [ ] Add account page
+- [ ] Add user resume and cover letter upload
+- [ ] Add web scraping
+- [ ] Add GPT-4 integration
