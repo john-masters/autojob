@@ -19,8 +19,6 @@ const UserContextKey contextKey = "user"
 
 func RequireAuth(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		fmt.Println("Hello from da middlewares")
-
 		tokenString, err := r.Cookie("Authorization")
 		if err != nil {
 			if err == http.ErrNoCookie {
@@ -39,17 +37,10 @@ func RequireAuth(next http.HandlerFunc) http.HandlerFunc {
 		})
 
 		if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
-			fmt.Println(claims)
-
-			fmt.Println("exp: ", claims["exp"])
-			fmt.Println("time n: ", time.Now().Unix())
-
 			if int64(time.Now().Unix()) > int64(claims["exp"].(float64)) {
 				fmt.Println("expired cookie")
 				w.WriteHeader(http.StatusUnauthorized)
 			}
-			fmt.Println("not expired cookie")
-			fmt.Println("sub: ", claims["sub"])
 
 			var user models.User
 
@@ -72,9 +63,7 @@ func RequireAuth(next http.HandlerFunc) http.HandlerFunc {
 				}
 				return
 			}
-			fmt.Println(user)
 
-			// set user value in context
 			ctx := context.WithValue(r.Context(), UserContextKey, user)
 			r = r.WithContext(ctx)
 
