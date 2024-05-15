@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"autojob/middleware"
 	"autojob/models"
 	"autojob/utils"
 	"database/sql"
@@ -164,5 +165,9 @@ func AuthRoutes() *http.ServeMux {
 		fmt.Fprint(w, "Sign up successful, please <a href='/'>log in</a>.")
 	})
 
+	router.HandleFunc("GET /validate", middleware.RequireAuth(func(w http.ResponseWriter, r *http.Request) {
+		fmt.Println("Hello from da router")
+		// fmt.Fprint(w, "Hello from router")
+	}))
 	return router
 }
