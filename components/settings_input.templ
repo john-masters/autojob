@@ -1,0 +1,12 @@
+package components
+
+import "strconv"
+
+templ SettingsInput(value string, typeVal string, nameVal string, labelVal string, isDisabled bool) {
+	<form>
+		<label for={ nameVal }>{ labelVal }</label>
+		<input value={ value } name={ nameVal } id={ nameVal } type={ typeVal } disabled={ strconv.FormatBool(isDisabled) } required/>
+		<button>edit</button>
+		<span id={ nameVal + "-response" }></span>
+	</form>
+}

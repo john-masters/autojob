@@ -42,8 +42,8 @@
 
 ## TODO
 
-- [ ] Add user auth
-- [ ] Add account page
+- [x] Add user auth
+- [x] Add account page
 - [ ] Add user resume and cover letter upload
 - [ ] Add web scraping
 - [ ] Add GPT-4 integration

@@ -1,0 +1,16 @@
+package components
+
+import "autojob/models"
+
+templ Settings(user models.User) {
+	@Layout("Settings") {
+		<main>
+			@Nav()
+			<h2>{ user.FirstName }'s account</h2>
+			@SettingsInput(user.FirstName, "text", "first_name", "First name: ", true)
+			@SettingsInput(user.LastName, "text", "last_name", "Last name: ", true)
+			@SettingsInput(user.Email, "email", "email", "Email: ", true)
+			@SettingsInput(user.Password, "password", "password", "Password: ", true)
+		</main>
+	}
+}

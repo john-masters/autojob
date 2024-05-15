@@ -27,3 +27,14 @@ func AccountPage(w http.ResponseWriter, r *http.Request) {
 	component := components.Account(user)
 	component.Render(r.Context(), w)
 }
+
+func SettingsPage(w http.ResponseWriter, r *http.Request) {
+	user, ok := r.Context().Value(middleware.UserContextKey).(models.User)
+	if !ok {
+		http.Error(w, "User not found in context", http.StatusUnauthorized)
+		return
+	}
+
+	component := components.Settings(user)
+	component.Render(r.Context(), w)
+}
