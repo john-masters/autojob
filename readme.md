@@ -30,9 +30,13 @@
 ## SETUP
 
 1. Install dependencies: `go mod tidy`
-2. Run the server: `go run .`
+1. Add environment variables
+    1. Rename `.env.sample` to `.env`
+    1. Add your environment variables
+        - To genererate a JWT secret, run `openssl rand -hex 32` or just use a random string
+1. Run the server: `go run .`
     - Optional: uncomment the `// utils.DbInit()` line in `main.go` to initialise the db
-3. Visit `http://localhost:8080`
+1. Visit `http://localhost:8080`
 
 ## TODO
 
