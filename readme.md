@@ -47,3 +47,6 @@
 - [ ] Add user resume and cover letter upload
 - [ ] Add web scraping
 - [ ] Add GPT-4 integration
+- [ ] Add more robust input validation
+  - [ ] valid email
+  - [ ] password complexity

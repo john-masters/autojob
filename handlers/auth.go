@@ -77,7 +77,7 @@ func AuthRoutes() *http.ServeMux {
 		}
 
 		http.SetCookie(w, &http.Cookie{
-			Name:    "Token",
+			Name:    "Authorization",
 			Value:   tokenString,
 			Expires: time.Now().Add(time.Hour * 24),
 			Path:    "/",
