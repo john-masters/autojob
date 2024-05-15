@@ -159,3 +159,14 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Fprint(w, "Sign up successful, please <a href='/'>log in</a>.")
 }
+
+func Logout(w http.ResponseWriter, r *http.Request) {
+	http.SetCookie(w, &http.Cookie{
+		Name:    "Authorization",
+		Value:   "",
+		Expires: time.Unix(0, 0),
+		Path:    "/",
+	})
+
+	http.Redirect(w, r, "/", http.StatusSeeOther)
+}

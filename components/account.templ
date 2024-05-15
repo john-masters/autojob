@@ -6,6 +6,7 @@ import "fmt"
 templ Account(user models.User) {
 	@Layout("Account") {
 		<main>
+			<a href="/auth/logout">Logout</a>
 			<h2>Welcome to the authorised zone</h2>
 			<p>{ fmt.Sprint(user.ID) }</p>
 			<p>{ user.FirstName }</p>
