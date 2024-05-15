@@ -6,7 +6,10 @@ import (
 	"database/sql"
 	"fmt"
 	"net/http"
+	"os"
+	"time"
 
+	"github.com/golang-jwt/jwt"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -54,10 +57,31 @@ func AuthRoutes() *http.ServeMux {
 			return
 		}
 
-		if user.Password != password {
+		err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
+		if err != nil {
 			fmt.Fprint(w, "Invalid email address or password")
 			return
 		}
+
+		token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+			"user_id": user.ID,
+			"expiry":  time.Now().Add(time.Hour * 24).Unix(),
+		})
+
+		tokenString, err := token.SignedString([]byte(os.Getenv("JWT_SECRET")))
+
+		if err != nil {
+			fmt.Println("Error generating JWT: ", err)
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
+		http.SetCookie(w, &http.Cookie{
+			Name:    "Token",
+			Value:   tokenString,
+			Expires: time.Now().Add(time.Hour * 24),
+			Path:    "/",
+		})
 
 		fmt.Fprint(w, "Log in successful. Go to <a href='/account'>my account</a>.")
 

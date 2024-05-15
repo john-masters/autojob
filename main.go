@@ -2,13 +2,19 @@ package main
 
 import (
 	"autojob/handlers"
-	// "autojob/utils"
 	"fmt"
+	"log"
 	"net/http"
+
+	"github.com/joho/godotenv"
 )
 
 func main() {
 	// utils.DbInit()
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
 
 	mux := http.NewServeMux()
 
