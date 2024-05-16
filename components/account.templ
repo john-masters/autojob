@@ -4,5 +4,6 @@ import "autojob/models"
 
 templ Account(user models.User) {
 	@Dashboard(user, "Account") {
+		@Experience()
 	}
 }

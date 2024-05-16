@@ -1,0 +1,43 @@
+package components
+
+templ Experience() {
+	<form>
+		<section id="name">
+			<label for="name">Employer Name:</label>
+			<input type="text" name="name" required/>
+		</section>
+		<section id="role">
+			<label for="name">Role:</label>
+			<input type="text" name="role" required/>
+		</section>
+		<section id="start">
+			<label for="start">Start date:</label>
+			<input type="month" name="start" required/>
+		</section>
+		<section id="finish">
+			<label for="finish">Finish date:</label>
+			<input type="month" name="finish" required/>
+		</section>
+		<section id="current">
+			<label for="current">Current employer?:</label>
+			<input
+				hx-on:change="const finish = document.getElementById('finish'); finish.style.display = this.checked ? 'none' : 'block'; finish.querySelector('input').required = !this.checked;"
+				type="checkbox"
+				name="current"
+			/>
+		</section>
+		<section id="responsibilities">
+			<label for="responsibilities">Responsibilities:</label>
+			<textarea
+				required
+				hx-validate="true"
+				type="checkbox"
+				name="responsibilities"
+			></textarea>
+		</section>
+		<button type="submit">
+			<span>Submit</span>
+		</button>
+		<span id="response"></span>
+	</form>
+}
