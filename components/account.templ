@@ -6,7 +6,7 @@ templ Account(user models.User) {
 	@Layout("Account") {
 		<main>
 			@Nav()
-			<h2>{ user.FirstName }'s account</h2>
+			<h2>My account</h2>
 			<form hx-post="/" hx-target="#response" hx-swap="innerHTML">
 				<div>
 					<textarea id="content" name="content" placeholder="Enter a sample cover letter content"></textarea>

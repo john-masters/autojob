@@ -12,7 +12,7 @@ import "bytes"
 
 import "autojob/models"
 
-func SettingsForm(user models.User, isDisabled bool, method string) templ.Component {
+func SettingsForm(user models.User, method string) templ.Component {
 	return templ.ComponentFunc(func(ctx context.Context, templ_7745c5c3_W io.Writer) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templ_7745c5c3_W.(*bytes.Buffer)
 		if !templ_7745c5c3_IsBuffer {
@@ -30,48 +30,23 @@ func SettingsForm(user models.User, isDisabled bool, method string) templ.Compon
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = SettingsInput(user.FirstName, "text", "first_name", "First name: ", isDisabled).Render(ctx, templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = SettingsInput(user.FirstName, "text", "first_name", "First name: ", false).Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = SettingsInput(user.LastName, "text", "last_name", "Last name: ", isDisabled).Render(ctx, templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = SettingsInput(user.LastName, "text", "last_name", "Last name: ", false).Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = SettingsInput(user.Email, "email", "email", "Email: ", isDisabled).Render(ctx, templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = SettingsInput(user.Email, "email", "email", "Email: ", false).Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = SettingsInput(user.Password, "password", "password", "Password: ", isDisabled).Render(ctx, templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = SettingsInput(user.Password, "password", "password", "Password: ", false).Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<button type=\"submit\"><span>Submit</span></button> <span id=\"response\"></span></form>")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-		} else if method == "PUT" {
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<form hx-put=\"/user\" hx-swap=\"outerHTML\">")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			templ_7745c5c3_Err = SettingsInput(user.FirstName, "text", "first_name", "First name: ", isDisabled).Render(ctx, templ_7745c5c3_Buffer)
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			templ_7745c5c3_Err = SettingsInput(user.LastName, "text", "last_name", "Last name: ", isDisabled).Render(ctx, templ_7745c5c3_Buffer)
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			templ_7745c5c3_Err = SettingsInput(user.Email, "email", "email", "Email: ", isDisabled).Render(ctx, templ_7745c5c3_Buffer)
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			templ_7745c5c3_Err = SettingsInput(user.Password, "password", "password", "Password: ", isDisabled).Render(ctx, templ_7745c5c3_Buffer)
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<button type=\"submit\"><span>Submit</span></button> <span id=\"response\"></span></form>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<button type=\"submit\"><span>Update</span></button> <span id=\"response\"></span></form>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -80,23 +55,23 @@ func SettingsForm(user models.User, isDisabled bool, method string) templ.Compon
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = SettingsInput(user.FirstName, "text", "first_name", "First name: ", isDisabled).Render(ctx, templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = SettingsInput(user.FirstName, "text", "first_name", "First name: ", true).Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = SettingsInput(user.LastName, "text", "last_name", "Last name: ", isDisabled).Render(ctx, templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = SettingsInput(user.LastName, "text", "last_name", "Last name: ", true).Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = SettingsInput(user.Email, "email", "email", "Email: ", isDisabled).Render(ctx, templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = SettingsInput(user.Email, "email", "email", "Email: ", true).Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = SettingsInput(user.Password, "password", "password", "Password: ", isDisabled).Render(ctx, templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = SettingsInput(user.Password, "password", "password", "Password: ", true).Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<button type=\"submit\"><span>Submit</span></button> <span id=\"response\"></span></form>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<button type=\"submit\"><span>Edit</span></button> <span id=\"response\"></span></form>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

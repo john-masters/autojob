@@ -22,7 +22,7 @@ func Get(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	component := components.SettingsForm(user, false, "POST")
+	component := components.SettingsForm(user, "POST")
 	component.Render(r.Context(), w)
 }
 
@@ -140,6 +140,6 @@ func Post(w http.ResponseWriter, r *http.Request) {
 		Path:    "/",
 	})
 
-	component := components.SettingsForm(updatedUser, true, "GET")
+	component := components.SettingsForm(updatedUser, "GET")
 	component.Render(r.Context(), w)
 }

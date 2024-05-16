@@ -6,8 +6,8 @@ templ Settings(user models.User) {
 	@Layout("Settings") {
 		<main>
 			@Nav()
-			<h2>{ user.FirstName }'s account</h2>
-			@SettingsForm(user, true, "GET")
+			<h2>My account</h2>
+			@SettingsForm(user, "GET")
 		</main>
 	}
 }

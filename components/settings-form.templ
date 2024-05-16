@@ -2,37 +2,26 @@ package components
 
 import "autojob/models"
 
-templ SettingsForm(user models.User, isDisabled bool, method string) {
+templ SettingsForm(user models.User, method string) {
 	if method == "POST" {
 		<form hx-post="/user/" hx-swap="outerHTML">
-			@SettingsInput(user.FirstName, "text", "first_name", "First name: ", isDisabled)
-			@SettingsInput(user.LastName, "text", "last_name", "Last name: ", isDisabled)
-			@SettingsInput(user.Email, "email", "email", "Email: ", isDisabled)
-			@SettingsInput(user.Password, "password", "password", "Password: ", isDisabled)
+			@SettingsInput(user.FirstName, "text", "first_name", "First name: ", false)
+			@SettingsInput(user.LastName, "text", "last_name", "Last name: ", false)
+			@SettingsInput(user.Email, "email", "email", "Email: ", false)
+			@SettingsInput(user.Password, "password", "password", "Password: ", false)
 			<button type="submit">
-				<span>Submit</span>
-			</button>
-			<span id="response"></span>
-		</form>
-	} else if method == "PUT" {
-		<form hx-put="/user" hx-swap="outerHTML">
-			@SettingsInput(user.FirstName, "text", "first_name", "First name: ", isDisabled)
-			@SettingsInput(user.LastName, "text", "last_name", "Last name: ", isDisabled)
-			@SettingsInput(user.Email, "email", "email", "Email: ", isDisabled)
-			@SettingsInput(user.Password, "password", "password", "Password: ", isDisabled)
-			<button type="submit">
-				<span>Submit</span>
+				<span>Update</span>
 			</button>
 			<span id="response"></span>
 		</form>
 	} else if method == "GET" {
 		<form hx-get="/user/" hx-swap="outerHTML">
-			@SettingsInput(user.FirstName, "text", "first_name", "First name: ", isDisabled)
-			@SettingsInput(user.LastName, "text", "last_name", "Last name: ", isDisabled)
-			@SettingsInput(user.Email, "email", "email", "Email: ", isDisabled)
-			@SettingsInput(user.Password, "password", "password", "Password: ", isDisabled)
+			@SettingsInput(user.FirstName, "text", "first_name", "First name: ", true)
+			@SettingsInput(user.LastName, "text", "last_name", "Last name: ", true)
+			@SettingsInput(user.Email, "email", "email", "Email: ", true)
+			@SettingsInput(user.Password, "password", "password", "Password: ", true)
 			<button type="submit">
-				<span>Submit</span>
+				<span>Edit</span>
 			</button>
 			<span id="response"></span>
 		</form>
