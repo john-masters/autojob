@@ -20,6 +20,7 @@ func main() {
 
 	mux.Handle("/", routes.HomeRoutes())
 	mux.Handle("/auth/", http.StripPrefix("/auth", routes.AuthRoutes()))
+	mux.Handle("/user/", http.StripPrefix("/user", routes.UserRoutes()))
 
 	fmt.Println("Server running on http://localhost:8080")
 	http.ListenAndServe(":8080", mux)

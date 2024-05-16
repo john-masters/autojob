@@ -1,0 +1,15 @@
+package components
+
+templ SettingsInput(value string, typeVal string, nameVal string, labelVal string, isDisabled bool) {
+	if isDisabled {
+		<div>
+			<label for={ nameVal }>{ labelVal }</label>
+			<input value={ value } name={ nameVal } id={ nameVal } type={ typeVal } disabled required/>
+		</div>
+	} else {
+		<div>
+			<label for={ nameVal }>{ labelVal }</label>
+			<input value={ value } name={ nameVal } id={ nameVal } type={ typeVal } required/>
+		</div>
+	}
+}
