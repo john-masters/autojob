@@ -8,7 +8,7 @@ templ SettingsForm(user models.User, method string) {
 			@SettingsInput(user.FirstName, "text", "first_name", "First name: ", false)
 			@SettingsInput(user.LastName, "text", "last_name", "Last name: ", false)
 			@SettingsInput(user.Email, "email", "email", "Email: ", false)
-			@SettingsInput(user.Password, "password", "password", "Password: ", false)
+			@SettingsInput("", "password", "password", "Password: ", false)
 			<button type="submit">
 				<span>Update</span>
 			</button>
@@ -19,7 +19,7 @@ templ SettingsForm(user models.User, method string) {
 			@SettingsInput(user.FirstName, "text", "first_name", "First name: ", true)
 			@SettingsInput(user.LastName, "text", "last_name", "Last name: ", true)
 			@SettingsInput(user.Email, "email", "email", "Email: ", true)
-			@SettingsInput(user.Password, "password", "password", "Password: ", true)
+			@SettingsInput("******", "password", "password", "Password: ", true)
 			<button type="submit">
 				<span>Edit</span>
 			</button>

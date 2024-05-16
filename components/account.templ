@@ -3,20 +3,6 @@ package components
 import "autojob/models"
 
 templ Account(user models.User) {
-	@Layout("Account") {
-		<main>
-			@Nav()
-			<h2>My account</h2>
-			<form hx-post="/" hx-target="#response" hx-swap="innerHTML">
-				<div>
-					<textarea id="content" name="content" placeholder="Enter a sample cover letter content"></textarea>
-					<input type="file" id="file" name="file"/>
-				</div>
-				<button type="submit">
-					<span>Submit</span>
-				</button>
-				<span id="response"></span>
-			</form>
-		</main>
+	@Dashboard(user, "Account") {
 	}
 }
