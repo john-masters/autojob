@@ -9,8 +9,8 @@ import (
 func UserRoutes() *http.ServeMux {
 	router := http.NewServeMux()
 
-	router.HandleFunc("GET /", middleware.RequireAuth(handlers.Get))
-	router.HandleFunc("POST /", middleware.RequireAuth(handlers.Post))
+	router.HandleFunc("GET /", middleware.RequireAuth(handlers.GetUser))
+	router.HandleFunc("POST /", middleware.RequireAuth(handlers.UpdateUser))
 
 	return router
 }

@@ -34,15 +34,15 @@ func DbInit() {
 			password TEXT NOT NULL
 		);
 
-		CREATE TABLE experience (
+		CREATE TABLE experiences (
 			id INTEGER PRIMARY KEY AUTOINCREMENT,
 			user_id INTEGER NOT NULL,
 			name TEXT NOT NULL,
 			role TEXT NOT NULL,
-			start_date TEXT NOT NULL,
-			finish_date TEXT,
+			start TEXT NOT NULL,
+			finish TEXT,
 			current BOOLEAN NOT NULL,
-			responsibilities TEXT,
+			duties TEXT,
 			FOREIGN KEY (user_id) REFERENCES user (id)
 		);
 	`)

@@ -15,7 +15,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-func Get(w http.ResponseWriter, r *http.Request) {
+func GetUser(w http.ResponseWriter, r *http.Request) {
 	user, ok := r.Context().Value(middleware.UserContextKey).(models.User)
 	if !ok {
 		http.Error(w, "User not found in context", http.StatusUnauthorized)
@@ -26,7 +26,7 @@ func Get(w http.ResponseWriter, r *http.Request) {
 	component.Render(r.Context(), w)
 }
 
-func Post(w http.ResponseWriter, r *http.Request) {
+func UpdateUser(w http.ResponseWriter, r *http.Request) {
 	user, ok := r.Context().Value(middleware.UserContextKey).(models.User)
 	if !ok {
 		http.Error(w, "User not found in context", http.StatusUnauthorized)

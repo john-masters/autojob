@@ -1,40 +1,40 @@
 package components
 
 templ Experience() {
-	<form>
-		<section id="name">
+	<form hx-post="/experience/" hx-swap="outerHTML">
+		<div id="name">
 			<label for="name">Employer Name:</label>
 			<input type="text" name="name" required/>
-		</section>
-		<section id="role">
+		</div>
+		<div id="role">
 			<label for="name">Role:</label>
 			<input type="text" name="role" required/>
-		</section>
-		<section id="start">
+		</div>
+		<div id="start">
 			<label for="start">Start date:</label>
 			<input type="month" name="start" required/>
-		</section>
-		<section id="finish">
+		</div>
+		<div id="finish">
 			<label for="finish">Finish date:</label>
 			<input type="month" name="finish" required/>
-		</section>
-		<section id="current">
+		</div>
+		<div id="current">
 			<label for="current">Current employer?:</label>
 			<input
 				hx-on:change="const finish = document.getElementById('finish'); finish.style.display = this.checked ? 'none' : 'block'; finish.querySelector('input').required = !this.checked;"
 				type="checkbox"
 				name="current"
 			/>
-		</section>
-		<section id="responsibilities">
-			<label for="responsibilities">Responsibilities:</label>
+		</div>
+		<div id="duties">
+			<label for="duties">Duties:</label>
 			<textarea
 				required
 				hx-validate="true"
 				type="checkbox"
-				name="responsibilities"
+				name="duties"
 			></textarea>
-		</section>
+		</div>
 		<button type="submit">
 			<span>Submit</span>
 		</button>

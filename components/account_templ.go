@@ -35,6 +35,10 @@ func Account(user models.User) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" <div hx-get=\"/experience/\" hx-trigger=\"every 1s\"></div>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
 			if !templ_7745c5c3_IsBuffer {
 				_, templ_7745c5c3_Err = io.Copy(templ_7745c5c3_W, templ_7745c5c3_Buffer)
 			}
