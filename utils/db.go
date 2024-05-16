@@ -25,14 +25,27 @@ func DbInit() {
 		return
 	}
 	defer db.Close()
+	_, err = db.Exec(`
+		CREATE TABLE IF NOT EXISTS users (
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			first_name TEXT NOT NULL,
+			last_name TEXT NOT NULL,
+			email TEXT NOT NULL,
+			password TEXT NOT NULL
+		);
 
-	_, err = db.Exec(`CREATE TABLE IF NOT EXISTS users (
-		id INTEGER PRIMARY KEY AUTOINCREMENT,
-		first_name TEXT,
-		last_name TEXT,
-		email TEXT,
-		password TEXT
-	)`)
+		CREATE TABLE experience (
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			user_id INTEGER NOT NULL,
+			name TEXT NOT NULL,
+			role TEXT NOT NULL,
+			start_date TEXT NOT NULL,
+			finish_date TEXT,
+			current BOOLEAN NOT NULL,
+			responsibilities TEXT,
+			FOREIGN KEY (user_id) REFERENCES user (id)
+		);
+	`)
 	if err != nil {
 		fmt.Println("Error creating table")
 		return
