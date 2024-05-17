@@ -21,7 +21,7 @@ templ ExperienceForm(method string, experience models.Experience) {
 			if experience.Current {
 				<div id="finish" style="display: none;">
 					<label for="finish">Finish date:</label>
-					<input type="month" name="finish" experience={ experience.Finish }/>
+					<input type="month" name="finish" value={ experience.Finish }/>
 				</div>
 				<div id="current">
 					<label for="current">Current employer?:</label>
@@ -35,7 +35,7 @@ templ ExperienceForm(method string, experience models.Experience) {
 			} else {
 				<div id="finish">
 					<label for="finish">Finish date:</label>
-					<input type="month" name="finish" required experience={ experience.Finish }/>
+					<input type="month" name="finish" required value={ experience.Finish }/>
 				</div>
 				<div id="current">
 					<label for="current">Current employer?:</label>
