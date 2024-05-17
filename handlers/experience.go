@@ -144,8 +144,6 @@ func GetExperience(w http.ResponseWriter, r *http.Request) {
 	component.Render(r.Context(), w)
 }
 
-// NOT WORKING
-// TODO: fix this func
 func GetSingleExperience(w http.ResponseWriter, r *http.Request) {
 	id := r.PathValue("id")
 
@@ -172,5 +170,106 @@ func GetSingleExperience(w http.ResponseWriter, r *http.Request) {
 	}
 
 	component := components.ExperienceForm("POST", experience)
+	component.Render(r.Context(), w)
+}
+
+func UpdateSingleExperience(w http.ResponseWriter, r *http.Request) {
+	user, ok := r.Context().Value(middleware.UserContextKey).(models.User)
+	if !ok {
+		http.Error(w, "User not found in context", http.StatusUnauthorized)
+		return
+	}
+
+	err := r.ParseForm()
+
+	if err != nil {
+		fmt.Println("Error parsing form")
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	id := r.PathValue("id")
+	name := r.FormValue("name")
+	role := r.FormValue("role")
+	start := r.FormValue("start")
+	finish := r.FormValue("finish")
+	current := r.FormValue("current")
+	duties := r.FormValue("duties")
+
+	switch {
+	case name == "":
+		fmt.Fprint(w, "Name is required")
+		return
+	case role == "":
+		fmt.Fprint(w, "Role is required")
+		return
+	case start == "":
+		fmt.Fprint(w, "Start date is required")
+		return
+	case finish == "" && current != "on":
+		fmt.Fprint(w, "Finish date is required")
+		return
+	case current == "on" && finish != "":
+		fmt.Fprint(w, "Finish date should be empty")
+		return
+	case duties == "":
+		fmt.Fprint(w, "Duties is required")
+		return
+	}
+
+	isCurrent := current == "on"
+
+	db, err := utils.DbConnection()
+	if err != nil {
+		fmt.Println("Error initializing database")
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	defer db.Close()
+
+	updateExperienceSQL := `UPDATE experiences SET name = ?, role = ?, start = ?, finish = ?, current = ?, duties = ? WHERE id = ? AND user_id = ?`
+
+	statement, err := db.Prepare(updateExperienceSQL)
+	if err != nil {
+		fmt.Println("Error preparing SQL statement:", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	defer statement.Close()
+
+	result, err := statement.Exec(name, role, start, finish, isCurrent, duties, id, user.ID)
+	if err != nil {
+		fmt.Println("Error executing SQL statement:", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	rowsAffected, _ := result.RowsAffected()
+
+	if rowsAffected == 0 {
+		fmt.Println("No rows updated")
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
+
+	var experience models.Experience
+
+	err = db.QueryRow("SELECT * FROM experiences WHERE id = ? AND user_id = ?", id, user.ID).Scan(
+		&experience.ID,
+		&experience.UserID,
+		&experience.Name,
+		&experience.Role,
+		&experience.Start,
+		&experience.Finish,
+		&experience.Current,
+		&experience.Duties,
+	)
+	if err != nil {
+		fmt.Println("Error querying the new experience:", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	component := components.ExperienceForm("GET", experience)
 	component.Render(r.Context(), w)
 }

@@ -46,13 +46,13 @@ templ ExperienceForm(method string, experience models.Experience) {
 					/>
 				</div>
 			}
-			<div id="responsibilities">
-				<label for="responsibilities">Responsibilities:</label>
+			<div id="duties">
+				<label for="duties">Duties:</label>
 				<textarea
 					required
 					hx-validate="true"
 					type="checkbox"
-					name="responsibilities"
+					name="duties"
 				>{ experience.Duties }</textarea>
 			</div>
 			<button type="submit">
@@ -60,7 +60,7 @@ templ ExperienceForm(method string, experience models.Experience) {
 			</button>
 		</form>
 	} else {
-		<form hx-get={ "/experience/" + strconv.Itoa(experience.ID) } hx-swap="outerHTML">
+		<form>
 			<div id="name">
 				<span>Employer Name:</span>
 				<span>{ experience.Name }</span>
@@ -81,12 +81,15 @@ templ ExperienceForm(method string, experience models.Experience) {
 				<span>Current employer: </span>
 				<span>{ strconv.FormatBool(experience.Current) }</span>
 			</div>
-			<div id="responsibilities">
+			<div id="duties">
 				<span>Duties:</span>
 				<div style="white-space: pre-wrap;">{ experience.Duties }</div>
 			</div>
-			<button type="submit">
+			<button type="submit" hx-get={ "/experience/" + strconv.Itoa(experience.ID) } hx-swap="outerHTML" hx-target="closest form">
 				<span>Edit</span>
+			</button>
+			<button type="submit" hx-delete={ "/experience/" + strconv.Itoa(experience.ID) } hx-swap="outerHTML" hx-target="closest form" hx-confirm="Are you sure you wish to delete this job experience?">
+				<span>Delete</span>
 			</button>
 			<br/>
 		</form>

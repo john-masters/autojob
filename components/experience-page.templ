@@ -7,7 +7,7 @@ templ ExperiencePage(user models.User) {
 		<a href="/work-experience/create">
 			<button>Add New</button>
 		</a>
-		<br/>
+		<hr/>
 		<div hx-get="/experience/" hx-trigger="load once" hx-swap="outerHTML">
 			<span>Loading...</span>
 		</div>
