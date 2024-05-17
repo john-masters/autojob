@@ -71,21 +71,31 @@ func CreateExperience(w http.ResponseWriter, r *http.Request) {
 	}
 	defer statement.Close()
 
-	_, err = statement.Exec(user.ID, name, role, start, finish, isCurrent, duties)
+	res, err := statement.Exec(user.ID, name, role, start, finish, isCurrent, duties)
 	if err != nil {
 		fmt.Println("Error executing SQL statement:", err)
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
-	component := components.ExperienceForm("GET", models.Experience{
-		Name:    name,
-		Role:    role,
-		Start:   start,
-		Finish:  finish,
-		Current: isCurrent,
-		Duties:  duties,
-	})
+	lastInsertID, err := res.LastInsertId()
+	if err != nil {
+		fmt.Println("Error getting last insert ID:", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	var experience models.Experience
+
+	err = db.QueryRow("SELECT id, user_id, name, role, start, finish, current, duties FROM experiences WHERE id = ?", lastInsertID).Scan(
+		&experience.ID, &experience.UserID, &experience.Name, &experience.Role, &experience.Start, &experience.Finish, &experience.Current, &experience.Duties)
+	if err != nil {
+		fmt.Println("Error querying the new experience:", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	component := components.ExperienceForm("GET", experience)
 	component.Render(r.Context(), w)
 }
 
@@ -130,8 +140,6 @@ func GetExperience(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Println(experiences)
-
 	component := components.ExperienceList(experiences)
 	component.Render(r.Context(), w)
 }
@@ -162,8 +170,6 @@ func GetSingleExperience(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
-
-	fmt.Println(experience)
 
 	component := components.ExperienceForm("POST", experience)
 	component.Render(r.Context(), w)
