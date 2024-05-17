@@ -1,0 +1,15 @@
+package components
+
+import "autojob/models"
+
+templ ExperiencePage(user models.User) {
+	@Dashboard(user, "Experience List") {
+		<a href="/work-experience/create">
+			<button>Add New</button>
+		</a>
+		<br/>
+		<div hx-get="/experience/" hx-trigger="load once" hx-swap="outerHTML">
+			<span>Loading...</span>
+		</div>
+	}
+}

@@ -104,10 +104,6 @@ func GetExperience(w http.ResponseWriter, r *http.Request) {
 	}
 	defer db.Close()
 
-	// var experience models.Experience
-	// err = db.QueryRow("SELECT * FROM experiences WHERE user_id = ?", user.ID).Scan(&experience.ID, &experience.UserID, &experience.Name, &experience.Role, &experience.Start, &experience.Finish, &experience.Current, &experience.Duties)
-
-	// fmt.Println(experience)
 	rows, err := db.Query("SELECT * FROM experiences WHERE user_id = ?", user.ID)
 	if err != nil {
 		fmt.Println("Database query error:", err)

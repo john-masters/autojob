@@ -62,60 +62,33 @@ templ ExperienceForm(method string, experience models.Experience) {
 	} else {
 		<form hx-get={ "/experience/" + strconv.Itoa(experience.ID) } hx-swap="outerHTML">
 			<div id="name">
-				<label for="name">Employer Name:</label>
-				<input type="text" name="name" required value={ experience.Name } disabled/>
+				<span>Employer Name:</span>
+				<span>{ experience.Name }</span>
 			</div>
 			<div id="role">
-				<label for="name">Role:</label>
-				<input type="text" name="role" required value={ experience.Role } disabled/>
+				<span>Role:</span>
+				<span>{ experience.Role }</span>
 			</div>
 			<div id="start">
-				<label for="start">Start date:</label>
-				<input type="month" name="start" required value={ experience.Start } disabled/>
+				<span>Start date:</span>
+				<span>{ experience.Start }</span>
 			</div>
-			if experience.Current {
-				<div id="finish" style="display: none;">
-					<label for="finish">Finish date:</label>
-					<input type="month" name="finish" experience={ experience.Finish } disabled/>
-				</div>
-				<div id="current">
-					<label for="current">Current employer?:</label>
-					<input
-						hx-on:change="const finish = document.getElementById('finish'); finish.style.display = this.checked ? 'none' : 'block'; finish.querySelector('input').required = !this.checked;"
-						type="checkbox"
-						name="current"
-						checked
-						disabled
-					/>
-				</div>
-			} else {
-				<div id="finish">
-					<label for="finish">Finish date:</label>
-					<input type="month" name="finish" required experience={ experience.Finish } disabled/>
-				</div>
-				<div id="current">
-					<label for="current">Current employer?:</label>
-					<input
-						hx-on:change="const finish = document.getElementById('finish'); finish.style.display = this.checked ? 'none' : 'block'; finish.querySelector('input').required = !this.checked;"
-						type="checkbox"
-						name="current"
-						disabled
-					/>
-				</div>
-			}
+			<div id="finish">
+				<span>Finish date:</span>
+				<span>{ experience.Finish }</span>
+			</div>
+			<div id="current">
+				<span>Current employer: </span>
+				<span>{ strconv.FormatBool(experience.Current) }</span>
+			</div>
 			<div id="responsibilities">
-				<label for="responsibilities">Responsibilities:</label>
-				<textarea
-					required
-					hx-validate="true"
-					type="checkbox"
-					name="responsibilities"
-					disabled
-				>{ experience.Duties }</textarea>
+				<span>Duties:</span>
+				<div style="white-space: pre-wrap;">{ experience.Duties }</div>
 			</div>
 			<button type="submit">
 				<span>Edit</span>
 			</button>
+			<br/>
 		</form>
 	}
 }

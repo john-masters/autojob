@@ -1,0 +1,9 @@
+package components
+
+import "autojob/models"
+
+templ CreateExperiencePage(user models.User) {
+	@Dashboard(user, "Experience - Create new") {
+		@Experience()
+	}
+}
