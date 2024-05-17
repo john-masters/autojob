@@ -78,7 +78,14 @@ func CreateExperience(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	component := components.ExperienceForm("GET")
+	component := components.ExperienceForm("GET", models.Experience{
+		Name:    name,
+		Role:    role,
+		Start:   start,
+		Finish:  finish,
+		Current: isCurrent,
+		Duties:  duties,
+	})
 	component.Render(r.Context(), w)
 }
 
@@ -97,8 +104,63 @@ func GetExperience(w http.ResponseWriter, r *http.Request) {
 	}
 	defer db.Close()
 
+	// var experience models.Experience
+	// err = db.QueryRow("SELECT * FROM experiences WHERE user_id = ?", user.ID).Scan(&experience.ID, &experience.UserID, &experience.Name, &experience.Role, &experience.Start, &experience.Finish, &experience.Current, &experience.Duties)
+
+	// fmt.Println(experience)
+	rows, err := db.Query("SELECT * FROM experiences WHERE user_id = ?", user.ID)
+	if err != nil {
+		fmt.Println("Database query error:", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	var experiences []models.Experience
+	for rows.Next() {
+		var experience models.Experience
+		err := rows.Scan(&experience.ID, &experience.UserID, &experience.Name, &experience.Role, &experience.Start, &experience.Finish, &experience.Current, &experience.Duties)
+		if err != nil {
+			fmt.Println("Error scanning row:", err)
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+		experiences = append(experiences, experience)
+
+	}
+
+	if err := rows.Err(); err != nil {
+		fmt.Println("Error iterating rows:", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	fmt.Println(experiences)
+
+	component := components.ExperienceList(experiences)
+	component.Render(r.Context(), w)
+}
+
+// NOT WORKING
+// TODO: fix this func
+func GetSingleExperience(w http.ResponseWriter, r *http.Request) {
+	id := r.PathValue("id")
+
+	user, ok := r.Context().Value(middleware.UserContextKey).(models.User)
+	if !ok {
+		http.Error(w, "User not found in context", http.StatusUnauthorized)
+		return
+	}
+
+	db, err := utils.DbConnection()
+	if err != nil {
+		fmt.Println("Error initializing database")
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	defer db.Close()
+
 	var experience models.Experience
-	err = db.QueryRow("SELECT * FROM experiences WHERE user_id = ?", user.ID).Scan(&experience.ID, &experience.UserID, &experience.Name, &experience.Role, &experience.Start, &experience.Finish, &experience.Current, &experience.Duties)
+	err = db.QueryRow("SELECT * FROM experiences WHERE id = ? AND user_id = ?", id, user.ID).Scan(&experience.ID, &experience.UserID, &experience.Name, &experience.Role, &experience.Start, &experience.Finish, &experience.Current, &experience.Duties)
 	if err != nil {
 		fmt.Println("Database query error:", err)
 		w.WriteHeader(http.StatusInternalServerError)
@@ -107,6 +169,6 @@ func GetExperience(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Println(experience)
 
-	component := components.ExperienceForm("POST")
+	component := components.ExperienceForm("POST", experience)
 	component.Render(r.Context(), w)
 }

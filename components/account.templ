@@ -5,6 +5,8 @@ import "autojob/models"
 templ Account(user models.User) {
 	@Dashboard(user, "Account") {
 		@Experience()
-		<div hx-get="/experience/" hx-trigger="every 1s"></div>
+		<div hx-get="/experience/" hx-trigger="load once" hx-swap="outerHTML">
+			<span>Loading...</span>
+		</div>
 	}
 }

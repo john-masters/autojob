@@ -1,0 +1,11 @@
+package components
+
+import "autojob/models"
+
+templ ExperienceList(experiences []models.Experience) {
+	<div>
+		for _, experience := range experiences {
+			@ExperienceForm("GET", experience)
+		}
+	</div>
+}

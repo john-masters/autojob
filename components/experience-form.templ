@@ -1,32 +1,51 @@
 package components
 
-templ ExperienceForm(method string) {
+import "autojob/models"
+import "strconv"
+
+templ ExperienceForm(method string, experience models.Experience) {
 	if method == "POST" {
-		<form hx-post="/experience/" hx-swap="outerHTML">
+		<form hx-post={ "/experience/" + strconv.Itoa(experience.ID) } hx-swap="outerHTML">
 			<div id="name">
 				<label for="name">Employer Name:</label>
-				<input type="text" name="name" required/>
+				<input type="text" name="name" required value={ experience.Name }/>
 			</div>
 			<div id="role">
 				<label for="name">Role:</label>
-				<input type="text" name="role" required/>
+				<input type="text" name="role" required value={ experience.Role }/>
 			</div>
 			<div id="start">
 				<label for="start">Start date:</label>
-				<input type="month" name="start" required/>
+				<input type="month" name="start" required value={ experience.Start }/>
 			</div>
-			<div id="finish">
-				<label for="finish">Finish date:</label>
-				<input type="month" name="finish" required/>
-			</div>
-			<div id="current">
-				<label for="current">Current employer?:</label>
-				<input
-					hx-on:change="const finish = document.getElementById('finish'); finish.style.display = this.checked ? 'none' : 'block'; finish.querySelector('input').required = !this.checked;"
-					type="checkbox"
-					name="current"
-				/>
-			</div>
+			if experience.Current {
+				<div id="finish" style="display: none;">
+					<label for="finish">Finish date:</label>
+					<input type="month" name="finish" experience={ experience.Finish }/>
+				</div>
+				<div id="current">
+					<label for="current">Current employer?:</label>
+					<input
+						hx-on:change="const finish = document.getElementById('finish'); finish.style.display = this.checked ? 'none' : 'block'; finish.querySelector('input').required = !this.checked;"
+						type="checkbox"
+						name="current"
+						checked
+					/>
+				</div>
+			} else {
+				<div id="finish">
+					<label for="finish">Finish date:</label>
+					<input type="month" name="finish" required experience={ experience.Finish }/>
+				</div>
+				<div id="current">
+					<label for="current">Current employer?:</label>
+					<input
+						hx-on:change="const finish = document.getElementById('finish'); finish.style.display = this.checked ? 'none' : 'block'; finish.querySelector('input').required = !this.checked;"
+						type="checkbox"
+						name="current"
+					/>
+				</div>
+			}
 			<div id="responsibilities">
 				<label for="responsibilities">Responsibilities:</label>
 				<textarea
@@ -34,40 +53,56 @@ templ ExperienceForm(method string) {
 					hx-validate="true"
 					type="checkbox"
 					name="responsibilities"
-				></textarea>
+				>{ experience.Duties }</textarea>
 			</div>
 			<button type="submit">
 				<span>Submit</span>
 			</button>
-			<span id="response"></span>
 		</form>
-	} else if method == "GET" {
-		<form hx-post="/experience/" hx-swap="outerHTML">
+	} else {
+		<form hx-get={ "/experience/" + strconv.Itoa(experience.ID) } hx-swap="outerHTML">
 			<div id="name">
 				<label for="name">Employer Name:</label>
-				<input type="text" name="name" required disabled/>
+				<input type="text" name="name" required value={ experience.Name } disabled/>
 			</div>
 			<div id="role">
 				<label for="name">Role:</label>
-				<input type="text" name="role" required disabled/>
+				<input type="text" name="role" required value={ experience.Role } disabled/>
 			</div>
 			<div id="start">
 				<label for="start">Start date:</label>
-				<input type="month" name="start" required disabled/>
+				<input type="month" name="start" required value={ experience.Start } disabled/>
 			</div>
-			<div id="finish">
-				<label for="finish">Finish date:</label>
-				<input type="month" name="finish" required disabled/>
-			</div>
-			<div id="current">
-				<label for="current">Current employer?:</label>
-				<input
-					hx-on:change="const finish = document.getElementById('finish'); finish.style.display = this.checked ? 'none' : 'block'; finish.querySelector('input').required = !this.checked;"
-					type="checkbox"
-					name="current"
-					disabled
-				/>
-			</div>
+			if experience.Current {
+				<div id="finish" style="display: none;">
+					<label for="finish">Finish date:</label>
+					<input type="month" name="finish" experience={ experience.Finish } disabled/>
+				</div>
+				<div id="current">
+					<label for="current">Current employer?:</label>
+					<input
+						hx-on:change="const finish = document.getElementById('finish'); finish.style.display = this.checked ? 'none' : 'block'; finish.querySelector('input').required = !this.checked;"
+						type="checkbox"
+						name="current"
+						checked
+						disabled
+					/>
+				</div>
+			} else {
+				<div id="finish">
+					<label for="finish">Finish date:</label>
+					<input type="month" name="finish" required experience={ experience.Finish } disabled/>
+				</div>
+				<div id="current">
+					<label for="current">Current employer?:</label>
+					<input
+						hx-on:change="const finish = document.getElementById('finish'); finish.style.display = this.checked ? 'none' : 'block'; finish.querySelector('input').required = !this.checked;"
+						type="checkbox"
+						name="current"
+						disabled
+					/>
+				</div>
+			}
 			<div id="responsibilities">
 				<label for="responsibilities">Responsibilities:</label>
 				<textarea
@@ -76,12 +111,11 @@ templ ExperienceForm(method string) {
 					type="checkbox"
 					name="responsibilities"
 					disabled
-				></textarea>
+				>{ experience.Duties }</textarea>
 			</div>
-			<button type="submit" disabled>
-				<span>Submit</span>
+			<button type="submit">
+				<span>Edit</span>
 			</button>
-			<span id="response"></span>
 		</form>
 	}
 }
