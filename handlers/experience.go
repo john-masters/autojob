@@ -273,3 +273,40 @@ func UpdateSingleExperience(w http.ResponseWriter, r *http.Request) {
 	component := components.ExperienceForm("GET", experience)
 	component.Render(r.Context(), w)
 }
+
+func DeleteSingleExperience(w http.ResponseWriter, r *http.Request) {
+	user, ok := r.Context().Value(middleware.UserContextKey).(models.User)
+	if !ok {
+		http.Error(w, "User not found in context", http.StatusUnauthorized)
+		return
+	}
+
+	db, err := utils.DbConnection()
+	if err != nil {
+		fmt.Println("Error initializing database")
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	defer db.Close()
+
+	id := r.PathValue("id")
+
+	deleteExperienceSQL := `DELETE FROM experiences WHERE id = ? AND user_id = ?`
+	statement, err := db.Prepare(deleteExperienceSQL)
+	if err != nil {
+		fmt.Println("Error preparing SQL statement:", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	defer statement.Close()
+
+	_, err = statement.Exec(id, user.ID)
+	if err != nil {
+		fmt.Println("Error executing SQL statement:", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	// return ok so ui knows no issue in updating
+	w.WriteHeader(http.StatusOK)
+}

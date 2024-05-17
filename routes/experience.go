@@ -14,6 +14,7 @@ func ExperienceRoutes() *http.ServeMux {
 
 	router.HandleFunc("GET /{id}", middleware.RequireAuth(handlers.GetSingleExperience))
 	router.HandleFunc("POST /{id}", middleware.RequireAuth(handlers.UpdateSingleExperience))
+	router.HandleFunc("DELETE /{id}", middleware.RequireAuth(handlers.DeleteSingleExperience))
 
 	return router
 }
