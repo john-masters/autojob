@@ -8,12 +8,12 @@ import (
 )
 
 func HomePage(w http.ResponseWriter, r *http.Request) {
-	component := components.Home()
+	component := components.HomePage()
 	component.Render(r.Context(), w)
 }
 
 func SignupPage(w http.ResponseWriter, r *http.Request) {
-	component := components.Signup()
+	component := components.SignupPage()
 	component.Render(r.Context(), w)
 }
 
@@ -24,7 +24,7 @@ func AccountPage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	component := components.Account(user)
+	component := components.AccountPage(user)
 	component.Render(r.Context(), w)
 }
 
@@ -35,6 +35,6 @@ func SettingsPage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	component := components.Settings(user)
+	component := components.SettingsPage(user)
 	component.Render(r.Context(), w)
 }

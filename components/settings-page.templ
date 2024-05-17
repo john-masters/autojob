@@ -2,7 +2,7 @@ package components
 
 import "autojob/models"
 
-templ Settings(user models.User) {
+templ SettingsPage(user models.User) {
 	@Dashboard(user, "Settings") {
 		@SettingsForm(user, "GET")
 	}

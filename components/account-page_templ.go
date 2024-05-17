@@ -10,7 +10,9 @@ import "context"
 import "io"
 import "bytes"
 
-func Home() templ.Component {
+import "autojob/models"
+
+func AccountPage(user models.User) templ.Component {
 	return templ.ComponentFunc(func(ctx context.Context, templ_7745c5c3_W io.Writer) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templ_7745c5c3_W.(*bytes.Buffer)
 		if !templ_7745c5c3_IsBuffer {
@@ -29,7 +31,11 @@ func Home() templ.Component {
 				templ_7745c5c3_Buffer = templ.GetBuffer()
 				defer templ.ReleaseBuffer(templ_7745c5c3_Buffer)
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<main><h2>Log in</h2><form hx-post=\"/auth/login\" hx-target=\"#response\" hx-swap=\"innerHTML\"><div><label for=\"email\">Email:</label> <input id=\"email\" name=\"email\" type=\"email\" required></div><div><label for=\"password\">Password:</label> <input id=\"password\" name=\"password\" type=\"password\" required></div><button type=\"submit\"><span>Submit</span></button> <span id=\"response\"></span></form><p><span>Don't have an account? Sign up <a href=\"/sign-up\">here</a>.</span></p></main>")
+			templ_7745c5c3_Err = Experience().Render(ctx, templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" <div hx-get=\"/experience/\" hx-trigger=\"load once\" hx-swap=\"outerHTML\"><span>Loading...</span></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -38,7 +44,7 @@ func Home() templ.Component {
 			}
 			return templ_7745c5c3_Err
 		})
-		templ_7745c5c3_Err = Layout("Home").Render(templ.WithChildren(ctx, templ_7745c5c3_Var2), templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = Dashboard(user, "Account").Render(templ.WithChildren(ctx, templ_7745c5c3_Var2), templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
