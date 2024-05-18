@@ -7,6 +7,7 @@ import (
 	"autojob/utils"
 	"fmt"
 	"net/http"
+	"time"
 )
 
 func CreateExperience(w http.ResponseWriter, r *http.Request) {
@@ -54,6 +55,23 @@ func CreateExperience(w http.ResponseWriter, r *http.Request) {
 
 	isCurrent := current == "on"
 
+	startTime, err := time.Parse("2006-01", start)
+	if err != nil {
+		fmt.Println("Error parsing start date:", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	var finishTime time.Time
+	if finish != "" {
+		finishTime, err = time.Parse("2006-01", finish)
+		if err != nil {
+			fmt.Println("Error parsing finish date:", err)
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+	}
+
 	db, err := utils.DbConnection()
 	if err != nil {
 		fmt.Println("Error initializing database")
@@ -71,7 +89,7 @@ func CreateExperience(w http.ResponseWriter, r *http.Request) {
 	}
 	defer statement.Close()
 
-	res, err := statement.Exec(user.ID, name, role, start, finish, isCurrent, duties)
+	res, err := statement.Exec(user.ID, name, role, startTime, finishTime, isCurrent, duties)
 	if err != nil {
 		fmt.Println("Error executing SQL statement:", err)
 		w.WriteHeader(http.StatusInternalServerError)

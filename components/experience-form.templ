@@ -16,17 +16,17 @@ templ ExperienceForm(method string, experience models.Experience) {
 			</div>
 			<div id="start">
 				<label for="start">Start date:</label>
-				<input type="month" name="start" required value={ experience.Start }/>
+				<input type="month" name="start" required value={ experience.Start.Format("2006-01") }/>
 			</div>
 			if experience.Current {
 				<div id="finish" style="display: none;">
 					<label for="finish">Finish date:</label>
-					<input type="month" name="finish" value={ experience.Finish }/>
+					<input type="month" name="finish" value={ experience.Finish.Format("2006-01") }/>
 				</div>
 				<div id="current">
 					<label for="current">Current employer?:</label>
 					<input
-						hx-on:change="const finish = document.getElementById('finish'); finish.style.display = this.checked ? 'none' : 'block'; finish.querySelector('input').required = !this.checked;"
+						hx-on:change="const finish = document.getElementById('finish'); const input = finish.querySelector('input'); if (this.checked) { input.value = ''; finish.style.display = 'none'; input.required = false; } else { finish.style.display = 'block'; input.required = true; }"
 						type="checkbox"
 						name="current"
 						checked
@@ -35,12 +35,12 @@ templ ExperienceForm(method string, experience models.Experience) {
 			} else {
 				<div id="finish">
 					<label for="finish">Finish date:</label>
-					<input type="month" name="finish" required value={ experience.Finish }/>
+					<input type="month" name="finish" required value={ experience.Finish.Format("2006-01") }/>
 				</div>
 				<div id="current">
 					<label for="current">Current employer?:</label>
 					<input
-						hx-on:change="const finish = document.getElementById('finish'); finish.style.display = this.checked ? 'none' : 'block'; finish.querySelector('input').required = !this.checked;"
+						hx-on:change="const finish = document.getElementById('finish'); const input = finish.querySelector('input'); if (this.checked) { input.value = ''; finish.style.display = 'none'; input.required = false; } else { finish.style.display = 'block'; input.required = true; }"
 						type="checkbox"
 						name="current"
 					/>
@@ -71,24 +71,42 @@ templ ExperienceForm(method string, experience models.Experience) {
 			</div>
 			<div id="start">
 				<span>Start date:</span>
-				<span>{ experience.Start }</span>
+				<span>{ experience.Start.Format("2006-01") }</span>
 			</div>
-			<div id="finish">
-				<span>Finish date:</span>
-				<span>{ experience.Finish }</span>
-			</div>
-			<div id="current">
-				<span>Current employer: </span>
-				<span>{ strconv.FormatBool(experience.Current) }</span>
-			</div>
+			if experience.Current {
+				<div id="current">
+					<span>Current employer: </span>
+					<span>{ strconv.FormatBool(experience.Current) }</span>
+				</div>
+			} else {
+				<div id="finish">
+					<span>Finish date:</span>
+					<span>{ experience.Finish.Format("2006-01") }</span>
+				</div>
+				<div id="current">
+					<span>Current employer: </span>
+					<span>{ strconv.FormatBool(experience.Current) }</span>
+				</div>
+			}
 			<div id="duties">
 				<span>Duties:</span>
 				<div style="white-space: pre-wrap;">{ experience.Duties }</div>
 			</div>
-			<button type="submit" hx-get={ "/experience/" + strconv.Itoa(experience.ID) } hx-swap="outerHTML" hx-target="closest form">
+			<button
+				type="submit"
+				hx-get={ "/experience/" + strconv.Itoa(experience.ID) }
+				hx-swap="outerHTML"
+				hx-target="closest form"
+			>
 				<span>Edit</span>
 			</button>
-			<button type="submit" hx-delete={ "/experience/" + strconv.Itoa(experience.ID) } hx-swap="outerHTML" hx-target="closest form" hx-confirm="Are you sure you wish to delete this job experience?">
+			<button
+				type="submit"
+				hx-delete={ "/experience/" + strconv.Itoa(experience.ID) }
+				hx-swap="outerHTML"
+				hx-target="closest form"
+				hx-confirm={ "Are you sure you wish to delete this job experience from " + experience.Name + "?" }
+			>
 				<span>Delete</span>
 			</button>
 			<br/>
