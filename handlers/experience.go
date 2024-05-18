@@ -132,7 +132,7 @@ func GetExperience(w http.ResponseWriter, r *http.Request) {
 	}
 	defer db.Close()
 
-	rows, err := db.Query("SELECT * FROM experiences WHERE user_id = ?", user.ID)
+	rows, err := db.Query("SELECT * FROM experiences WHERE user_id = ? ORDER BY start DESC", user.ID)
 	if err != nil {
 		fmt.Println("Database query error:", err)
 		w.WriteHeader(http.StatusInternalServerError)
