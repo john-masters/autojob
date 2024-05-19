@@ -2,7 +2,7 @@ package models
 
 import "time"
 
-type Experience struct {
+type History struct {
 	ID      int
 	UserID  int
 	Name    string

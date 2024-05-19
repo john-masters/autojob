@@ -3,25 +3,25 @@ package components
 import "autojob/models"
 import "strconv"
 
-templ ExperienceForm(method string, experience models.Experience) {
+templ HistoryForm(method string, history models.History) {
 	if method == "POST" {
-		<form hx-post={ "/experience/" + strconv.Itoa(experience.ID) } hx-swap="outerHTML">
+		<form hx-post={ "/history/" + strconv.Itoa(history.ID) } hx-swap="outerHTML">
 			<div id="name">
 				<label for="name">Employer Name:</label>
-				<input type="text" name="name" required value={ experience.Name }/>
+				<input type="text" name="name" required value={ history.Name }/>
 			</div>
 			<div id="role">
 				<label for="name">Role:</label>
-				<input type="text" name="role" required value={ experience.Role }/>
+				<input type="text" name="role" required value={ history.Role }/>
 			</div>
 			<div id="start">
 				<label for="start">Start date:</label>
-				<input type="month" name="start" required value={ experience.Start.Format("2006-01") }/>
+				<input type="month" name="start" required value={ history.Start.Format("2006-01") }/>
 			</div>
-			if experience.Current {
+			if history.Current {
 				<div id="finish" style="display: none;">
 					<label for="finish">Finish date:</label>
-					<input type="month" name="finish" value={ experience.Finish.Format("2006-01") }/>
+					<input type="month" name="finish" value={ history.Finish.Format("2006-01") }/>
 				</div>
 				<div id="current">
 					<label for="current">Current employer?:</label>
@@ -35,7 +35,7 @@ templ ExperienceForm(method string, experience models.Experience) {
 			} else {
 				<div id="finish">
 					<label for="finish">Finish date:</label>
-					<input type="month" name="finish" required value={ experience.Finish.Format("2006-01") }/>
+					<input type="month" name="finish" required value={ history.Finish.Format("2006-01") }/>
 				</div>
 				<div id="current">
 					<label for="current">Current employer?:</label>
@@ -53,7 +53,7 @@ templ ExperienceForm(method string, experience models.Experience) {
 					hx-validate="true"
 					type="checkbox"
 					name="duties"
-				>{ experience.Duties }</textarea>
+				>{ history.Duties }</textarea>
 			</div>
 			<button type="submit">
 				<span>Submit</span>
@@ -63,38 +63,38 @@ templ ExperienceForm(method string, experience models.Experience) {
 		<form>
 			<div id="name">
 				<span>Employer Name:</span>
-				<span>{ experience.Name }</span>
+				<span>{ history.Name }</span>
 			</div>
 			<div id="role">
 				<span>Role:</span>
-				<span>{ experience.Role }</span>
+				<span>{ history.Role }</span>
 			</div>
 			<div id="start">
 				<span>Start date:</span>
-				<span>{ experience.Start.Format("2006-01") }</span>
+				<span>{ history.Start.Format("2006-01") }</span>
 			</div>
-			if experience.Current {
+			if history.Current {
 				<div id="current">
 					<span>Current employer: </span>
-					<span>{ strconv.FormatBool(experience.Current) }</span>
+					<span>{ strconv.FormatBool(history.Current) }</span>
 				</div>
 			} else {
 				<div id="finish">
 					<span>Finish date:</span>
-					<span>{ experience.Finish.Format("2006-01") }</span>
+					<span>{ history.Finish.Format("2006-01") }</span>
 				</div>
 				<div id="current">
 					<span>Current employer: </span>
-					<span>{ strconv.FormatBool(experience.Current) }</span>
+					<span>{ strconv.FormatBool(history.Current) }</span>
 				</div>
 			}
 			<div id="duties">
 				<span>Duties:</span>
-				<div style="white-space: pre-wrap;">{ experience.Duties }</div>
+				<div style="white-space: pre-wrap;">{ history.Duties }</div>
 			</div>
 			<button
 				type="submit"
-				hx-get={ "/experience/" + strconv.Itoa(experience.ID) }
+				hx-get={ "/history/" + strconv.Itoa(history.ID) }
 				hx-swap="outerHTML"
 				hx-target="closest form"
 			>
@@ -102,10 +102,10 @@ templ ExperienceForm(method string, experience models.Experience) {
 			</button>
 			<button
 				type="submit"
-				hx-delete={ "/experience/" + strconv.Itoa(experience.ID) }
+				hx-delete={ "/history/" + strconv.Itoa(history.ID) }
 				hx-swap="outerHTML"
 				hx-target="closest form"
-				hx-confirm={ "Are you sure you wish to delete this job experience from " + experience.Name + "?" }
+				hx-confirm={ "Are you sure you wish to delete this job from " + history.Name + "?" }
 			>
 				<span>Delete</span>
 			</button>

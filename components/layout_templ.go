@@ -41,7 +41,7 @@ func Layout(title string, isLoggedIn bool) templ.Component {
 			return templ_7745c5c3_Err
 		}
 		if isLoggedIn {
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<a href=\"/\">Account</a> | <a href=\"/job-history\">Job History</a> | <a href=\"/cover-letter\">Cover Letter</a> | <a href=\"/settings\">Settings</a> | <a href=\"/auth/logout\">Log out</a> |")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<a href=\"/account\">Account</a> | <a href=\"/job-history\">Job History</a> | <a href=\"/cover-letter\">Cover Letter</a> | <a href=\"/settings\">Settings</a> | <a href=\"/auth/logout\">Log out</a> |")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

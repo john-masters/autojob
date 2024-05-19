@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-func CreateExperience(w http.ResponseWriter, r *http.Request) {
+func CreateHistory(w http.ResponseWriter, r *http.Request) {
 	user, ok := r.Context().Value(middleware.UserContextKey).(models.User)
 	if !ok {
 		http.Error(w, "User not found in context", http.StatusUnauthorized)
@@ -80,8 +80,8 @@ func CreateExperience(w http.ResponseWriter, r *http.Request) {
 	}
 	defer db.Close()
 
-	insertExperienceSQL := `INSERT INTO experiences (user_id, name, role, start, finish, current, duties) VALUES (?, ?, ?, ?, ?, ?, ?)`
-	statement, err := db.Prepare(insertExperienceSQL)
+	insertHistorySQL := `INSERT INTO history (user_id, name, role, start, finish, current, duties) VALUES (?, ?, ?, ?, ?, ?, ?)`
+	statement, err := db.Prepare(insertHistorySQL)
 	if err != nil {
 		fmt.Println("Error preparing SQL statement:", err)
 		w.WriteHeader(http.StatusInternalServerError)
@@ -89,35 +89,17 @@ func CreateExperience(w http.ResponseWriter, r *http.Request) {
 	}
 	defer statement.Close()
 
-	res, err := statement.Exec(user.ID, name, role, startTime, finishTime, isCurrent, duties)
+	_, err = statement.Exec(user.ID, name, role, startTime, finishTime, isCurrent, duties)
 	if err != nil {
 		fmt.Println("Error executing SQL statement:", err)
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
-	lastInsertID, err := res.LastInsertId()
-	if err != nil {
-		fmt.Println("Error getting last insert ID:", err)
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
-
-	var experience models.Experience
-
-	err = db.QueryRow("SELECT id, user_id, name, role, start, finish, current, duties FROM experiences WHERE id = ?", lastInsertID).Scan(
-		&experience.ID, &experience.UserID, &experience.Name, &experience.Role, &experience.Start, &experience.Finish, &experience.Current, &experience.Duties)
-	if err != nil {
-		fmt.Println("Error querying the new experience:", err)
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
-
-	component := components.ExperienceForm("GET", experience)
-	component.Render(r.Context(), w)
+	http.Redirect(w, r, "/job-history", http.StatusSeeOther)
 }
 
-func GetExperience(w http.ResponseWriter, r *http.Request) {
+func GetHistory(w http.ResponseWriter, r *http.Request) {
 	user, ok := r.Context().Value(middleware.UserContextKey).(models.User)
 	if !ok {
 		http.Error(w, "User not found in context", http.StatusUnauthorized)
@@ -132,23 +114,23 @@ func GetExperience(w http.ResponseWriter, r *http.Request) {
 	}
 	defer db.Close()
 
-	rows, err := db.Query("SELECT * FROM experiences WHERE user_id = ? ORDER BY start DESC", user.ID)
+	rows, err := db.Query("SELECT * FROM history WHERE user_id = ? ORDER BY start DESC", user.ID)
 	if err != nil {
 		fmt.Println("Database query error:", err)
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
-	var experiences []models.Experience
+	var historyList []models.History
 	for rows.Next() {
-		var experience models.Experience
-		err := rows.Scan(&experience.ID, &experience.UserID, &experience.Name, &experience.Role, &experience.Start, &experience.Finish, &experience.Current, &experience.Duties)
+		var history models.History
+		err := rows.Scan(&history.ID, &history.UserID, &history.Name, &history.Role, &history.Start, &history.Finish, &history.Current, &history.Duties)
 		if err != nil {
 			fmt.Println("Error scanning row:", err)
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
-		experiences = append(experiences, experience)
+		historyList = append(historyList, history)
 
 	}
 
@@ -158,11 +140,11 @@ func GetExperience(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	component := components.ExperienceList(experiences)
+	component := components.HistoryList(historyList)
 	component.Render(r.Context(), w)
 }
 
-func GetSingleExperience(w http.ResponseWriter, r *http.Request) {
+func GetSingleHistory(w http.ResponseWriter, r *http.Request) {
 	id := r.PathValue("id")
 
 	user, ok := r.Context().Value(middleware.UserContextKey).(models.User)
@@ -179,19 +161,19 @@ func GetSingleExperience(w http.ResponseWriter, r *http.Request) {
 	}
 	defer db.Close()
 
-	var experience models.Experience
-	err = db.QueryRow("SELECT * FROM experiences WHERE id = ? AND user_id = ?", id, user.ID).Scan(&experience.ID, &experience.UserID, &experience.Name, &experience.Role, &experience.Start, &experience.Finish, &experience.Current, &experience.Duties)
+	var history models.History
+	err = db.QueryRow("SELECT * FROM history WHERE id = ? AND user_id = ?", id, user.ID).Scan(&history.ID, &history.UserID, &history.Name, &history.Role, &history.Start, &history.Finish, &history.Current, &history.Duties)
 	if err != nil {
 		fmt.Println("Database query error:", err)
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
-	component := components.ExperienceForm("POST", experience)
+	component := components.HistoryForm("POST", history)
 	component.Render(r.Context(), w)
 }
 
-func UpdateSingleExperience(w http.ResponseWriter, r *http.Request) {
+func UpdateSingleHistory(w http.ResponseWriter, r *http.Request) {
 	user, ok := r.Context().Value(middleware.UserContextKey).(models.User)
 	if !ok {
 		http.Error(w, "User not found in context", http.StatusUnauthorized)
@@ -245,9 +227,9 @@ func UpdateSingleExperience(w http.ResponseWriter, r *http.Request) {
 	}
 	defer db.Close()
 
-	updateExperienceSQL := `UPDATE experiences SET name = ?, role = ?, start = ?, finish = ?, current = ?, duties = ? WHERE id = ? AND user_id = ?`
+	updateHistorySQL := `UPDATE history SET name = ?, role = ?, start = ?, finish = ?, current = ?, duties = ? WHERE id = ? AND user_id = ?`
 
-	statement, err := db.Prepare(updateExperienceSQL)
+	statement, err := db.Prepare(updateHistorySQL)
 	if err != nil {
 		fmt.Println("Error preparing SQL statement:", err)
 		w.WriteHeader(http.StatusInternalServerError)
@@ -270,29 +252,29 @@ func UpdateSingleExperience(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var experience models.Experience
+	var history models.History
 
-	err = db.QueryRow("SELECT * FROM experiences WHERE id = ? AND user_id = ?", id, user.ID).Scan(
-		&experience.ID,
-		&experience.UserID,
-		&experience.Name,
-		&experience.Role,
-		&experience.Start,
-		&experience.Finish,
-		&experience.Current,
-		&experience.Duties,
+	err = db.QueryRow("SELECT * FROM history WHERE id = ? AND user_id = ?", id, user.ID).Scan(
+		&history.ID,
+		&history.UserID,
+		&history.Name,
+		&history.Role,
+		&history.Start,
+		&history.Finish,
+		&history.Current,
+		&history.Duties,
 	)
 	if err != nil {
-		fmt.Println("Error querying the new experience:", err)
+		fmt.Println("Error querying the new history:", err)
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
-	component := components.ExperienceForm("GET", experience)
+	component := components.HistoryForm("GET", history)
 	component.Render(r.Context(), w)
 }
 
-func DeleteSingleExperience(w http.ResponseWriter, r *http.Request) {
+func DeleteSingleHistory(w http.ResponseWriter, r *http.Request) {
 	user, ok := r.Context().Value(middleware.UserContextKey).(models.User)
 	if !ok {
 		http.Error(w, "User not found in context", http.StatusUnauthorized)
@@ -309,8 +291,8 @@ func DeleteSingleExperience(w http.ResponseWriter, r *http.Request) {
 
 	id := r.PathValue("id")
 
-	deleteExperienceSQL := `DELETE FROM experiences WHERE id = ? AND user_id = ?`
-	statement, err := db.Prepare(deleteExperienceSQL)
+	deleteHistorySQL := `DELETE FROM history WHERE id = ? AND user_id = ?`
+	statement, err := db.Prepare(deleteHistorySQL)
 	if err != nil {
 		fmt.Println("Error preparing SQL statement:", err)
 		w.WriteHeader(http.StatusInternalServerError)

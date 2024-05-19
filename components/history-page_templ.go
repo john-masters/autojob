@@ -12,7 +12,7 @@ import "bytes"
 
 import "autojob/models"
 
-func ExperiencePage(user models.User) templ.Component {
+func HistoryPage(user models.User) templ.Component {
 	return templ.ComponentFunc(func(ctx context.Context, templ_7745c5c3_W io.Writer) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templ_7745c5c3_W.(*bytes.Buffer)
 		if !templ_7745c5c3_IsBuffer {
@@ -31,7 +31,7 @@ func ExperiencePage(user models.User) templ.Component {
 				templ_7745c5c3_Buffer = templ.GetBuffer()
 				defer templ.ReleaseBuffer(templ_7745c5c3_Buffer)
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<a href=\"/work-experience/create\"><button>Add New</button></a><div hx-get=\"/experience/\" hx-trigger=\"load once\" hx-swap=\"outerHTML\"><span>Loading...</span></div>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<fieldset><legend>Add new job</legend><form hx-post=\"/history/\" hx-swap=\"outerHTML\"><div id=\"name\"><label for=\"name\">Employer Name:</label> <input type=\"text\" name=\"name\" required></div><div id=\"role\"><label for=\"name\">Role:</label> <input type=\"text\" name=\"role\" required></div><div id=\"start\"><label for=\"start\">Start date:</label> <input type=\"month\" name=\"start\" required></div><div id=\"finish\"><label for=\"finish\">Finish date:</label> <input type=\"month\" name=\"finish\" required></div><div id=\"current\"><label for=\"current\">Current employer?:</label> <input hx-on:change=\"const finish = document.getElementById(&#39;finish&#39;); const input = finish.querySelector(&#39;input&#39;); if (this.checked) { input.value = &#39;&#39;; finish.style.display = &#39;none&#39;; input.required = false; } else { finish.style.display = &#39;block&#39;; input.required = true; }\" type=\"checkbox\" name=\"current\"></div><div id=\"duties\"><label for=\"duties\">Duties:</label> <textarea required hx-validate=\"true\" type=\"checkbox\" name=\"duties\"></textarea></div><button type=\"submit\"><span>Add new</span></button> <span id=\"response\"></span></form></fieldset><div hx-get=\"/history/\" hx-trigger=\"load once\" hx-swap=\"outerHTML\"><span>Loading...</span></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -40,7 +40,7 @@ func ExperiencePage(user models.User) templ.Component {
 			}
 			return templ_7745c5c3_Err
 		})
-		templ_7745c5c3_Err = Dashboard(user, "Experience List").Render(templ.WithChildren(ctx, templ_7745c5c3_Var2), templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = Layout("Job History", true).Render(templ.WithChildren(ctx, templ_7745c5c3_Var2), templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

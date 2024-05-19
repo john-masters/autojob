@@ -13,7 +13,7 @@ import "bytes"
 import "autojob/models"
 import "strconv"
 
-func ExperienceForm(method string, experience models.Experience) templ.Component {
+func HistoryForm(method string, history models.History) templ.Component {
 	return templ.ComponentFunc(func(ctx context.Context, templ_7745c5c3_W io.Writer) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templ_7745c5c3_W.(*bytes.Buffer)
 		if !templ_7745c5c3_IsBuffer {
@@ -32,9 +32,9 @@ func ExperienceForm(method string, experience models.Experience) templ.Component
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var2 string
-			templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs("/experience/" + strconv.Itoa(experience.ID))
+			templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs("/history/" + strconv.Itoa(history.ID))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/experience-form.templ`, Line: 8, Col: 62}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/history-form.templ`, Line: 8, Col: 56}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 			if templ_7745c5c3_Err != nil {
@@ -45,9 +45,9 @@ func ExperienceForm(method string, experience models.Experience) templ.Component
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var3 string
-			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(experience.Name)
+			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(history.Name)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/experience-form.templ`, Line: 11, Col: 67}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/history-form.templ`, Line: 11, Col: 64}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 			if templ_7745c5c3_Err != nil {
@@ -58,9 +58,9 @@ func ExperienceForm(method string, experience models.Experience) templ.Component
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var4 string
-			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(experience.Role)
+			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(history.Role)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/experience-form.templ`, Line: 15, Col: 67}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/history-form.templ`, Line: 15, Col: 64}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 			if templ_7745c5c3_Err != nil {
@@ -71,9 +71,9 @@ func ExperienceForm(method string, experience models.Experience) templ.Component
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var5 string
-			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(experience.Start.Format("2006-01"))
+			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(history.Start.Format("2006-01"))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/experience-form.templ`, Line: 19, Col: 88}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/history-form.templ`, Line: 19, Col: 85}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 			if templ_7745c5c3_Err != nil {
@@ -83,15 +83,15 @@ func ExperienceForm(method string, experience models.Experience) templ.Component
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			if experience.Current {
+			if history.Current {
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div id=\"finish\" style=\"display: none;\"><label for=\"finish\">Finish date:</label> <input type=\"month\" name=\"finish\" value=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var6 string
-				templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(experience.Finish.Format("2006-01"))
+				templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(history.Finish.Format("2006-01"))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/experience-form.templ`, Line: 24, Col: 82}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/history-form.templ`, Line: 24, Col: 79}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 				if templ_7745c5c3_Err != nil {
@@ -107,9 +107,9 @@ func ExperienceForm(method string, experience models.Experience) templ.Component
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var7 string
-				templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(experience.Finish.Format("2006-01"))
+				templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(history.Finish.Format("2006-01"))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/experience-form.templ`, Line: 38, Col: 91}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/history-form.templ`, Line: 38, Col: 88}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 				if templ_7745c5c3_Err != nil {
@@ -125,9 +125,9 @@ func ExperienceForm(method string, experience models.Experience) templ.Component
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var8 string
-			templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(experience.Duties)
+			templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(history.Duties)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/experience-form.templ`, Line: 56, Col: 24}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/history-form.templ`, Line: 56, Col: 21}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 			if templ_7745c5c3_Err != nil {
@@ -143,9 +143,9 @@ func ExperienceForm(method string, experience models.Experience) templ.Component
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var9 string
-			templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(experience.Name)
+			templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(history.Name)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/experience-form.templ`, Line: 66, Col: 27}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/history-form.templ`, Line: 66, Col: 24}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 			if templ_7745c5c3_Err != nil {
@@ -156,9 +156,9 @@ func ExperienceForm(method string, experience models.Experience) templ.Component
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var10 string
-			templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(experience.Role)
+			templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(history.Role)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/experience-form.templ`, Line: 70, Col: 27}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/history-form.templ`, Line: 70, Col: 24}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
 			if templ_7745c5c3_Err != nil {
@@ -169,9 +169,9 @@ func ExperienceForm(method string, experience models.Experience) templ.Component
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var11 string
-			templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(experience.Start.Format("2006-01"))
+			templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(history.Start.Format("2006-01"))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/experience-form.templ`, Line: 74, Col: 46}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/history-form.templ`, Line: 74, Col: 43}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
 			if templ_7745c5c3_Err != nil {
@@ -181,15 +181,15 @@ func ExperienceForm(method string, experience models.Experience) templ.Component
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			if experience.Current {
+			if history.Current {
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div id=\"current\"><span>Current employer: </span> <span>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var12 string
-				templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.FormatBool(experience.Current))
+				templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.FormatBool(history.Current))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/experience-form.templ`, Line: 79, Col: 51}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/history-form.templ`, Line: 79, Col: 48}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
 				if templ_7745c5c3_Err != nil {
@@ -205,9 +205,9 @@ func ExperienceForm(method string, experience models.Experience) templ.Component
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var13 string
-				templ_7745c5c3_Var13, templ_7745c5c3_Err = templ.JoinStringErrs(experience.Finish.Format("2006-01"))
+				templ_7745c5c3_Var13, templ_7745c5c3_Err = templ.JoinStringErrs(history.Finish.Format("2006-01"))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/experience-form.templ`, Line: 84, Col: 48}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/history-form.templ`, Line: 84, Col: 45}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var13))
 				if templ_7745c5c3_Err != nil {
@@ -218,9 +218,9 @@ func ExperienceForm(method string, experience models.Experience) templ.Component
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var14 string
-				templ_7745c5c3_Var14, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.FormatBool(experience.Current))
+				templ_7745c5c3_Var14, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.FormatBool(history.Current))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/experience-form.templ`, Line: 88, Col: 51}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/history-form.templ`, Line: 88, Col: 48}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var14))
 				if templ_7745c5c3_Err != nil {
@@ -236,9 +236,9 @@ func ExperienceForm(method string, experience models.Experience) templ.Component
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var15 string
-			templ_7745c5c3_Var15, templ_7745c5c3_Err = templ.JoinStringErrs(experience.Duties)
+			templ_7745c5c3_Var15, templ_7745c5c3_Err = templ.JoinStringErrs(history.Duties)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/experience-form.templ`, Line: 93, Col: 59}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/history-form.templ`, Line: 93, Col: 56}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var15))
 			if templ_7745c5c3_Err != nil {
@@ -249,9 +249,9 @@ func ExperienceForm(method string, experience models.Experience) templ.Component
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var16 string
-			templ_7745c5c3_Var16, templ_7745c5c3_Err = templ.JoinStringErrs("/experience/" + strconv.Itoa(experience.ID))
+			templ_7745c5c3_Var16, templ_7745c5c3_Err = templ.JoinStringErrs("/history/" + strconv.Itoa(history.ID))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/experience-form.templ`, Line: 97, Col: 57}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/history-form.templ`, Line: 97, Col: 51}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var16))
 			if templ_7745c5c3_Err != nil {
@@ -262,9 +262,9 @@ func ExperienceForm(method string, experience models.Experience) templ.Component
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var17 string
-			templ_7745c5c3_Var17, templ_7745c5c3_Err = templ.JoinStringErrs("/experience/" + strconv.Itoa(experience.ID))
+			templ_7745c5c3_Var17, templ_7745c5c3_Err = templ.JoinStringErrs("/history/" + strconv.Itoa(history.ID))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/experience-form.templ`, Line: 105, Col: 60}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/history-form.templ`, Line: 105, Col: 54}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var17))
 			if templ_7745c5c3_Err != nil {
@@ -275,9 +275,9 @@ func ExperienceForm(method string, experience models.Experience) templ.Component
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var18 string
-			templ_7745c5c3_Var18, templ_7745c5c3_Err = templ.JoinStringErrs("Are you sure you wish to delete this job experience from " + experience.Name + "?")
+			templ_7745c5c3_Var18, templ_7745c5c3_Err = templ.JoinStringErrs("Are you sure you wish to delete this job from " + history.Name + "?")
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/experience-form.templ`, Line: 108, Col: 100}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/history-form.templ`, Line: 108, Col: 86}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var18))
 			if templ_7745c5c3_Err != nil {

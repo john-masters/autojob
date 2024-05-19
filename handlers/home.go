@@ -28,25 +28,14 @@ func AccountPage(w http.ResponseWriter, r *http.Request) {
 	component.Render(r.Context(), w)
 }
 
-func ExperiencePage(w http.ResponseWriter, r *http.Request) {
+func HistoryPage(w http.ResponseWriter, r *http.Request) {
 	user, ok := r.Context().Value(middleware.UserContextKey).(models.User)
 	if !ok {
 		http.Error(w, "User not found in context", http.StatusUnauthorized)
 		return
 	}
 
-	component := components.ExperiencePage(user)
-	component.Render(r.Context(), w)
-}
-
-func CreateExperiencePage(w http.ResponseWriter, r *http.Request) {
-	user, ok := r.Context().Value(middleware.UserContextKey).(models.User)
-	if !ok {
-		http.Error(w, "User not found in context", http.StatusUnauthorized)
-		return
-	}
-
-	component := components.CreateExperiencePage(user)
+	component := components.HistoryPage(user)
 	component.Render(r.Context(), w)
 }
 

@@ -34,7 +34,7 @@ func DbInit() {
 			password TEXT NOT NULL
 		);
 
-		CREATE TABLE experiences (
+		CREATE TABLE history (
 			id INTEGER PRIMARY KEY AUTOINCREMENT,
 			user_id INTEGER NOT NULL,
 			name TEXT NOT NULL,

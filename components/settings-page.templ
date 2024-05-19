@@ -3,7 +3,7 @@ package components
 import "autojob/models"
 
 templ SettingsPage(user models.User) {
-	@Dashboard(user, "Settings") {
+	@Layout("Settings", true) {
 		@SettingsForm(user, "GET")
 	}
 }

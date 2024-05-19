@@ -1,10 +1,10 @@
 package components
 
 templ SignupPage() {
-	@Layout("Home", false) {
+	@Layout("Sign up", false) {
 		<section>
 			<fieldset>
-				<legend>Sign up</legend>
+				<legend>Make an account</legend>
 				<form hx-post="/auth/signup" hx-target="#response" hx-swap="innerHTML">
 					<div>
 						<label for="first_name">First name:</label>

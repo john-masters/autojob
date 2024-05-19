@@ -29,7 +29,7 @@ func SignupPage() templ.Component {
 				templ_7745c5c3_Buffer = templ.GetBuffer()
 				defer templ.ReleaseBuffer(templ_7745c5c3_Buffer)
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<section><fieldset><legend>Sign up</legend><form hx-post=\"/auth/signup\" hx-target=\"#response\" hx-swap=\"innerHTML\"><div><label for=\"first_name\">First name:</label> <input name=\"first_name\" id=\"first_name\" type=\"text\" required></div><div><label for=\"last_name\">Last name:</label> <input name=\"last_name\" id=\"last_name\" type=\"text\" required></div><div><label for=\"email\">Email:</label> <input name=\"email\" id=\"email\" type=\"email\" required></div><div><label for=\"password\">Password:</label> <input name=\"password\" id=\"password\" type=\"password\" required></div><button type=\"submit\"><span>Submit</span></button> <span id=\"response\"></span></form></fieldset><p><span>Already have an account? Log in <a href=\"/\">here</a>.</span></p></section>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<section><fieldset><legend>Make an account</legend><form hx-post=\"/auth/signup\" hx-target=\"#response\" hx-swap=\"innerHTML\"><div><label for=\"first_name\">First name:</label> <input name=\"first_name\" id=\"first_name\" type=\"text\" required></div><div><label for=\"last_name\">Last name:</label> <input name=\"last_name\" id=\"last_name\" type=\"text\" required></div><div><label for=\"email\">Email:</label> <input name=\"email\" id=\"email\" type=\"email\" required></div><div><label for=\"password\">Password:</label> <input name=\"password\" id=\"password\" type=\"password\" required></div><button type=\"submit\"><span>Submit</span></button> <span id=\"response\"></span></form></fieldset><p><span>Already have an account? Log in <a href=\"/\">here</a>.</span></p></section>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -38,7 +38,7 @@ func SignupPage() templ.Component {
 			}
 			return templ_7745c5c3_Err
 		})
-		templ_7745c5c3_Err = Layout("Home", false).Render(templ.WithChildren(ctx, templ_7745c5c3_Var2), templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = Layout("Sign up", false).Render(templ.WithChildren(ctx, templ_7745c5c3_Var2), templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
