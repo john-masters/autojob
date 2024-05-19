@@ -31,7 +31,7 @@ func ExperiencePage(user models.User) templ.Component {
 				templ_7745c5c3_Buffer = templ.GetBuffer()
 				defer templ.ReleaseBuffer(templ_7745c5c3_Buffer)
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<a href=\"/work-experience/create\"><button>Add New</button></a><hr><div hx-get=\"/experience/\" hx-trigger=\"load once\" hx-swap=\"outerHTML\"><span>Loading...</span></div>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<a href=\"/work-experience/create\"><button>Add New</button></a><div hx-get=\"/experience/\" hx-trigger=\"load once\" hx-swap=\"outerHTML\"><span>Loading...</span></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

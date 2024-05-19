@@ -29,7 +29,15 @@ func HomePage() templ.Component {
 				templ_7745c5c3_Buffer = templ.GetBuffer()
 				defer templ.ReleaseBuffer(templ_7745c5c3_Buffer)
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<main><h2>Log in</h2><form hx-post=\"/auth/login\" hx-target=\"#response\" hx-swap=\"innerHTML\"><div><label for=\"email\">Email:</label> <input id=\"email\" name=\"email\" type=\"email\" required></div><div><label for=\"password\">Password:</label> <input id=\"password\" name=\"password\" type=\"password\" required></div><button type=\"submit\"><span>Submit</span></button> <span id=\"response\"></span></form><p><span>Don't have an account? Sign up <a href=\"/sign-up\">here</a>.</span></p></main>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<section>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = HomeNav().Render(ctx, templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<fieldset><legend>Log in</legend><form hx-post=\"/auth/login\" hx-target=\"#response\" hx-swap=\"innerHTML\"><div><label for=\"email\">Email:</label> <input id=\"email\" name=\"email\" type=\"email\" required></div><div><label for=\"password\">Password:</label> <input id=\"password\" name=\"password\" type=\"password\" required></div><button type=\"submit\"><span>Submit</span></button> <span id=\"response\"></span></form></fieldset><p><span>Don't have an account? Sign up <a href=\"/sign-up\">here</a>.</span></p></section>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

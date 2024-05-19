@@ -12,29 +12,25 @@ templ Layout(title string) {
 				href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💼</text></svg>"
 			/>
 			<style>
-			body {
+			main {
 				width: 100%;
 				margin-inline: auto;
 				max-width: 980px;
-				padding: 0 1rem;
-			}
-			header {
-				display: flex;
-				flex-direction: column;
 			}
 			</style>
 			<title>AUTO JOB - { title }</title>
 		</head>
 		<body>
-			<header>
-				<h1>AUTO JOB</h1>
-				<p>
-					A simple site that helps you find a job through automation and
-					AI.
-				</p>
-			</header>
-			<hr/>
-			{ children... }
+			<main>
+				<header>
+					<h1>AUTO JOB</h1>
+					<p>
+						A simple site that helps you find a job through automation and
+						AI.
+					</p>
+				</header>
+				{ children... }
+			</main>
 		</body>
 	</html>
 }

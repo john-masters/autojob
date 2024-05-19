@@ -2,28 +2,31 @@ package components
 
 templ HomePage() {
 	@Layout("Home") {
-		<main>
-			<h2>Log in</h2>
-			<form hx-post="/auth/login" hx-target="#response" hx-swap="innerHTML">
-				<div>
-					<label for="email">Email:</label>
-					<input id="email" name="email" type="email" required/>
-				</div>
-				<div>
-					<label for="password">Password:</label>
-					<input id="password" name="password" type="password" required/>
-				</div>
-				<button type="submit">
-					<span>Submit</span>
-				</button>
-				<span id="response"></span>
-			</form>
+		<section>
+			@HomeNav()
+			<fieldset>
+				<legend>Log in</legend>
+				<form hx-post="/auth/login" hx-target="#response" hx-swap="innerHTML">
+					<div>
+						<label for="email">Email:</label>
+						<input id="email" name="email" type="email" required/>
+					</div>
+					<div>
+						<label for="password">Password:</label>
+						<input id="password" name="password" type="password" required/>
+					</div>
+					<button type="submit">
+						<span>Submit</span>
+					</button>
+					<span id="response"></span>
+				</form>
+			</fieldset>
 			<p>
 				<span>
 					Don't have an account? Sign up
 					<a href="/sign-up">here</a>.
 				</span>
 			</p>
-		</main>
+		</section>
 	}
 }

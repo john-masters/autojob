@@ -10,7 +10,7 @@ import "context"
 import "io"
 import "bytes"
 
-func Nav() templ.Component {
+func AccountNav() templ.Component {
 	return templ.ComponentFunc(func(ctx context.Context, templ_7745c5c3_W io.Writer) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templ_7745c5c3_W.(*bytes.Buffer)
 		if !templ_7745c5c3_IsBuffer {
@@ -23,7 +23,7 @@ func Nav() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<nav><a href=\"/account\">Account</a> | <a href=\"/work-experience\">Work Experience</a> | <a href=\"/settings\">Settings</a> | <a href=\"/auth/logout\">Logout</a> |</nav>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<nav><hr><a href=\"/account\">Account</a> | <a href=\"/work-experience\">Work Experience</a> | <a href=\"/settings\">Settings</a> | <a href=\"/auth/logout\">Logout</a> |<hr></nav>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

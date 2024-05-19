@@ -4,10 +4,10 @@ import "autojob/models"
 
 templ Dashboard(user models.User, title string) {
 	@Layout(title) {
-		<main>
-			@Nav()
+		<section>
+			@AccountNav()
 			<h2>{ title }</h2>
 			{ children... }
-		</main>
+		</section>
 	}
 }
