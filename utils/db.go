@@ -39,8 +39,8 @@ func DbInit() {
 			user_id INTEGER NOT NULL,
 			name TEXT NOT NULL,
 			role TEXT NOT NULL,
-			start DATETIME NOT NULL,
-			finish DATETIME,
+			start TEXT NOT NULL,
+			finish TEXT,
 			current BOOLEAN NOT NULL,
 			duties TEXT,
 			FOREIGN KEY (user_id) REFERENCES user (id)

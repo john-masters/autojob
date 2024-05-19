@@ -16,11 +16,11 @@ templ HistoryForm(method string, history models.History) {
 			</div>
 			<div id="start">
 				<label for="start">Start date:</label>
-				<input type="month" name="start" required value={ history.Start.Format("2006-01") }/>
+				<input type="month" name="start" required value={ history.Start }/>
 			</div>
 			<div id="finish">
 				<label for="finish">Finish date:</label>
-				<input type="month" name="finish" value={ history.Finish.Format("2006-01") }/>
+				<input type="month" name="finish" value={ history.Finish }/>
 			</div>
 			<div id="current">
 				<label for="current">Current employer?:</label>
@@ -57,11 +57,11 @@ templ HistoryForm(method string, history models.History) {
 			</div>
 			<div id="start">
 				<span>Start date:</span>
-				<span>{ history.Start.Format("2006-01") }</span>
+				<span>{ history.Start }</span>
 			</div>
 			<div id="finish">
 				<span>Finish date:</span>
-				<span>{ history.Finish.Format("2006-01") }</span>
+				<span>{ history.Finish }</span>
 			</div>
 			<div id="current">
 				<span>Current employer: </span>

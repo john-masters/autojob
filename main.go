@@ -2,6 +2,7 @@ package main
 
 import (
 	"autojob/routes"
+	"autojob/utils"
 	"fmt"
 	"log"
 	"net/http"
@@ -10,7 +11,7 @@ import (
 )
 
 func main() {
-	// utils.DbInit()
+	utils.DbInit()
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatal("Error loading .env file")

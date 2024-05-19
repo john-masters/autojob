@@ -7,7 +7,6 @@ import (
 	"autojob/utils"
 	"fmt"
 	"net/http"
-	"time"
 )
 
 func CreateHistory(w http.ResponseWriter, r *http.Request) {
@@ -55,23 +54,6 @@ func CreateHistory(w http.ResponseWriter, r *http.Request) {
 
 	isCurrent := current == "on"
 
-	startTime, err := time.Parse("2006-01", start)
-	if err != nil {
-		fmt.Println("Error parsing start date:", err)
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
-
-	var finishTime time.Time
-	if finish != "" {
-		finishTime, err = time.Parse("2006-01", finish)
-		if err != nil {
-			fmt.Println("Error parsing finish date:", err)
-			w.WriteHeader(http.StatusInternalServerError)
-			return
-		}
-	}
-
 	db, err := utils.DbConnection()
 	if err != nil {
 		fmt.Println("Error initializing database")
@@ -89,7 +71,8 @@ func CreateHistory(w http.ResponseWriter, r *http.Request) {
 	}
 	defer statement.Close()
 
-	_, err = statement.Exec(user.ID, name, role, startTime, finishTime, isCurrent, duties)
+	_, err = statement.Exec(user.ID, name, role, start, finish, isCurrent, duties)
+
 	if err != nil {
 		fmt.Println("Error executing SQL statement:", err)
 		w.WriteHeader(http.StatusInternalServerError)
@@ -174,23 +157,6 @@ func UpdateSingleHistory(w http.ResponseWriter, r *http.Request) {
 
 	isCurrent := current == "on"
 
-	startTime, err := time.Parse("2006-01", start)
-	if err != nil {
-		fmt.Println("Error parsing start date:", err)
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
-
-	var finishTime time.Time
-	if finish != "" {
-		finishTime, err = time.Parse("2006-01", finish)
-		if err != nil {
-			fmt.Println("Error parsing finish date:", err)
-			w.WriteHeader(http.StatusInternalServerError)
-			return
-		}
-	}
-
 	db, err := utils.DbConnection()
 	if err != nil {
 		fmt.Println("Error initializing database")
@@ -209,7 +175,7 @@ func UpdateSingleHistory(w http.ResponseWriter, r *http.Request) {
 	}
 	defer statement.Close()
 
-	result, err := statement.Exec(name, role, startTime, finishTime, isCurrent, duties, id, user.ID)
+	result, err := statement.Exec(name, role, start, finish, isCurrent, duties, id, user.ID)
 	if err != nil {
 		fmt.Println("Error executing SQL statement:", err)
 		w.WriteHeader(http.StatusInternalServerError)

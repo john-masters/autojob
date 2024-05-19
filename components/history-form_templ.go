@@ -71,9 +71,9 @@ func HistoryForm(method string, history models.History) templ.Component {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var5 string
-			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(history.Start.Format("2006-01"))
+			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(history.Start)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/history-form.templ`, Line: 19, Col: 85}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/history-form.templ`, Line: 19, Col: 67}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 			if templ_7745c5c3_Err != nil {
@@ -84,9 +84,9 @@ func HistoryForm(method string, history models.History) templ.Component {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var6 string
-			templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(history.Finish.Format("2006-01"))
+			templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(history.Finish)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/history-form.templ`, Line: 23, Col: 78}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/history-form.templ`, Line: 23, Col: 60}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 			if templ_7745c5c3_Err != nil {
@@ -151,9 +151,9 @@ func HistoryForm(method string, history models.History) templ.Component {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var10 string
-			templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(history.Start.Format("2006-01"))
+			templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(history.Start)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/history-form.templ`, Line: 60, Col: 43}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/history-form.templ`, Line: 60, Col: 25}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
 			if templ_7745c5c3_Err != nil {
@@ -164,9 +164,9 @@ func HistoryForm(method string, history models.History) templ.Component {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var11 string
-			templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(history.Finish.Format("2006-01"))
+			templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(history.Finish)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/history-form.templ`, Line: 64, Col: 44}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/history-form.templ`, Line: 64, Col: 26}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
 			if templ_7745c5c3_Err != nil {
