@@ -45,6 +45,14 @@ func DbInit() {
 			duties TEXT,
 			FOREIGN KEY (user_id) REFERENCES user (id)
 		);
+
+		CREATE TABLE IF NOT EXISTS letters (
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			user_id INTEGER NOT NULL,
+			letter TEXT NOT NULL,
+			created_at TEXT NOT NULL DEFAULT (datetime('now')),
+			FOREIGN KEY (user_id) REFERENCES users (id)
+		);
 	`)
 	if err != nil {
 		fmt.Println("Error creating table")

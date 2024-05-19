@@ -41,12 +41,6 @@ func CreateHistory(w http.ResponseWriter, r *http.Request) {
 	case start == "":
 		fmt.Fprint(w, "Start date is required")
 		return
-	case finish == "" && current != "on":
-		fmt.Fprint(w, "Finish date is required")
-		return
-	case current == "on" && finish != "":
-		fmt.Fprint(w, "Finish date should be empty")
-		return
 	case duties == "":
 		fmt.Fprint(w, "Duties is required")
 		return
