@@ -23,7 +23,7 @@ func AccountNav() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<nav><hr><a href=\"/account\">Account</a> | <a href=\"/work-experience\">Work Experience</a> | <a href=\"/settings\">Settings</a> | <a href=\"/auth/logout\">Logout</a> |<hr></nav>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<nav><a href=\"/account\">Account</a> | <a href=\"/work-experience\">Work Experience</a> | <a href=\"/settings\">Settings</a> | <a href=\"/auth/logout\">Logout</a> |<hr></nav>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
