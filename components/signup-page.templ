@@ -1,9 +1,8 @@
 package components
 
 templ SignupPage() {
-	@Layout("Home") {
+	@Layout("Home", false) {
 		<section>
-			@HomeNav()
 			<fieldset>
 				<legend>Sign up</legend>
 				<form hx-post="/auth/signup" hx-target="#response" hx-swap="innerHTML">

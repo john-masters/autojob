@@ -3,9 +3,8 @@ package components
 import "autojob/models"
 
 templ Dashboard(user models.User, title string) {
-	@Layout(title) {
+	@Layout(title, true) {
 		<section>
-			@AccountNav()
 			<h2>{ title }</h2>
 			{ children... }
 		</section>
