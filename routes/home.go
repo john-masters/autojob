@@ -13,6 +13,7 @@ func HomeRoutes() *http.ServeMux {
 	router.HandleFunc("GET /sign-up", handlers.SignupPage)
 	router.HandleFunc("GET /account", middleware.RequireAuth(handlers.AccountPage))
 	router.HandleFunc("GET /job-history", middleware.RequireAuth(handlers.HistoryPage))
+	router.HandleFunc("GET /cover-letter", middleware.RequireAuth(handlers.CoverLetterPage))
 	router.HandleFunc("GET /settings", middleware.RequireAuth(handlers.SettingsPage))
 
 	return router

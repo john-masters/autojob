@@ -2,11 +2,11 @@ package components
 
 import "autojob/models"
 
-templ HistoryPage(user models.User) {
+templ HistoryPage(historyList []models.History) {
 	@Layout("Job History", true) {
 		<fieldset>
 			<legend>Add new job</legend>
-			<form hx-post="/history/" hx-swap="outerHTML">
+			<form action="/history/" method="post">
 				<div id="name">
 					<label for="name">Employer Name:</label>
 					<input type="text" name="name" required/>
@@ -21,15 +21,11 @@ templ HistoryPage(user models.User) {
 				</div>
 				<div id="finish">
 					<label for="finish">Finish date:</label>
-					<input type="month" name="finish" required/>
+					<input type="month" name="finish"/>
 				</div>
 				<div id="current">
 					<label for="current">Current employer?:</label>
-					<input
-						hx-on:change="const finish = document.getElementById('finish'); const input = finish.querySelector('input'); if (this.checked) { input.value = ''; finish.style.display = 'none'; input.required = false; } else { finish.style.display = 'block'; input.required = true; }"
-						type="checkbox"
-						name="current"
-					/>
+					<input type="checkbox" name="current"/>
 				</div>
 				<div id="duties">
 					<label for="duties">Duties:</label>
@@ -46,8 +42,11 @@ templ HistoryPage(user models.User) {
 				<span id="response"></span>
 			</form>
 		</fieldset>
-		<div hx-get="/history/" hx-trigger="load once" hx-swap="outerHTML">
-			<span>Loading...</span>
+		<div>
+			for _, history := range historyList {
+				@HistoryForm("GET", history)
+				<br/>
+			}
 		</div>
 	}
 }

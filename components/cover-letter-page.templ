@@ -1,0 +1,12 @@
+package components
+
+import "autojob/models"
+
+templ CoverLetterPage(user models.User) {
+	@Layout("Cover Letter", true) {
+		<fieldset>
+			<legend>Cover Letter</legend>
+			<textarea></textarea>
+		</fieldset>
+	}
+}

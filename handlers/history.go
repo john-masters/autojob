@@ -99,51 +99,6 @@ func CreateHistory(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/job-history", http.StatusSeeOther)
 }
 
-func GetHistory(w http.ResponseWriter, r *http.Request) {
-	user, ok := r.Context().Value(middleware.UserContextKey).(models.User)
-	if !ok {
-		http.Error(w, "User not found in context", http.StatusUnauthorized)
-		return
-	}
-
-	db, err := utils.DbConnection()
-	if err != nil {
-		fmt.Println("Error initializing database")
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
-	defer db.Close()
-
-	rows, err := db.Query("SELECT * FROM history WHERE user_id = ? ORDER BY start DESC", user.ID)
-	if err != nil {
-		fmt.Println("Database query error:", err)
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
-
-	var historyList []models.History
-	for rows.Next() {
-		var history models.History
-		err := rows.Scan(&history.ID, &history.UserID, &history.Name, &history.Role, &history.Start, &history.Finish, &history.Current, &history.Duties)
-		if err != nil {
-			fmt.Println("Error scanning row:", err)
-			w.WriteHeader(http.StatusInternalServerError)
-			return
-		}
-		historyList = append(historyList, history)
-
-	}
-
-	if err := rows.Err(); err != nil {
-		fmt.Println("Error iterating rows:", err)
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
-
-	component := components.HistoryList(historyList)
-	component.Render(r.Context(), w)
-}
-
 func GetSingleHistory(w http.ResponseWriter, r *http.Request) {
 	id := r.PathValue("id")
 
@@ -219,6 +174,23 @@ func UpdateSingleHistory(w http.ResponseWriter, r *http.Request) {
 
 	isCurrent := current == "on"
 
+	startTime, err := time.Parse("2006-01", start)
+	if err != nil {
+		fmt.Println("Error parsing start date:", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	var finishTime time.Time
+	if finish != "" {
+		finishTime, err = time.Parse("2006-01", finish)
+		if err != nil {
+			fmt.Println("Error parsing finish date:", err)
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+	}
+
 	db, err := utils.DbConnection()
 	if err != nil {
 		fmt.Println("Error initializing database")
@@ -237,7 +209,7 @@ func UpdateSingleHistory(w http.ResponseWriter, r *http.Request) {
 	}
 	defer statement.Close()
 
-	result, err := statement.Exec(name, role, start, finish, isCurrent, duties, id, user.ID)
+	result, err := statement.Exec(name, role, startTime, finishTime, isCurrent, duties, id, user.ID)
 	if err != nil {
 		fmt.Println("Error executing SQL statement:", err)
 		w.WriteHeader(http.StatusInternalServerError)
