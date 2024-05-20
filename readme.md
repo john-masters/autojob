@@ -45,7 +45,7 @@
 - [x] Add user auth
 - [x] Add account page
 - [x] Add settings page
-- [ ] Add user resume and cover letter upload
+- [x] Add user resume and cover letter upload
 - [ ] Add web scraping
 - [ ] Add GPT-4 integration
 - [ ] Add more robust input validation
