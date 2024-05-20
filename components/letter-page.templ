@@ -2,11 +2,39 @@ package components
 
 import "autojob/models"
 
-templ LetterPage(user models.User) {
+templ LetterPage(letter models.Letter) {
 	@Layout("Cover Letter", true) {
 		<fieldset>
-			<legend>Cover Letter</legend>
-			<textarea></textarea>
+			<legend>Write a sample cover letter</legend>
+			if letter.Content == "" {
+				<form id="#letter-form" action="/letter/" method="post">
+					<textarea
+						required
+						hx-validate="true"
+						name="content"
+					></textarea>
+					<br/>
+					<button type="submit">
+						<span>Add new</span>
+					</button>
+				</form>
+			} else {
+				<form>
+					<div>
+						{ letter.Content }
+					</div>
+					<br/>
+					<button
+						hx-delete="/letter/"
+						hx-select="#letter-form"
+						hx-swap="outerHTML"
+						hx-target="closest form"
+						hx-confirm={ "Are you sure you wish to delete this cover letter?" }
+					>
+						<span>Delete</span>
+					</button>
+				</form>
+			}
 		</fieldset>
 	}
 }

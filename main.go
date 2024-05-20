@@ -2,7 +2,6 @@ package main
 
 import (
 	"autojob/routes"
-	"autojob/utils"
 	"fmt"
 	"log"
 	"net/http"
@@ -11,7 +10,8 @@ import (
 )
 
 func main() {
-	utils.DbInit()
+	// utils.DbInit()
+
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatal("Error loading .env file")
@@ -23,6 +23,7 @@ func main() {
 	mux.Handle("/auth/", http.StripPrefix("/auth", routes.AuthRoutes()))
 	mux.Handle("/user/", http.StripPrefix("/user", routes.UserRoutes()))
 	mux.Handle("/history/", http.StripPrefix("/history", routes.HistoryRoutes()))
+	mux.Handle("/letter/", http.StripPrefix("/letter", routes.LetterRoutes()))
 
 	fmt.Println("Server running on http://localhost:8080")
 	http.ListenAndServe(":8080", mux)

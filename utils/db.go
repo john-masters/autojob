@@ -49,8 +49,8 @@ func DbInit() {
 		CREATE TABLE IF NOT EXISTS letters (
 			id INTEGER PRIMARY KEY AUTOINCREMENT,
 			user_id INTEGER NOT NULL,
-			letter TEXT NOT NULL,
-			created_at TEXT NOT NULL DEFAULT (datetime('now')),
+			content TEXT NOT NULL,
+			created_at DATETIME NOT NULL DEFAULT (datetime('now')),
 			FOREIGN KEY (user_id) REFERENCES users (id)
 		);
 	`)

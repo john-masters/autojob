@@ -5,6 +5,7 @@ import (
 	"autojob/middleware"
 	"autojob/models"
 	"autojob/utils"
+	"database/sql"
 	"fmt"
 	"net/http"
 )
@@ -82,7 +83,30 @@ func LetterPage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	component := components.LetterPage(user)
+	db, err := utils.DbConnection()
+	if err != nil {
+		fmt.Println("Error initializing database")
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	defer db.Close()
+
+	var letter models.Letter
+
+	err = db.QueryRow("SELECT * FROM letters WHERE user_id = ?", user.ID).Scan(
+		&letter.ID,
+		&letter.UserID,
+		&letter.Content,
+		&letter.CreatedAt,
+	)
+
+	if err != nil && err != sql.ErrNoRows {
+		fmt.Println("Database query error:", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	component := components.LetterPage(letter)
 	component.Render(r.Context(), w)
 }
 

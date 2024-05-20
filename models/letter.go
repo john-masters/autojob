@@ -5,6 +5,6 @@ import "time"
 type Letter struct {
 	ID        int
 	UserID    int
-	Letter    string
+	Content   string
 	CreatedAt time.Time
 }
