@@ -2,11 +2,13 @@ package main
 
 import (
 	"autojob/routes"
+	"autojob/utils"
 	"fmt"
 	"log"
 	"net/http"
 
 	"github.com/joho/godotenv"
+	"github.com/robfig/cron/v3"
 )
 
 func main() {
@@ -25,6 +27,14 @@ func main() {
 	mux.Handle("/history/", http.StripPrefix("/history", routes.HistoryRoutes()))
 	mux.Handle("/letter/", http.StripPrefix("/letter", routes.LetterRoutes()))
 
-	fmt.Println("Server running on http://localhost:8080")
-	http.ListenAndServe(":8080", mux)
+	go func() {
+		fmt.Println("Server running on http://localhost:8080")
+		http.ListenAndServe(":8080", mux)
+	}()
+
+	c := cron.New()
+	c.AddFunc("@every 1m", utils.UpdateToApplyList)
+	c.Start()
+
+	select {}
 }
