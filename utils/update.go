@@ -1,7 +1,14 @@
 package utils
 
-import "log"
+import (
+	"autojob/models"
+	"log"
+)
 
 func UpdateToApplyList() {
 	log.Println("updating...")
+
+	var jobs []models.Job
+
+	scrapeJobData(&jobs)
 }
