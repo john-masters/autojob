@@ -4,9 +4,9 @@ import (
 	"autojob/components"
 	"autojob/middleware"
 	"autojob/models"
-	"autojob/utils"
 	"fmt"
 	"net/http"
+	"strconv"
 )
 
 func CreateHistory(w http.ResponseWriter, r *http.Request) {
@@ -48,27 +48,17 @@ func CreateHistory(w http.ResponseWriter, r *http.Request) {
 
 	isCurrent := current == "on"
 
-	db, err := utils.DbConnection()
+	err = InsertHistory(&models.History{
+		UserID:  user.ID,
+		Name:    name,
+		Role:    role,
+		Start:   start,
+		Finish:  finish,
+		Current: isCurrent,
+		Duties:  duties,
+	})
 	if err != nil {
-		fmt.Println("Error initializing database")
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
-	defer db.Close()
-
-	insertHistorySQL := `INSERT INTO history (user_id, name, role, start, finish, current, duties) VALUES (?, ?, ?, ?, ?, ?, ?)`
-	statement, err := db.Prepare(insertHistorySQL)
-	if err != nil {
-		fmt.Println("Error preparing SQL statement:", err)
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
-	defer statement.Close()
-
-	_, err = statement.Exec(user.ID, name, role, start, finish, isCurrent, duties)
-
-	if err != nil {
-		fmt.Println("Error executing SQL statement:", err)
+		fmt.Println("Error Creating History:", err)
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
@@ -78,6 +68,12 @@ func CreateHistory(w http.ResponseWriter, r *http.Request) {
 
 func GetSingleHistory(w http.ResponseWriter, r *http.Request) {
 	id := r.PathValue("id")
+	intId, err := strconv.Atoi(id)
+	if err != nil {
+		fmt.Println("Error converting string to int: ", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
 
 	user, ok := r.Context().Value(middleware.UserContextKey).(models.User)
 	if !ok {
@@ -85,18 +81,11 @@ func GetSingleHistory(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	db, err := utils.DbConnection()
-	if err != nil {
-		fmt.Println("Error initializing database")
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
-	defer db.Close()
-
 	var history models.History
-	err = db.QueryRow("SELECT * FROM history WHERE id = ? AND user_id = ?", id, user.ID).Scan(&history.ID, &history.UserID, &history.Name, &history.Role, &history.Start, &history.Finish, &history.Current, &history.Duties)
+
+	err = SelectHistoryByIDAndUserID(intId, user.ID, &history)
 	if err != nil {
-		fmt.Println("Database query error:", err)
+		fmt.Println("Error getting history: ", err)
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
@@ -106,13 +95,21 @@ func GetSingleHistory(w http.ResponseWriter, r *http.Request) {
 }
 
 func UpdateSingleHistory(w http.ResponseWriter, r *http.Request) {
+	id := r.PathValue("id")
+	intId, err := strconv.Atoi(id)
+	if err != nil {
+		fmt.Println("Error converting string to int: ", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
 	user, ok := r.Context().Value(middleware.UserContextKey).(models.User)
 	if !ok {
 		http.Error(w, "User not found in context", http.StatusUnauthorized)
 		return
 	}
 
-	err := r.ParseForm()
+	err = r.ParseForm()
 
 	if err != nil {
 		fmt.Println("Error parsing form")
@@ -120,7 +117,6 @@ func UpdateSingleHistory(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	id := r.PathValue("id")
 	name := r.FormValue("name")
 	role := r.FormValue("role")
 	start := r.FormValue("start")
@@ -151,51 +147,25 @@ func UpdateSingleHistory(w http.ResponseWriter, r *http.Request) {
 
 	isCurrent := current == "on"
 
-	db, err := utils.DbConnection()
+	err = UpdateHistory(&models.History{
+		Name:    name,
+		Role:    role,
+		Start:   start,
+		Finish:  finish,
+		Current: isCurrent,
+		Duties:  duties,
+		ID:      intId,
+		UserID:  user.ID,
+	})
 	if err != nil {
-		fmt.Println("Error initializing database")
+		fmt.Println("Error updating history:", err)
 		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
-	defer db.Close()
-
-	updateHistorySQL := `UPDATE history SET name = ?, role = ?, start = ?, finish = ?, current = ?, duties = ? WHERE id = ? AND user_id = ?`
-
-	statement, err := db.Prepare(updateHistorySQL)
-	if err != nil {
-		fmt.Println("Error preparing SQL statement:", err)
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
-	defer statement.Close()
-
-	result, err := statement.Exec(name, role, start, finish, isCurrent, duties, id, user.ID)
-	if err != nil {
-		fmt.Println("Error executing SQL statement:", err)
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
-
-	rowsAffected, _ := result.RowsAffected()
-
-	if rowsAffected == 0 {
-		fmt.Println("No rows updated")
-		w.WriteHeader(http.StatusNotFound)
 		return
 	}
 
 	var history models.History
 
-	err = db.QueryRow("SELECT * FROM history WHERE id = ? AND user_id = ?", id, user.ID).Scan(
-		&history.ID,
-		&history.UserID,
-		&history.Name,
-		&history.Role,
-		&history.Start,
-		&history.Finish,
-		&history.Current,
-		&history.Duties,
-	)
+	err = SelectHistoryByIDAndUserID(intId, user.ID, &history)
 	if err != nil {
 		fmt.Println("Error querying the new history:", err)
 		w.WriteHeader(http.StatusInternalServerError)
@@ -207,34 +177,23 @@ func UpdateSingleHistory(w http.ResponseWriter, r *http.Request) {
 }
 
 func DeleteSingleHistory(w http.ResponseWriter, r *http.Request) {
+	id := r.PathValue("id")
+	intId, err := strconv.Atoi(id)
+	if err != nil {
+		fmt.Println("Error converting string to int: ", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
 	user, ok := r.Context().Value(middleware.UserContextKey).(models.User)
 	if !ok {
 		http.Error(w, "User not found in context", http.StatusUnauthorized)
 		return
 	}
 
-	db, err := utils.DbConnection()
+	err = DeleteHistory(intId, user.ID)
 	if err != nil {
-		fmt.Println("Error initializing database")
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
-	defer db.Close()
-
-	id := r.PathValue("id")
-
-	deleteHistorySQL := `DELETE FROM history WHERE id = ? AND user_id = ?`
-	statement, err := db.Prepare(deleteHistorySQL)
-	if err != nil {
-		fmt.Println("Error preparing SQL statement:", err)
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
-	defer statement.Close()
-
-	_, err = statement.Exec(id, user.ID)
-	if err != nil {
-		fmt.Println("Error executing SQL statement:", err)
+		fmt.Println("Error deleting history: ", err)
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}

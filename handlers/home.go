@@ -4,8 +4,6 @@ import (
 	"autojob/components"
 	"autojob/middleware"
 	"autojob/models"
-	"autojob/utils"
-	"database/sql"
 	"fmt"
 	"net/http"
 )
@@ -38,36 +36,11 @@ func HistoryPage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	db, err := utils.DbConnection()
-	if err != nil {
-		fmt.Println("Error initializing database")
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
-	defer db.Close()
-
-	rows, err := db.Query("SELECT * FROM history WHERE user_id = ? ORDER BY start DESC", user.ID)
-	if err != nil {
-		fmt.Println("Database query error:", err)
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
-
 	var historyList []models.History
-	for rows.Next() {
-		var history models.History
-		err := rows.Scan(&history.ID, &history.UserID, &history.Name, &history.Role, &history.Start, &history.Finish, &history.Current, &history.Duties)
-		if err != nil {
-			fmt.Println("Error scanning row:", err)
-			w.WriteHeader(http.StatusInternalServerError)
-			return
-		}
-		historyList = append(historyList, history)
 
-	}
-
-	if err := rows.Err(); err != nil {
-		fmt.Println("Error iterating rows:", err)
+	err := SelectHistoriesByUserID(user.ID, &historyList)
+	if err != nil {
+		fmt.Println("Error selecting histories by user ID:", err)
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
@@ -82,26 +55,11 @@ func LetterPage(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "User not found in context", http.StatusUnauthorized)
 		return
 	}
-
-	db, err := utils.DbConnection()
-	if err != nil {
-		fmt.Println("Error initializing database")
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
-	defer db.Close()
-
 	var letter models.Letter
 
-	err = db.QueryRow("SELECT * FROM letters WHERE user_id = ?", user.ID).Scan(
-		&letter.ID,
-		&letter.UserID,
-		&letter.Content,
-		&letter.CreatedAt,
-	)
-
-	if err != nil && err != sql.ErrNoRows {
-		fmt.Println("Database query error:", err)
+	err := SelectLetterByUserID(user.ID, &letter)
+	if err != nil {
+		fmt.Println("Error selecting user by ID:", err)
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}

@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"autojob/models"
-	"autojob/utils"
 	"database/sql"
 	"fmt"
 	"net/http"
@@ -34,16 +33,8 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	db, err := utils.DbConnection()
-	if err != nil {
-		fmt.Println("Error initializing database")
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
-	defer db.Close()
-
 	var user models.User
-	err = db.QueryRow("SELECT id, email, password FROM users WHERE email = ?", email).Scan(&user.ID, &user.Email, &user.Password)
+	err = SelectUserByEmail(email, &user)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			fmt.Fprint(w, "Invalid email address or password")
@@ -112,18 +103,11 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	db, err := utils.DbConnection()
-	if err != nil {
-		fmt.Println("Error initializing database")
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
-	defer db.Close()
-
 	var userCount int
-	err = db.QueryRow("SELECT COUNT(*) FROM users WHERE email = ?", email).Scan(&userCount)
+
+	err = SelectUserCountByEmail(email, &userCount)
 	if err != nil {
-		fmt.Println("Error querying database:", err)
+		fmt.Println("Error getting user count:", err)
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
@@ -141,18 +125,14 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	insertUserSQL := `INSERT INTO users (first_name, last_name, email, password) VALUES (?, ?, ?, ?)`
-	statement, err := db.Prepare(insertUserSQL)
+	err = InsertUser(&models.User{
+		FirstName: firstName,
+		LastName:  lastName,
+		Email:     email,
+		Password:  string(hash),
+	})
 	if err != nil {
-		fmt.Println("Error preparing SQL statement:", err)
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
-	defer statement.Close()
-
-	_, err = statement.Exec(firstName, lastName, email, string(hash))
-	if err != nil {
-		fmt.Println("Error executing SQL statement:", err)
+		fmt.Println("Error creating user:", err)
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
