@@ -12,7 +12,7 @@ import (
 )
 
 func main() {
-	utils.DbInit()
+	// utils.DbInit()
 
 	err := godotenv.Load()
 	if err != nil {
