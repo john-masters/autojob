@@ -12,7 +12,7 @@ import (
 )
 
 func main() {
-	// utils.DbInit()
+	utils.DbInit()
 
 	err := godotenv.Load()
 	if err != nil {
@@ -27,14 +27,22 @@ func main() {
 	mux.Handle("/history/", http.StripPrefix("/history", routes.HistoryRoutes()))
 	mux.Handle("/letter/", http.StripPrefix("/letter", routes.LetterRoutes()))
 
+	serverErrChan := make(chan error)
+
 	go func() {
 		fmt.Println("Server running on http://localhost:8080")
-		http.ListenAndServe(":8080", mux)
+		err := http.ListenAndServe(":8080", mux)
+		if err != nil {
+			serverErrChan <- err
+		}
 	}()
 
 	c := cron.New()
-	c.AddFunc("@every 1m", utils.UpdateToApplyList)
+	c.AddFunc("@every 10s", utils.UpdateToApplyList)
 	c.Start()
 
-	select {}
+	err = <-serverErrChan
+	if err != nil {
+		log.Fatal(err)
+	}
 }
