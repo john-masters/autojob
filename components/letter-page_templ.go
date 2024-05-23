@@ -41,7 +41,7 @@ func LetterPage(letter models.Letter) templ.Component {
 					return templ_7745c5c3_Err
 				}
 			} else {
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<form><div>")
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div><div style=\"white-space: pre-wrap;\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -67,7 +67,7 @@ func LetterPage(letter models.Letter) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"><span>Delete</span></button></form>")
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"><span>Delete</span></button></div>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}

@@ -19,8 +19,8 @@ templ LetterPage(letter models.Letter) {
 					</button>
 				</form>
 			} else {
-				<form>
-					<div>
+				<div>
+					<div style="white-space: pre-wrap;">
 						{ letter.Content }
 					</div>
 					<br/>
@@ -33,7 +33,7 @@ templ LetterPage(letter models.Letter) {
 					>
 						<span>Delete</span>
 					</button>
-				</form>
+				</div>
 			}
 		</fieldset>
 	}
