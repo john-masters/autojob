@@ -3,6 +3,7 @@ package utils
 import (
 	"autojob/models"
 	"log"
+	"sync"
 )
 
 func UpdateToApplyList() {
@@ -39,13 +40,13 @@ func UpdateToApplyList() {
 		log.Fatalln("Error iterating rows:", err)
 	}
 
-	log.Println(userList)
-
-	// get all users from the databasse where is_member = true
-
-	// start new go func for each user
-
-	// var jobs []models.Job
-	// scrapeJobData(&jobs)
-
+	var wg sync.WaitGroup
+	for _, user := range userList {
+		wg.Add(1)
+		go func(user models.User) {
+			defer wg.Done()
+			processUser(user)
+		}(user)
+	}
+	wg.Wait()
 }
