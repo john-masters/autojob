@@ -52,7 +52,13 @@ func RequireAuth(next http.HandlerFunc) http.HandlerFunc {
 			}
 			defer db.Close()
 
-			err = db.QueryRow("SELECT * FROM users WHERE id = ?", claims["sub"]).Scan(&user.ID, &user.FirstName, &user.LastName, &user.Email, &user.Password)
+			err = db.QueryRow("SELECT id, first_name, last_name, email, password FROM users WHERE id = ?", claims["sub"]).Scan(
+				&user.ID,
+				&user.FirstName,
+				&user.LastName,
+				&user.Email,
+				&user.Password,
+			)
 			if err != nil {
 				if err == sql.ErrNoRows {
 					fmt.Println("Invalid ID in cookie:", err)

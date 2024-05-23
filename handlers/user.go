@@ -106,7 +106,7 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 
 	// get updated user
 
-	err = db.QueryRow("SELECT * FROM users WHERE id = ?", user.ID).Scan(&updatedUser.ID, &updatedUser.FirstName, &updatedUser.LastName, &updatedUser.Email, &updatedUser.Password)
+	err = db.QueryRow("SELECT id, first_name, last_name, email, password FROM users WHERE id = ?", user.ID).Scan(&updatedUser.ID, &updatedUser.FirstName, &updatedUser.LastName, &updatedUser.Email, &updatedUser.Password)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			fmt.Println("Invalid ID in cookie:", err)
