@@ -1,0 +1,70 @@
+package components
+
+import "autojob/models"
+import "strconv"
+
+templ AdminPage(users *[]models.User) {
+	<!DOCTYPE html>
+	<html lang="en">
+		<head>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<script src="https://unpkg.com/htmx.org@1.9.12"></script>
+			<link
+				rel="icon"
+				href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💼</text></svg>"
+			/>
+			<style>
+			main, header, footer {
+				width: 100%;
+				margin-inline: auto;
+				max-width: 980px;
+			}
+			table, th, td {
+				border: 1px solid black;
+			}
+			td {
+				vertical-align: top;
+			}
+			</style>
+			<title>AUTO JOB - ADMIN</title>
+		</head>
+		<body>
+			<header>
+				<h1>🚧 ADMIN ONLY 🚧</h1>
+			</header>
+			<main>
+				<table>
+					<thead>
+						<tr>
+							<th>ID</th>
+							<th>First Name</th>
+							<th>Last Name</th>
+							<th>Email</th>
+							<th>Is Member</th>
+							<th>Is Admin</th>
+							<th>Options</th>
+						</tr>
+					</thead>
+					<tbody>
+						for _, user := range *users {
+							<tr>
+								<td>{ strconv.Itoa(user.ID) }</td>
+								<td>{ user.FirstName }</td>
+								<td>{ user.LastName }</td>
+								<td>{ user.Email }</td>
+								<td>{ strconv.FormatBool(user.IsMember) }</td>
+								<td>{ strconv.FormatBool(user.IsAdmin) }</td>
+								<td>
+									<button>Make Member</button>
+									<button>Make Admin</button>
+									<button>Delete User</button>
+								</td>
+							</tr>
+						}
+					</tbody>
+				</table>
+			</main>
+		</body>
+	</html>
+}

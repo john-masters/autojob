@@ -37,13 +37,14 @@ func SelectUserByID(ID int, user *models.User) error {
 	}
 	defer db.Close()
 
-	err = db.QueryRow("SELECT id, first_name, last_name, email, is_member, password FROM users WHERE id = ?", ID).Scan(
+	err = db.QueryRow("SELECT id, first_name, last_name, email, password, is_member, is_admin FROM users WHERE id = ?", ID).Scan(
 		&user.ID,
 		&user.FirstName,
 		&user.LastName,
 		&user.Email,
-		&user.IsMember,
 		&user.Password,
+		&user.IsMember,
+		&user.IsAdmin,
 	)
 	if err != nil {
 		if err == sql.ErrNoRows {
@@ -147,6 +148,45 @@ func SelectMemberUsersByID(userList *[]models.User) error {
 			&user.FirstName,
 			&user.LastName,
 			&user.Email,
+		)
+		if err != nil {
+			log.Fatalln("Error scanning row:", err)
+		}
+		*userList = append(*userList, user)
+
+	}
+
+	err = rows.Err()
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func SelectAllUsers(userList *[]models.User) error {
+	db, err := conn()
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer db.Close()
+
+	rows, err := db.Query("SELECT * FROM users")
+	if err != nil {
+		log.Fatalln("Database query error:", err)
+	}
+
+	for rows.Next() {
+		var user models.User
+
+		err := rows.Scan(
+			&user.ID,
+			&user.FirstName,
+			&user.LastName,
+			&user.Email,
+			&user.Password,
+			&user.IsMember,
+			&user.IsAdmin,
 		)
 		if err != nil {
 			log.Fatalln("Error scanning row:", err)

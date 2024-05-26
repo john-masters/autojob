@@ -39,6 +39,10 @@
 1. Run the server: `go run .`
     - Optional: uncomment the `// utils.DbInit()` line in `main.go` to initialise the db
 1. Visit `http://localhost:8080`
+1. Set admin:
+    - Connect to db using CLI: `sqlite3 test.db`
+    - Update permission: `UPDATE users SET is_admin = 1 WHERE id = <your user_id>;`
+    - Quit: `.quit`
 
 ## TODO
 

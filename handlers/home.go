@@ -117,3 +117,23 @@ func JobsPage(w http.ResponseWriter, r *http.Request) {
 	component := components.JobsPage(&jobsList)
 	component.Render(r.Context(), w)
 }
+
+func AdminPage(w http.ResponseWriter, r *http.Request) {
+	_, ok := r.Context().Value(middleware.UserContextKey).(models.User)
+	if !ok {
+		http.Error(w, "User not found in context", http.StatusUnauthorized)
+		return
+	}
+
+	var userList []models.User
+
+	err := db.SelectAllUsers(&userList)
+	if err != nil {
+		fmt.Println("Error getting all users:", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	component := components.AdminPage(&userList)
+	component.Render(r.Context(), w)
+}

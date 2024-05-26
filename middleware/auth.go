@@ -22,10 +22,10 @@ func RequireAuth(next http.HandlerFunc) http.HandlerFunc {
 		tokenString, err := r.Cookie("Authorization")
 		if err != nil {
 			if err == http.ErrNoCookie {
-				w.WriteHeader(http.StatusUnauthorized)
+				http.Redirect(w, r, "/", http.StatusSeeOther)
 				return
 			}
-			w.WriteHeader(http.StatusBadRequest)
+			http.Redirect(w, r, "/", http.StatusSeeOther)
 			return
 		}
 
@@ -39,7 +39,7 @@ func RequireAuth(next http.HandlerFunc) http.HandlerFunc {
 		if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
 			if int64(time.Now().Unix()) > int64(claims["exp"].(float64)) {
 				fmt.Println("expired cookie")
-				w.WriteHeader(http.StatusUnauthorized)
+				http.Redirect(w, r, "/", http.StatusSeeOther)
 			}
 
 			var user models.User
@@ -48,10 +48,10 @@ func RequireAuth(next http.HandlerFunc) http.HandlerFunc {
 			if err != nil {
 				if err == sql.ErrNoRows {
 					fmt.Println("Invalid ID in cookie:", err)
-					w.WriteHeader(http.StatusInternalServerError)
+					http.Redirect(w, r, "/", http.StatusSeeOther)
 				} else {
 					fmt.Println("Database query error:", err)
-					w.WriteHeader(http.StatusInternalServerError)
+					http.Redirect(w, r, "/", http.StatusSeeOther)
 				}
 				return
 			}
@@ -63,7 +63,7 @@ func RequireAuth(next http.HandlerFunc) http.HandlerFunc {
 
 		} else {
 			fmt.Println(err)
-			w.WriteHeader(http.StatusUnauthorized)
+			http.Redirect(w, r, "/", http.StatusSeeOther)
 			return
 		}
 	}

@@ -16,7 +16,8 @@ func Init() {
 			last_name TEXT NOT NULL,
 			email TEXT NOT NULL,
 			password TEXT NOT NULL,
-			is_member BOOLEAN NOT NULL DEFAULT FALSE
+			is_member BOOLEAN NOT NULL DEFAULT FALSE,
+			is_admin BOOLEAN NOT NULL DEFAULT FALSE
 		);
 
 		CREATE TABLE IF NOT EXISTS history (
