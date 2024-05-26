@@ -7,7 +7,7 @@ import (
 	"github.com/gocolly/colly"
 )
 
-func scrapeJobData(jobs *[]models.Job, searchTerm string) {
+func scrapeJobData(scrapeData *[]models.ScrapeData, searchTerm string) {
 	c := colly.NewCollector()
 
 	c.OnHTML("[data-card-type='JobCard']", func(e *colly.HTMLElement) {
@@ -17,13 +17,13 @@ func scrapeJobData(jobs *[]models.Job, searchTerm string) {
 
 		fullLink := "https://www.seek.com.au" + link
 
-		job := models.Job{
+		job := models.ScrapeData{
 			Title:   title,
 			Company: company,
 			Link:    fullLink,
 		}
 
-		*jobs = append(*jobs, job)
+		*scrapeData = append(*scrapeData, job)
 
 		e.Request.Visit(fullLink)
 	})
@@ -31,9 +31,9 @@ func scrapeJobData(jobs *[]models.Job, searchTerm string) {
 	c.OnHTML("div[data-automation='jobAdDetails']", func(e *colly.HTMLElement) {
 		description := e.Text
 
-		for i := range *jobs {
-			if (*jobs)[i].Link == e.Request.URL.String() {
-				(*jobs)[i].Description = description
+		for i := range *scrapeData {
+			if (*scrapeData)[i].Link == e.Request.URL.String() {
+				(*scrapeData)[i].Description = description
 				break
 			}
 		}

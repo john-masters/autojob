@@ -1,6 +1,6 @@
 package models
 
-type Job struct {
+type ScrapeData struct {
 	Title       string
 	Company     string
 	Link        string

@@ -14,9 +14,9 @@ func processUser(user models.User) {
 		log.Fatal("Error getting queries: ", err)
 	}
 
-	var jobs []models.Job
+	var scrapeData []models.ScrapeData
 	for _, query := range queriesList {
-		scrapeJobData(&jobs, query.Query)
+		scrapeJobData(&scrapeData, query.Query)
 	}
 
 	var jobHistory []models.History
@@ -39,7 +39,7 @@ func processUser(user models.User) {
 
 	var applyList []models.Apply
 
-	for _, job := range jobs {
+	for _, job := range scrapeData {
 		data := models.UserPromptData{
 			CoverLetterContent: coverLetter.Content,
 			JobHistory:         string(jsonHistory),
@@ -73,4 +73,5 @@ func processUser(user models.User) {
 			})
 		}
 	}
+
 }
