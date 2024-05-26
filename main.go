@@ -28,6 +28,7 @@ func main() {
 	mux.Handle("/history/", http.StripPrefix("/history", routes.HistoryRoutes()))
 	mux.Handle("/letter/", http.StripPrefix("/letter", routes.LetterRoutes()))
 	mux.Handle("/query/", http.StripPrefix("/query", routes.QueryRoutes()))
+	mux.Handle("/job/", http.StripPrefix("/job", routes.JobRoutes()))
 
 	serverErrChan := make(chan error)
 
@@ -40,7 +41,7 @@ func main() {
 	}()
 
 	c := cron.New()
-	c.AddFunc("@every 10s", utils.UpdateToApplyList)
+	c.AddFunc("@daily", utils.UpdateToApplyList)
 	c.Start()
 
 	err = <-serverErrChan

@@ -76,7 +76,22 @@ func processUser(user models.User) {
 	}
 
 	for _, job := range jobsList {
-		db.InsertJob(&job)
-	}
+		var count int
+		err := db.SelectJobCountByEmail(&job, &count)
 
+		if err != nil {
+			log.Printf("Error getting job count for job %v: %v", job, err)
+			continue
+		}
+
+		if count > 0 {
+			log.Printf("Job %v already exists, skipping", job)
+			continue
+		}
+
+		err = db.InsertJob(&job)
+		if err != nil {
+			log.Printf("Error inserting job %v: %v", job, err)
+		}
+	}
 }

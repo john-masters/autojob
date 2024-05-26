@@ -98,3 +98,22 @@ func SettingsPage(w http.ResponseWriter, r *http.Request) {
 	component := components.SettingsPage(user)
 	component.Render(r.Context(), w)
 }
+
+func JobsPage(w http.ResponseWriter, r *http.Request) {
+	user, ok := r.Context().Value(middleware.UserContextKey).(models.User)
+	if !ok {
+		http.Error(w, "User not found in context", http.StatusUnauthorized)
+		return
+	}
+
+	var jobsList []models.Job
+	err := db.SelectJobsByUserID(user.ID, &jobsList)
+	if err != nil {
+		fmt.Println("Error selecting jobs by user ID:", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	component := components.JobsPage(&jobsList)
+	component.Render(r.Context(), w)
+}

@@ -9,6 +9,12 @@ templ AccountPage(user models.User) {
 		</p>
 		<table>
 			<tr>
+				<td>Jobs to apply for</td>
+				<td>
+					<span hx-get="/job/count" hx-swap="innerHTML" hx-trigger="load once"></span>
+				</td>
+			</tr>
+			<tr>
 				<td>Job History</td>
 				<td>
 					<span hx-get="/history/count" hx-swap="innerHTML" hx-trigger="load once"></span>

@@ -13,6 +13,7 @@ func SelectQueriesByUserID(userID int, queriesList *[]models.Query) error {
 	if err != nil {
 		return err
 	}
+	defer rows.Close()
 
 	for rows.Next() {
 		var query models.Query
@@ -28,7 +29,8 @@ func SelectQueriesByUserID(userID int, queriesList *[]models.Query) error {
 
 	}
 
-	if err := rows.Err(); err != nil {
+	err = rows.Err()
+	if err != nil {
 		return err
 	}
 

@@ -17,6 +17,12 @@ templ Layout(title string, isLoggedIn bool) {
 				margin-inline: auto;
 				max-width: 980px;
 			}
+			table, th, td {
+				border: 1px solid black;
+			}
+			td {
+				vertical-align: top;
+			}
 			</style>
 			<title>AUTO JOB - { title }</title>
 		</head>
@@ -27,6 +33,7 @@ templ Layout(title string, isLoggedIn bool) {
 				<nav>
 					if isLoggedIn {
 						<a href="/account">Account</a> |
+						<a href="/to-apply">To Apply</a> |
 						<a href="/job-history">Job History</a> |
 						<a href="/cover-letter">Cover Letter</a> |
 						<a href="/search-terms">Search Terms</a> |
