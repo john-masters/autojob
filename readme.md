@@ -48,7 +48,7 @@
 - [x] Add user resume and cover letter upload
 - [x] Add web scraping
 - [x] Add GPT-4 integration
-- [ ] Add cron job to run daily
+- [x] Add cron job to run daily
 - [ ] Add more robust input validation
   - [ ] valid email
   - [ ] password complexity
