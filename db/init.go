@@ -3,7 +3,7 @@ package db
 import "fmt"
 
 func Init() {
-	db, err := db()
+	db, err := conn()
 	if err != nil {
 		fmt.Println("Error initializing database")
 		return
@@ -16,6 +16,7 @@ func Init() {
 			last_name TEXT NOT NULL,
 			email TEXT NOT NULL,
 			password TEXT NOT NULL,
+			search_term TEXT NOT NULL,
 			is_member BOOLEAN NOT NULL DEFAULT FALSE
 		);
 
