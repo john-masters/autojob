@@ -87,7 +87,6 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 	firstName := r.FormValue("first_name")
 	lastName := r.FormValue("last_name")
 	email := r.FormValue("email")
-	searchTerm := r.FormValue("search_term")
 	password := r.FormValue("password")
 
 	switch {
@@ -99,9 +98,6 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 		return
 	case email == "":
 		fmt.Fprint(w, "Email is required")
-		return
-	case searchTerm == "":
-		fmt.Fprint(w, "Search term is required")
 		return
 	case password == "":
 		fmt.Fprint(w, "Password is required")
@@ -131,11 +127,10 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 	}
 
 	err = db.InsertUser(&models.User{
-		FirstName:  firstName,
-		LastName:   lastName,
-		Email:      email,
-		SearchTerm: searchTerm,
-		Password:   string(hash),
+		FirstName: firstName,
+		LastName:  lastName,
+		Email:     email,
+		Password:  string(hash),
 	})
 	if err != nil {
 		fmt.Println("Error creating user:", err)

@@ -16,7 +16,6 @@ func Init() {
 			last_name TEXT NOT NULL,
 			email TEXT NOT NULL,
 			password TEXT NOT NULL,
-			search_term TEXT NOT NULL,
 			is_member BOOLEAN NOT NULL DEFAULT FALSE
 		);
 

@@ -14,12 +14,7 @@ func SelectUserByEmail(email string, user *models.User) error {
 	}
 	defer db.Close()
 
-	err = db.QueryRow("SELECT id, email, search_term, password FROM users WHERE email = ?", email).Scan(
-		&user.ID,
-		&user.Email,
-		&user.SearchTerm,
-		&user.Password,
-	)
+	err = db.QueryRow("SELECT id, email, password FROM users WHERE email = ?", email).Scan(&user.ID, &user.Email, &user.Password)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return sql.ErrNoRows
@@ -38,12 +33,11 @@ func SelectUserByID(ID int, user *models.User) error {
 	}
 	defer db.Close()
 
-	err = db.QueryRow("SELECT id, first_name, last_name, email, search_term, password FROM users WHERE id = ?", ID).Scan(
+	err = db.QueryRow("SELECT id, first_name, last_name, email, password FROM users WHERE id = ?", ID).Scan(
 		&user.ID,
 		&user.FirstName,
 		&user.LastName,
 		&user.Email,
-		&user.SearchTerm,
 		&user.Password,
 	)
 	if err != nil {
@@ -78,20 +72,14 @@ func InsertUser(user *models.User) error {
 	}
 	defer db.Close()
 
-	insertUserSQL := `INSERT INTO users (first_name, last_name, email, search_term, password) VALUES (?, ?, ?, ?)`
+	insertUserSQL := `INSERT INTO users (first_name, last_name, email, password) VALUES (?, ?, ?, ?)`
 	statement, err := db.Prepare(insertUserSQL)
 	if err != nil {
 		return err
 	}
 	defer statement.Close()
 
-	_, err = statement.Exec(
-		user.FirstName,
-		user.LastName,
-		user.Email,
-		user.SearchTerm,
-		user.Password,
-	)
+	_, err = statement.Exec(user.FirstName, user.LastName, user.Email, user.Password)
 	if err != nil {
 		return err
 	}
@@ -105,7 +93,7 @@ func UpdateUserByID(user *models.User) error {
 	}
 	defer db.Close()
 
-	updateUserSQL := `UPDATE users SET first_name = ?, last_name = ?, email = ?, search_term = ?, password = ? WHERE id = ?`
+	updateUserSQL := `UPDATE users SET first_name = ?, last_name = ?, email = ?, password = ? WHERE id = ?`
 
 	statement, err := db.Prepare(updateUserSQL)
 	if err != nil {
@@ -118,7 +106,6 @@ func UpdateUserByID(user *models.User) error {
 		user.FirstName,
 		user.LastName,
 		user.Email,
-		user.SearchTerm,
 		user.Password,
 	)
 	if err != nil {
@@ -141,7 +128,7 @@ func SelectMemberUsersByID(userList *[]models.User) error {
 	}
 	defer db.Close()
 
-	rows, err := db.Query("SELECT id, first_name, last_name, email, search_term FROM users WHERE is_member = TRUE")
+	rows, err := db.Query("SELECT id, first_name, last_name, email FROM users WHERE is_member = TRUE")
 	if err != nil {
 		log.Fatalln("Database query error:", err)
 	}
@@ -154,7 +141,6 @@ func SelectMemberUsersByID(userList *[]models.User) error {
 			&user.FirstName,
 			&user.LastName,
 			&user.Email,
-			&user.SearchTerm,
 		)
 		if err != nil {
 			log.Fatalln("Error scanning row:", err)

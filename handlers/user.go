@@ -44,7 +44,6 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 	firstName := r.FormValue("first_name")
 	lastName := r.FormValue("last_name")
 	email := r.FormValue("email")
-	searchTerm := r.FormValue("search_term")
 	password := r.FormValue("password")
 
 	switch {
@@ -56,9 +55,6 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 		return
 	case email == "":
 		fmt.Fprint(w, "Email is required")
-		return
-	case searchTerm == "":
-		fmt.Fprint(w, "Search term is required")
 		return
 	case password == "":
 		fmt.Fprint(w, "Password is required")
@@ -73,12 +69,11 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	err = db.UpdateUserByID(&models.User{
-		ID:         user.ID,
-		FirstName:  firstName,
-		LastName:   lastName,
-		Email:      email,
-		SearchTerm: searchTerm,
-		Password:   string(hash),
+		ID:        user.ID,
+		FirstName: firstName,
+		LastName:  lastName,
+		Email:     email,
+		Password:  string(hash),
 	})
 	if err != nil {
 		fmt.Println("Error updating user:", err)
