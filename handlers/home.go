@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"autojob/components"
+	"autojob/db"
 	"autojob/middleware"
 	"autojob/models"
 	"fmt"
@@ -38,7 +39,7 @@ func HistoryPage(w http.ResponseWriter, r *http.Request) {
 
 	var historyList []models.History
 
-	err := SelectHistoriesByUserID(user.ID, &historyList)
+	err := db.SelectHistoriesByUserID(user.ID, &historyList)
 	if err != nil {
 		fmt.Println("Error selecting histories by user ID:", err)
 		w.WriteHeader(http.StatusInternalServerError)
@@ -57,7 +58,7 @@ func LetterPage(w http.ResponseWriter, r *http.Request) {
 	}
 	var letter models.Letter
 
-	err := SelectLetterByUserID(user.ID, &letter)
+	err := db.SelectLetterByUserID(user.ID, &letter)
 	if err != nil {
 		fmt.Println("Error selecting user by ID:", err)
 		w.WriteHeader(http.StatusInternalServerError)

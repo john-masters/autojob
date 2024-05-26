@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"autojob/components"
+	"autojob/db"
 	"autojob/middleware"
 	"autojob/models"
 	"fmt"
@@ -48,7 +49,7 @@ func CreateHistory(w http.ResponseWriter, r *http.Request) {
 
 	isCurrent := current == "on"
 
-	err = InsertHistory(&models.History{
+	err = db.InsertHistory(&models.History{
 		UserID:  user.ID,
 		Name:    name,
 		Role:    role,
@@ -83,7 +84,7 @@ func GetSingleHistory(w http.ResponseWriter, r *http.Request) {
 
 	var history models.History
 
-	err = SelectHistoryByIDAndUserID(intId, user.ID, &history)
+	err = db.SelectHistoryByIDAndUserID(intId, user.ID, &history)
 	if err != nil {
 		fmt.Println("Error getting history: ", err)
 		w.WriteHeader(http.StatusInternalServerError)
@@ -147,7 +148,7 @@ func UpdateSingleHistory(w http.ResponseWriter, r *http.Request) {
 
 	isCurrent := current == "on"
 
-	err = UpdateHistory(&models.History{
+	err = db.UpdateHistory(&models.History{
 		Name:    name,
 		Role:    role,
 		Start:   start,
@@ -165,7 +166,7 @@ func UpdateSingleHistory(w http.ResponseWriter, r *http.Request) {
 
 	var history models.History
 
-	err = SelectHistoryByIDAndUserID(intId, user.ID, &history)
+	err = db.SelectHistoryByIDAndUserID(intId, user.ID, &history)
 	if err != nil {
 		fmt.Println("Error querying the new history:", err)
 		w.WriteHeader(http.StatusInternalServerError)
@@ -191,7 +192,7 @@ func DeleteSingleHistory(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = DeleteHistory(intId, user.ID)
+	err = db.DeleteHistory(intId, user.ID)
 	if err != nil {
 		fmt.Println("Error deleting history: ", err)
 		w.WriteHeader(http.StatusInternalServerError)

@@ -2,9 +2,9 @@ package handlers
 
 import (
 	"autojob/components"
+	"autojob/db"
 	"autojob/middleware"
 	"autojob/models"
-	"autojob/utils"
 	"database/sql"
 	"fmt"
 	"net/http"
@@ -61,52 +61,29 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	db, err := utils.DbConnection()
-	if err != nil {
-		fmt.Println("Error initializing database")
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
-	defer db.Close()
-
 	hash, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
-
 	if err != nil {
 		fmt.Println("Error generating hash from password:", err)
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
-	updateUserSQL := `UPDATE users SET first_name = ?, last_name = ?, email = ?, password = ? WHERE id = ?`
-
-	statement, err := db.Prepare(updateUserSQL)
+	err = db.UpdateUserByID(&models.User{
+		ID:        user.ID,
+		FirstName: firstName,
+		LastName:  lastName,
+		Email:     email,
+		Password:  string(hash),
+	})
 	if err != nil {
-		fmt.Println("Error preparing SQL statement:", err)
+		fmt.Println("Error updating user:", err)
 		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
-	defer statement.Close()
-
-	result, err := statement.Exec(firstName, lastName, email, string(hash), user.ID)
-	if err != nil {
-		fmt.Println("Error executing SQL statement:", err)
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
-
-	rowsAffected, _ := result.RowsAffected()
-
-	if rowsAffected == 0 {
-		fmt.Println("No rows updated")
-		w.WriteHeader(http.StatusNotFound)
 		return
 	}
 
 	var updatedUser models.User
 
-	// get updated user
-
-	err = db.QueryRow("SELECT id, first_name, last_name, email, password FROM users WHERE id = ?", user.ID).Scan(&updatedUser.ID, &updatedUser.FirstName, &updatedUser.LastName, &updatedUser.Email, &updatedUser.Password)
+	err = db.SelectUserByID(user.ID, &updatedUser)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			fmt.Println("Invalid ID in cookie:", err)

@@ -1,8 +1,8 @@
 package middleware
 
 import (
+	"autojob/db"
 	"autojob/models"
-	"autojob/utils"
 	"context"
 	"database/sql"
 	"fmt"
@@ -44,21 +44,7 @@ func RequireAuth(next http.HandlerFunc) http.HandlerFunc {
 
 			var user models.User
 
-			db, err := utils.DbConnection()
-			if err != nil {
-				fmt.Println("Error initializing database")
-				w.WriteHeader(http.StatusInternalServerError)
-				return
-			}
-			defer db.Close()
-
-			err = db.QueryRow("SELECT id, first_name, last_name, email, password FROM users WHERE id = ?", claims["sub"]).Scan(
-				&user.ID,
-				&user.FirstName,
-				&user.LastName,
-				&user.Email,
-				&user.Password,
-			)
+			err := db.SelectUserByID(int(claims["sub"].(float64)), &user)
 			if err != nil {
 				if err == sql.ErrNoRows {
 					fmt.Println("Invalid ID in cookie:", err)

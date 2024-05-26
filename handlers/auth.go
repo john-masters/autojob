@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"autojob/db"
 	"autojob/models"
 	"database/sql"
 	"fmt"
@@ -34,7 +35,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var user models.User
-	err = SelectUserByEmail(email, &user)
+	err = db.SelectUserByEmail(email, &user)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			fmt.Fprint(w, "Invalid email address or password")
@@ -105,7 +106,7 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 
 	var userCount int
 
-	err = SelectUserCountByEmail(email, &userCount)
+	err = db.SelectUserCountByEmail(email, &userCount)
 	if err != nil {
 		fmt.Println("Error getting user count:", err)
 		w.WriteHeader(http.StatusInternalServerError)
@@ -125,7 +126,7 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = InsertUser(&models.User{
+	err = db.InsertUser(&models.User{
 		FirstName: firstName,
 		LastName:  lastName,
 		Email:     email,
