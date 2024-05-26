@@ -27,6 +27,7 @@ func main() {
 	mux.Handle("/user/", http.StripPrefix("/user", routes.UserRoutes()))
 	mux.Handle("/history/", http.StripPrefix("/history", routes.HistoryRoutes()))
 	mux.Handle("/letter/", http.StripPrefix("/letter", routes.LetterRoutes()))
+	mux.Handle("/query/", http.StripPrefix("/query", routes.QueryRoutes()))
 
 	serverErrChan := make(chan error)
 

@@ -69,6 +69,25 @@ func LetterPage(w http.ResponseWriter, r *http.Request) {
 	component.Render(r.Context(), w)
 }
 
+func QueriesPage(w http.ResponseWriter, r *http.Request) {
+	user, ok := r.Context().Value(middleware.UserContextKey).(models.User)
+	if !ok {
+		http.Error(w, "User not found in context", http.StatusUnauthorized)
+		return
+	}
+
+	var queriesList []models.Query
+	err := db.SelectQueriesByUserID(user.ID, &queriesList)
+	if err != nil {
+		fmt.Println("Error selecting histories by user ID:", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	component := components.QueriesPage(&queriesList)
+	component.Render(r.Context(), w)
+}
+
 func SettingsPage(w http.ResponseWriter, r *http.Request) {
 	user, ok := r.Context().Value(middleware.UserContextKey).(models.User)
 	if !ok {

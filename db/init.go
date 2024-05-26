@@ -19,7 +19,7 @@ func Init() {
 			is_member BOOLEAN NOT NULL DEFAULT FALSE
 		);
 
-		CREATE TABLE history (
+		CREATE TABLE IF NOT EXISTS history (
 			id INTEGER PRIMARY KEY AUTOINCREMENT,
 			user_id INTEGER NOT NULL,
 			name TEXT NOT NULL,
@@ -36,6 +36,13 @@ func Init() {
 			user_id INTEGER NOT NULL,
 			content TEXT NOT NULL,
 			created_at DATETIME NOT NULL DEFAULT (datetime('now')),
+			FOREIGN KEY (user_id) REFERENCES users (id)
+		);
+
+		CREATE TABLE IF NOT EXISTS queries (
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			user_id INTEGER NOT NULL,
+			query TEXT NOT NULL,
 			FOREIGN KEY (user_id) REFERENCES users (id)
 		);
 	`)

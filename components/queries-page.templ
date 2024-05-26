@@ -1,0 +1,35 @@
+package components
+
+import "autojob/models"
+import "strconv"
+
+templ QueriesPage(queryList *[]models.Query) {
+	@Layout("Search terms", true) {
+		<form action="/query/" method="post">
+			<input type="text" id="query" name="query" placeholder="Search term"/>
+			<button type="submit">
+				<span>🆕</span>
+			</button>
+		</form>
+		<fieldset>
+			<legend>Current search terms: </legend>
+			<ul>
+				for _, query := range *queryList {
+					<li>
+						<form>
+							<span>{ query.Query }</span>
+							<button
+								type="submit"
+								hx-delete={ "/query/" + strconv.Itoa(query.ID) }
+								hx-swap="outerHTML"
+								hx-target="closest li"
+							>
+								<span>🗑️</span>
+							</button>
+						</form>
+					</li>
+				}
+			</ul>
+		</fieldset>
+	}
+}
