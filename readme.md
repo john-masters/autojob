@@ -47,7 +47,7 @@
 - [x] Add settings page
 - [x] Add user resume and cover letter upload
 - [x] Add web scraping
-- [ ] Add GPT-4 integration
+- [x] Add GPT-4 integration
 - [ ] Add cron job to run daily
 - [ ] Add more robust input validation
   - [ ] valid email
