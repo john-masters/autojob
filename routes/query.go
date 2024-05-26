@@ -12,5 +12,7 @@ func QueryRoutes() *http.ServeMux {
 	router.HandleFunc("POST /", middleware.RequireAuth(handlers.CreateQuery))
 	router.HandleFunc("DELETE /{id}", middleware.RequireAuth(handlers.DeleteSingleQuery))
 
+	router.HandleFunc("GET /count", middleware.RequireAuth(handlers.GetQueryCount))
+
 	return router
 }

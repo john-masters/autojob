@@ -4,5 +4,28 @@ import "autojob/models"
 
 templ AccountPage(user models.User) {
 	@Layout("Account", true) {
+		<p>
+			Please ensure that your account information is filled out.
+		</p>
+		<table>
+			<tr>
+				<td>Job History</td>
+				<td>
+					<span hx-get="/history/count" hx-swap="innerHTML" hx-trigger="load once"></span>
+				</td>
+			</tr>
+			<tr>
+				<td>Cover Letter</td>
+				<td>
+					<span hx-get="/letter/count" hx-swap="innerHTML" hx-trigger="load once"></span>
+				</td>
+			</tr>
+			<tr>
+				<td>Search Terms</td>
+				<td>
+					<span hx-get="/query/count" hx-swap="innerHTML" hx-trigger="load once"></span>
+				</td>
+			</tr>
+		</table>
 	}
 }

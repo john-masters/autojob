@@ -202,3 +202,22 @@ func DeleteSingleHistory(w http.ResponseWriter, r *http.Request) {
 	// return ok so ui knows no issue in updating
 	w.WriteHeader(http.StatusOK)
 }
+
+func GetHistoryCount(w http.ResponseWriter, r *http.Request) {
+	user, ok := r.Context().Value(middleware.UserContextKey).(models.User)
+	if !ok {
+		http.Error(w, "User not found in context", http.StatusUnauthorized)
+		return
+	}
+
+	var historyCount int
+
+	err := db.SelectHistoryCount(&user, &historyCount)
+	if err != nil {
+		fmt.Println("Error getting user count:", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	fmt.Fprint(w, historyCount)
+}

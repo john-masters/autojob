@@ -12,5 +12,7 @@ func LetterRoutes() *http.ServeMux {
 	router.HandleFunc("POST /", middleware.RequireAuth(handlers.CreateLetter))
 	router.HandleFunc("DELETE /", middleware.RequireAuth(handlers.DeleteLetter))
 
+	router.HandleFunc("GET /count", middleware.RequireAuth(handlers.GetLetterCount))
+
 	return router
 }

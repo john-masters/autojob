@@ -54,7 +54,7 @@ func LetterPage(letter models.Letter) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><br><button hx-delete=\"/letter/\" hx-select=\"#letter-form\" hx-swap=\"outerHTML\" hx-target=\"closest form\" hx-confirm=\"")
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><br><button hx-delete=\"/letter/\" hx-select=\"fieldset\" hx-target=\"closest fieldset\" hx-swap=\"outerHTML\" hx-confirm=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}

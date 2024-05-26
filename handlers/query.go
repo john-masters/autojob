@@ -70,3 +70,22 @@ func DeleteSingleQuery(w http.ResponseWriter, r *http.Request) {
 	// return ok so ui knows no issue in updating
 	w.WriteHeader(http.StatusOK)
 }
+
+func GetQueryCount(w http.ResponseWriter, r *http.Request) {
+	user, ok := r.Context().Value(middleware.UserContextKey).(models.User)
+	if !ok {
+		http.Error(w, "User not found in context", http.StatusUnauthorized)
+		return
+	}
+
+	var queryCount int
+
+	err := db.SelectQueryCount(&user, &queryCount)
+	if err != nil {
+		fmt.Println("Error getting user count:", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	fmt.Fprint(w, queryCount)
+}

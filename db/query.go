@@ -80,3 +80,17 @@ func DeleteQuery(id int, userID int) error {
 	}
 	return nil
 }
+
+func SelectQueryCount(user *models.User, count *int) error {
+	db, err := conn()
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+
+	err = db.QueryRow("SELECT COUNT(*) FROM queries WHERE user_id = ?", &user.ID).Scan(count)
+	if err != nil {
+		return err
+	}
+	return nil
+}

@@ -31,6 +31,10 @@ func AccountPage(user models.User) templ.Component {
 				templ_7745c5c3_Buffer = templ.GetBuffer()
 				defer templ.ReleaseBuffer(templ_7745c5c3_Buffer)
 			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<p>Please ensure that your account information is filled out.</p><table><tr><td>Job History</td><td><span hx-get=\"/history/count\" hx-swap=\"innerHTML\" hx-trigger=\"load once\"></span></td></tr><tr><td>Cover Letter</td><td><span hx-get=\"/letter/count\" hx-swap=\"innerHTML\" hx-trigger=\"load once\"></span></td></tr><tr><td>Search Terms</td><td><span hx-get=\"/query/count\" hx-swap=\"innerHTML\" hx-trigger=\"load once\"></span></td></tr></table>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
 			if !templ_7745c5c3_IsBuffer {
 				_, templ_7745c5c3_Err = io.Copy(templ_7745c5c3_W, templ_7745c5c3_Buffer)
 			}

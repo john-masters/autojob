@@ -1,6 +1,8 @@
 package db
 
-import "autojob/models"
+import (
+	"autojob/models"
+)
 
 func SelectHistoriesByUserID(userID int, histories *[]models.History) error {
 	db, err := conn()
@@ -53,6 +55,20 @@ func SelectHistoryByIDAndUserID(id int, userID int, history *models.History) err
 		return err
 	}
 
+	return nil
+}
+
+func SelectHistoryCount(user *models.User, count *int) error {
+	db, err := conn()
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+
+	err = db.QueryRow("SELECT COUNT(*) FROM history WHERE user_id = ?", &user.ID).Scan(count)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 

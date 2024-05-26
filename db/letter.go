@@ -68,3 +68,17 @@ func DeleteLetterByUserID(userID int) error {
 	}
 	return nil
 }
+
+func SelectLetterCount(user *models.User, count *int) error {
+	db, err := conn()
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+
+	err = db.QueryRow("SELECT COUNT(*) FROM letters WHERE user_id = ?", &user.ID).Scan(count)
+	if err != nil {
+		return err
+	}
+	return nil
+}

@@ -15,5 +15,7 @@ func HistoryRoutes() *http.ServeMux {
 	router.HandleFunc("POST /{id}", middleware.RequireAuth(handlers.UpdateSingleHistory))
 	router.HandleFunc("DELETE /{id}", middleware.RequireAuth(handlers.DeleteSingleHistory))
 
+	router.HandleFunc("GET /count", middleware.RequireAuth(handlers.GetHistoryCount))
+
 	return router
 }
