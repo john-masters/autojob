@@ -14,7 +14,11 @@ func SelectUserByEmail(email string, user *models.User) error {
 	}
 	defer db.Close()
 
-	err = db.QueryRow("SELECT id, email, password FROM users WHERE email = ?", email).Scan(&user.ID, &user.Email, &user.Password)
+	err = db.QueryRow("SELECT id, email, password FROM users WHERE email = ?", email).Scan(
+		&user.ID,
+		&user.Email,
+		&user.Password,
+	)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return sql.ErrNoRows
@@ -33,11 +37,12 @@ func SelectUserByID(ID int, user *models.User) error {
 	}
 	defer db.Close()
 
-	err = db.QueryRow("SELECT id, first_name, last_name, email, password FROM users WHERE id = ?", ID).Scan(
+	err = db.QueryRow("SELECT id, first_name, last_name, email, is_member, password FROM users WHERE id = ?", ID).Scan(
 		&user.ID,
 		&user.FirstName,
 		&user.LastName,
 		&user.Email,
+		&user.IsMember,
 		&user.Password,
 	)
 	if err != nil {
@@ -93,7 +98,7 @@ func UpdateUserByID(user *models.User) error {
 	}
 	defer db.Close()
 
-	updateUserSQL := `UPDATE users SET first_name = ?, last_name = ?, email = ?, password = ? WHERE id = ?`
+	updateUserSQL := `UPDATE users SET first_name = ?, last_name = ?, email = ?, is_member = ?, password = ? WHERE id = ?`
 
 	statement, err := db.Prepare(updateUserSQL)
 	if err != nil {
@@ -102,11 +107,12 @@ func UpdateUserByID(user *models.User) error {
 	defer statement.Close()
 
 	result, err := statement.Exec(
-		user.ID,
 		user.FirstName,
 		user.LastName,
 		user.Email,
+		user.IsMember,
 		user.Password,
+		user.ID,
 	)
 	if err != nil {
 		return err
