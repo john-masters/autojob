@@ -161,5 +161,4 @@ func SelectMemberUsersByID(userList *[]models.User) error {
 	}
 
 	return nil
-
 }

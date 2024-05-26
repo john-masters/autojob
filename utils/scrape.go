@@ -2,11 +2,12 @@ package utils
 
 import (
 	"autojob/models"
+	"strings"
 
 	"github.com/gocolly/colly"
 )
 
-func scrapeJobData(jobs *[]models.Job) {
+func scrapeJobData(jobs *[]models.Job, searchTerm string) {
 	c := colly.NewCollector()
 
 	c.OnHTML("[data-card-type='JobCard']", func(e *colly.HTMLElement) {
@@ -45,5 +46,7 @@ func scrapeJobData(jobs *[]models.Job) {
 		}
 	})
 
-	c.Visit("https://www.seek.com.au/junior-developer-jobs/full-time?daterange=1")
+	url := "https://www.seek.com.au/" + strings.ReplaceAll(searchTerm, " ", "-") + "-jobs/full-time?daterange=1"
+
+	c.Visit(url)
 }
