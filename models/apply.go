@@ -1,6 +1,6 @@
 package models
 
-type ApplyJob struct {
+type Apply struct {
 	Title       string
 	Company     string
 	Link        string
