@@ -32,7 +32,7 @@ func QueriesPage(queryList *[]models.Query) templ.Component {
 				templ_7745c5c3_Buffer = templ.GetBuffer()
 				defer templ.ReleaseBuffer(templ_7745c5c3_Buffer)
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<form action=\"/query/\" method=\"post\"><input type=\"text\" id=\"query\" name=\"query\" placeholder=\"Search term\"> <button type=\"submit\"><span>🆕</span></button></form><fieldset><legend>Current search terms: </legend><ul>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<form action=\"/query/\" method=\"post\"><input type=\"text\" id=\"query\" name=\"query\" placeholder=\"Search term\"> <button type=\"submit\"><span>Add new</span></button></form><fieldset><legend>Current search terms: </legend><ul>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -63,7 +63,7 @@ func QueriesPage(queryList *[]models.Query) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" hx-swap=\"outerHTML\" hx-target=\"closest li\"><span>🗑️</span></button></form></li>")
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" hx-swap=\"outerHTML\" hx-target=\"closest li\"><span>Delete</span></button></form></li>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}

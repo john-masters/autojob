@@ -8,7 +8,7 @@ templ QueriesPage(queryList *[]models.Query) {
 		<form action="/query/" method="post">
 			<input type="text" id="query" name="query" placeholder="Search term"/>
 			<button type="submit">
-				<span>🆕</span>
+				<span>Add new</span>
 			</button>
 		</form>
 		<fieldset>
@@ -24,7 +24,7 @@ templ QueriesPage(queryList *[]models.Query) {
 								hx-swap="outerHTML"
 								hx-target="closest li"
 							>
-								<span>🗑️</span>
+								<span>Delete</span>
 							</button>
 						</form>
 					</li>
