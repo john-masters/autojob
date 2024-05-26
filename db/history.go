@@ -3,7 +3,7 @@ package db
 import "autojob/models"
 
 func SelectHistoriesByUserID(userID int, histories *[]models.History) error {
-	db, err := DbConnection()
+	db, err := db()
 	if err != nil {
 		return err
 	}
@@ -32,7 +32,7 @@ func SelectHistoriesByUserID(userID int, histories *[]models.History) error {
 }
 
 func SelectHistoryByIDAndUserID(id int, userID int, history *models.History) error {
-	db, err := DbConnection()
+	db, err := db()
 	if err != nil {
 		return err
 	}
@@ -57,7 +57,7 @@ func SelectHistoryByIDAndUserID(id int, userID int, history *models.History) err
 }
 
 func InsertHistory(history *models.History) error {
-	db, err := DbConnection()
+	db, err := db()
 	if err != nil {
 		return err
 	}
@@ -87,7 +87,7 @@ func InsertHistory(history *models.History) error {
 }
 
 func UpdateHistory(history *models.History) error {
-	db, err := DbConnection()
+	db, err := db()
 	if err != nil {
 		return err
 	}
@@ -124,7 +124,7 @@ func UpdateHistory(history *models.History) error {
 }
 
 func DeleteHistory(id int, userID int) error {
-	db, err := DbConnection()
+	db, err := db()
 	if err != nil {
 		return err
 	}

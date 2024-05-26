@@ -2,8 +2,8 @@ package db
 
 import "fmt"
 
-func DbInit() {
-	db, err := DbConnection()
+func Init() {
+	db, err := db()
 	if err != nil {
 		fmt.Println("Error initializing database")
 		return

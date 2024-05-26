@@ -8,7 +8,7 @@ import (
 )
 
 func SelectUserByEmail(email string, user *models.User) error {
-	db, err := DbConnection()
+	db, err := db()
 	if err != nil {
 		return err
 	}
@@ -27,7 +27,7 @@ func SelectUserByEmail(email string, user *models.User) error {
 }
 
 func SelectUserByID(ID int, user *models.User) error {
-	db, err := DbConnection()
+	db, err := db()
 	if err != nil {
 		return err
 	}
@@ -52,7 +52,7 @@ func SelectUserByID(ID int, user *models.User) error {
 }
 
 func SelectUserCountByEmail(email string, count *int) error {
-	db, err := DbConnection()
+	db, err := db()
 	if err != nil {
 		return err
 	}
@@ -66,7 +66,7 @@ func SelectUserCountByEmail(email string, count *int) error {
 }
 
 func InsertUser(user *models.User) error {
-	db, err := DbConnection()
+	db, err := db()
 	if err != nil {
 		return err
 	}
@@ -87,7 +87,7 @@ func InsertUser(user *models.User) error {
 }
 
 func UpdateUserByID(user *models.User) error {
-	db, err := DbConnection()
+	db, err := db()
 	if err != nil {
 		return err
 	}
@@ -122,7 +122,7 @@ func UpdateUserByID(user *models.User) error {
 }
 
 func SelectMemberUsersByID(userList *[]models.User) error {
-	db, err := DbConnection()
+	db, err := db()
 	if err != nil {
 		log.Fatal(err)
 	}

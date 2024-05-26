@@ -1,6 +1,7 @@
 package main
 
 import (
+	"autojob/db"
 	"autojob/routes"
 	"autojob/utils"
 	"fmt"
@@ -12,7 +13,7 @@ import (
 )
 
 func main() {
-	// utils.DbInit()
+	db.Init()
 
 	err := godotenv.Load()
 	if err != nil {

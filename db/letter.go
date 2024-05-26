@@ -6,7 +6,7 @@ import (
 )
 
 func SelectLetterByUserID(userID int, letter *models.Letter) error {
-	db, err := DbConnection()
+	db, err := db()
 	if err != nil {
 		return err
 	}
@@ -26,7 +26,7 @@ func SelectLetterByUserID(userID int, letter *models.Letter) error {
 }
 
 func InsertLetter(letter *models.Letter) error {
-	db, err := DbConnection()
+	db, err := db()
 	if err != nil {
 		return err
 	}
@@ -49,7 +49,7 @@ func InsertLetter(letter *models.Letter) error {
 }
 
 func DeleteLetterByUserID(userID int) error {
-	db, err := DbConnection()
+	db, err := db()
 	if err != nil {
 		return err
 	}
