@@ -56,9 +56,9 @@ templ AdminPage(users *[]models.User) {
 								<td>{ strconv.FormatBool(user.IsMember) }</td>
 								<td>{ strconv.FormatBool(user.IsAdmin) }</td>
 								<td>
-									<button>Make Member</button>
-									<button>Make Admin</button>
-									<button>Delete User</button>
+									<button hx-put={ "user/member/" + strconv.Itoa(user.ID) } hx-select="table" hx-target="closest table" hx-swap="outerHTML">Make Member</button>
+									<button hx-put={ "user/admin/" + strconv.Itoa(user.ID) } hx-select="table" hx-target="closest table" hx-swap="outerHTML">Make Admin</button>
+									<button hx-delete={ "user/" + strconv.Itoa(user.ID) } hx-select="table" hx-target="closest table" hx-swap="outerHTML">Delete User</button>
 								</td>
 							</tr>
 						}

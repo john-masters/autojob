@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"strconv"
 	"time"
 
 	"github.com/golang-jwt/jwt"
@@ -122,4 +123,79 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 
 	component := components.SettingsForm(updatedUser, "GET")
 	component.Render(r.Context(), w)
+}
+
+func MakeMember(w http.ResponseWriter, r *http.Request) {
+	_, ok := r.Context().Value(middleware.UserContextKey).(models.User)
+	if !ok {
+		http.Error(w, "User not found in context", http.StatusUnauthorized)
+		return
+	}
+
+	id := r.PathValue("id")
+	intId, err := strconv.Atoi(id)
+	if err != nil {
+		fmt.Println("Error converting string to int: ", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	err = db.UpdateUserMemberStatusByID(intId)
+	if err != nil {
+		fmt.Println("Error updating user:", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	http.Redirect(w, r, "/admin", http.StatusSeeOther)
+}
+
+func MakeAdmin(w http.ResponseWriter, r *http.Request) {
+	_, ok := r.Context().Value(middleware.UserContextKey).(models.User)
+	if !ok {
+		http.Error(w, "User not found in context", http.StatusUnauthorized)
+		return
+	}
+
+	id := r.PathValue("id")
+	intId, err := strconv.Atoi(id)
+	if err != nil {
+		fmt.Println("Error converting string to int: ", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	err = db.UpdateUserAdminStatusByID(intId)
+	if err != nil {
+		fmt.Println("Error updating user:", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	http.Redirect(w, r, "/admin", http.StatusSeeOther)
+}
+
+func DeleteUser(w http.ResponseWriter, r *http.Request) {
+	_, ok := r.Context().Value(middleware.UserContextKey).(models.User)
+	if !ok {
+		http.Error(w, "User not found in context", http.StatusUnauthorized)
+		return
+	}
+
+	id := r.PathValue("id")
+	intId, err := strconv.Atoi(id)
+	if err != nil {
+		fmt.Println("Error converting string to int: ", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	err = db.DeleteUserByID(intId)
+	if err != nil {
+		fmt.Println("Error updating user:", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	http.Redirect(w, r, "/admin", http.StatusSeeOther)
 }

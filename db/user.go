@@ -202,3 +202,106 @@ func SelectAllUsers(userList *[]models.User) error {
 
 	return nil
 }
+
+func UpdateUserMemberStatusByID(ID int) error {
+	var user models.User
+
+	err := SelectUserByID(ID, &user)
+	if err != nil {
+		return err
+	}
+
+	db, err := conn()
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+
+	updateUserSQL := "UPDATE users SET is_member = ? WHERE id = ?"
+
+	statement, err := db.Prepare(updateUserSQL)
+	if err != nil {
+		return err
+	}
+	defer statement.Close()
+
+	isMember := !user.IsMember
+
+	result, err := statement.Exec(
+		isMember,
+		ID,
+	)
+	if err != nil {
+		return err
+	}
+
+	rowsAffected, _ := result.RowsAffected()
+
+	if rowsAffected == 0 {
+		return fmt.Errorf("no rows affected")
+	}
+
+	return nil
+}
+
+func UpdateUserAdminStatusByID(ID int) error {
+	var user models.User
+
+	err := SelectUserByID(ID, &user)
+	if err != nil {
+		return err
+	}
+
+	db, err := conn()
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+
+	updateUserSQL := "UPDATE users SET is_admin = ? WHERE id = ?"
+
+	statement, err := db.Prepare(updateUserSQL)
+	if err != nil {
+		return err
+	}
+	defer statement.Close()
+
+	isAdmin := !user.IsAdmin
+
+	result, err := statement.Exec(
+		isAdmin,
+		ID,
+	)
+	if err != nil {
+		return err
+	}
+
+	rowsAffected, _ := result.RowsAffected()
+
+	if rowsAffected == 0 {
+		return fmt.Errorf("no rows affected")
+	}
+
+	return nil
+}
+
+func DeleteUserByID(id int) error {
+	db, err := conn()
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+
+	deleteHistorySQL := "DELETE FROM users WHERE id = ?"
+	statement, err := db.Prepare(deleteHistorySQL)
+	if err != nil {
+		return err
+	}
+	defer statement.Close()
+
+	_, err = statement.Exec(id)
+	if err != nil {
+		return err
+	}
+	return nil
+}
