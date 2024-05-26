@@ -37,7 +37,7 @@ func processUser(user models.User) {
 		log.Fatal(err)
 	}
 
-	var applyList []models.Apply
+	var jobsList []models.Job
 
 	for _, job := range scrapeData {
 		data := models.UserPromptData{
@@ -64,7 +64,8 @@ func processUser(user models.User) {
 		}
 
 		if response.IsMatch {
-			applyList = append(applyList, models.Apply{
+			jobsList = append(jobsList, models.Job{
+				UserID:      user.ID,
 				Title:       job.Title,
 				Company:     job.Company,
 				Link:        job.Link,
@@ -72,6 +73,10 @@ func processUser(user models.User) {
 				CoverLetter: response.CoverLetter,
 			})
 		}
+	}
+
+	for _, job := range jobsList {
+		db.InsertJob(&job)
 	}
 
 }

@@ -45,6 +45,17 @@ func Init() {
 			query TEXT NOT NULL,
 			FOREIGN KEY (user_id) REFERENCES users (id)
 		);
+
+		CREATE TABLE IF NOT EXISTS jobs (
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			user_id INTEGER NOT NULL,
+			title TEXT NOT NULL,
+			company TEXT NOT NULL,
+			link TEXT NOT NULL,
+			description TEXT NOT NULL,
+			cover_letter TEXT NOT NULL,
+			FOREIGN KEY (user_id) REFERENCES users (id)
+		);
 	`)
 	if err != nil {
 		fmt.Println("Error creating table")

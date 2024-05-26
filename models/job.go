@@ -1,6 +1,7 @@
 package models
 
-type Apply struct {
+type Job struct {
+	UserID      int
 	Title       string
 	Company     string
 	Link        string
