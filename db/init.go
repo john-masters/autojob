@@ -11,7 +11,7 @@ func Init() {
 	defer db.Close()
 	_, err = db.Exec(`
 		CREATE TABLE IF NOT EXISTS users (
-			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			id SERIAL PRIMARY KEY,
 			first_name TEXT NOT NULL,
 			last_name TEXT NOT NULL,
 			email TEXT NOT NULL,
@@ -21,7 +21,7 @@ func Init() {
 		);
 
 		CREATE TABLE IF NOT EXISTS history (
-			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			id SERIAL PRIMARY KEY,
 			user_id INTEGER NOT NULL,
 			name TEXT NOT NULL,
 			role TEXT NOT NULL,
@@ -29,26 +29,26 @@ func Init() {
 			finish TEXT,
 			current BOOLEAN NOT NULL,
 			duties TEXT,
-			FOREIGN KEY (user_id) REFERENCES user (id)
+			FOREIGN KEY (user_id) REFERENCES users (id)
 		);
 
 		CREATE TABLE IF NOT EXISTS letters (
-			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			id SERIAL PRIMARY KEY,
 			user_id INTEGER NOT NULL,
 			content TEXT NOT NULL,
-			created_at DATETIME NOT NULL DEFAULT (datetime('now')),
+			created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 			FOREIGN KEY (user_id) REFERENCES users (id)
 		);
 
 		CREATE TABLE IF NOT EXISTS queries (
-			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			id SERIAL PRIMARY KEY,
 			user_id INTEGER NOT NULL,
 			query TEXT NOT NULL,
 			FOREIGN KEY (user_id) REFERENCES users (id)
 		);
 
 		CREATE TABLE IF NOT EXISTS jobs (
-			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			id SERIAL PRIMARY KEY,
 			user_id INTEGER NOT NULL,
 			title TEXT NOT NULL,
 			company TEXT NOT NULL,
@@ -59,7 +59,7 @@ func Init() {
 		);
 	`)
 	if err != nil {
-		fmt.Println("Error creating table")
+		fmt.Println("Error creating table", err)
 		return
 	}
 
