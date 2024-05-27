@@ -13,12 +13,12 @@ import (
 )
 
 func main() {
-	db.Init()
-
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
+
+	db.Init()
 
 	mux := http.NewServeMux()
 
