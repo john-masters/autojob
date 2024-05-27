@@ -57,6 +57,22 @@ func Init() {
 			cover_letter TEXT NOT NULL,
 			FOREIGN KEY (user_id) REFERENCES users (id)
 		);
+
+		INSERT INTO users (
+			first_name,
+			last_name,
+			email,
+			password,
+			is_member,
+			is_admin
+		)VALUES (
+			'Admin',
+			'User',
+			'admin@example.com',
+			'securepassword',
+			TRUE,
+			TRUE
+		) ON CONFLICT DO NOTHING;
 	`)
 	if err != nil {
 		fmt.Println("Error creating table", err)

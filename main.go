@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/robfig/cron/v3"
 )
@@ -15,6 +16,8 @@ func main() {
 	db.Init()
 
 	mux := http.NewServeMux()
+
+	port := os.Getenv("PORT")
 
 	mux.Handle("/", routes.HomeRoutes())
 	mux.Handle("/auth/", http.StripPrefix("/auth", routes.AuthRoutes()))
@@ -27,8 +30,8 @@ func main() {
 	serverErrChan := make(chan error)
 
 	go func() {
-		fmt.Println("Server running on http://localhost:8080")
-		err := http.ListenAndServe(":8080", mux)
+		fmt.Printf("Server running on http://localhost:%v\n", port)
+		err := http.ListenAndServe(":"+port, mux)
 		if err != nil {
 			serverErrChan <- err
 		}
