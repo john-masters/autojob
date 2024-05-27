@@ -41,7 +41,7 @@ func main() {
 	c.AddFunc("@daily", utils.UpdateToApplyList)
 	c.Start()
 
-	err = <-serverErrChan
+	err := <-serverErrChan
 	if err != nil {
 		log.Fatal(err)
 	}
