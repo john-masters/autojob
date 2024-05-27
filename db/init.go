@@ -1,6 +1,11 @@
 package db
 
-import "fmt"
+import (
+	"fmt"
+	"os"
+
+	"golang.org/x/crypto/bcrypt"
+)
 
 func Init() {
 	db, err := conn()
@@ -10,6 +15,12 @@ func Init() {
 	}
 	defer db.Close()
 	_, err = db.Exec(`
+		DROP TABLE IF EXISTS queries CASCADE;
+		DROP TABLE IF EXISTS jobs CASCADE;
+		DROP TABLE IF EXISTS letters CASCADE;
+		DROP TABLE IF EXISTS history CASCADE;
+		DROP TABLE IF EXISTS users CASCADE;
+
 		CREATE TABLE IF NOT EXISTS users (
 			id SERIAL PRIMARY KEY,
 			first_name TEXT NOT NULL,
@@ -57,25 +68,49 @@ func Init() {
 			cover_letter TEXT NOT NULL,
 			FOREIGN KEY (user_id) REFERENCES users (id)
 		);
-
-		INSERT INTO users (
-			first_name,
-			last_name,
-			email,
-			password,
-			is_member,
-			is_admin
-		)VALUES (
-			'Admin',
-			'User',
-			'admin@example.com',
-			'securepassword',
-			TRUE,
-			TRUE
-		) ON CONFLICT DO NOTHING;
 	`)
+
 	if err != nil {
 		fmt.Println("Error creating table", err)
+		return
+	}
+
+	insertAdminSQL := `
+	INSERT INTO users (
+		first_name,
+		last_name,
+		email,
+		password,
+		is_member,
+		is_admin
+	) VALUES (
+		'Admin',
+		'User',
+		'admin@example.com',
+		$1,
+		TRUE,
+		TRUE
+	) ON CONFLICT DO NOTHING;`
+
+	statement, err := db.Prepare(insertAdminSQL)
+	if err != nil {
+		fmt.Println("Error preparing statement", err)
+		return
+	}
+	defer statement.Close()
+
+	password := os.Getenv("ADMIN_PASS")
+
+	hash, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+
+	if err != nil {
+		fmt.Println("Error generating hash from password:", err)
+		return
+	}
+
+	_, err = statement.Exec(string(hash))
+	if err != nil {
+		fmt.Println("Error inserting admin user", err)
 		return
 	}
 
