@@ -9,11 +9,17 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/joho/godotenv"
 	"github.com/robfig/cron/v3"
 )
 
 func main() {
 	db.Init()
+
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
 
 	mux := http.NewServeMux()
 
@@ -41,7 +47,7 @@ func main() {
 	c.AddFunc("@daily", utils.UpdateToApplyList)
 	c.Start()
 
-	err := <-serverErrChan
+	err = <-serverErrChan
 	if err != nil {
 		log.Fatal(err)
 	}
