@@ -9,7 +9,7 @@ func InsertJob(job *models.Job) error {
 	}
 	defer db.Close()
 
-	insertJobSQL := "INSERT INTO jobs (user_id, title, company, link, description, cover_letter) VALUES (?, ?, ?, ?, ?, ?)"
+	insertJobSQL := "INSERT INTO jobs (user_id, title, company, link, description, cover_letter) VALUES ($1, $2, $3, $4, $5, $6);"
 	statement, err := db.Prepare(insertJobSQL)
 	if err != nil {
 		return err
@@ -38,7 +38,7 @@ func SelectJobCountByEmail(job *models.Job, count *int) error {
 	}
 	defer db.Close()
 
-	err = db.QueryRow("SELECT COUNT(*) FROM jobs WHERE user_id = ? AND link = ?", &job.UserID, &job.Link).Scan(&count)
+	err = db.QueryRow("SELECT COUNT(*) FROM jobs WHERE user_id = $1 AND link = $2;", &job.UserID, &job.Link).Scan(&count)
 	if err != nil {
 		return err
 	}
@@ -52,7 +52,7 @@ func SelectJobsByUserID(userID int, jobs *[]models.Job) error {
 	}
 	defer db.Close()
 
-	rows, err := db.Query("SELECT * FROM jobs WHERE user_id = ?", userID)
+	rows, err := db.Query("SELECT * FROM jobs WHERE user_id = $1;", userID)
 	if err != nil {
 		return err
 	}
@@ -89,7 +89,7 @@ func DeleteJob(id int, userID int) error {
 	}
 	defer db.Close()
 
-	deleteHistorySQL := `DELETE FROM jobs WHERE id = ? AND user_id = ?`
+	deleteHistorySQL := `DELETE FROM jobs WHERE id = $1 AND user_id = $2`
 	statement, err := db.Prepare(deleteHistorySQL)
 	if err != nil {
 		return err
@@ -110,7 +110,7 @@ func SelectJobCount(user *models.User, count *int) error {
 	}
 	defer db.Close()
 
-	err = db.QueryRow("SELECT COUNT(*) FROM jobs WHERE user_id = ?", &user.ID).Scan(count)
+	err = db.QueryRow("SELECT COUNT(*) FROM jobs WHERE user_id = $1;", &user.ID).Scan(count)
 	if err != nil {
 		return err
 	}

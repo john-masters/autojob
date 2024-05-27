@@ -14,7 +14,7 @@ func SelectUserByEmail(email string, user *models.User) error {
 	}
 	defer db.Close()
 
-	err = db.QueryRow("SELECT id, email, password FROM users WHERE email = ?", email).Scan(
+	err = db.QueryRow("SELECT id, email, password FROM users WHERE email = $1;", email).Scan(
 		&user.ID,
 		&user.Email,
 		&user.Password,
@@ -37,7 +37,7 @@ func SelectUserByID(ID int, user *models.User) error {
 	}
 	defer db.Close()
 
-	err = db.QueryRow("SELECT id, first_name, last_name, email, password, is_member, is_admin FROM users WHERE id = ?", ID).Scan(
+	err = db.QueryRow("SELECT id, first_name, last_name, email, password, is_member, is_admin FROM users WHERE id = $1;", ID).Scan(
 		&user.ID,
 		&user.FirstName,
 		&user.LastName,
@@ -64,7 +64,7 @@ func SelectUserCountByEmail(email string, count *int) error {
 	}
 	defer db.Close()
 
-	err = db.QueryRow("SELECT COUNT(*) FROM users WHERE email = ?", email).Scan(&count)
+	err = db.QueryRow("SELECT COUNT(*) FROM users WHERE email = $1;", email).Scan(&count)
 	if err != nil {
 		return err
 	}
@@ -78,7 +78,7 @@ func InsertUser(user *models.User) error {
 	}
 	defer db.Close()
 
-	insertUserSQL := `INSERT INTO users (first_name, last_name, email, password) VALUES (?, ?, ?, ?)`
+	insertUserSQL := "INSERT INTO users (first_name, last_name, email, password) VALUES ($1, $2, $3, $4);"
 	statement, err := db.Prepare(insertUserSQL)
 	if err != nil {
 		return err
@@ -99,7 +99,7 @@ func UpdateUserByID(user *models.User) error {
 	}
 	defer db.Close()
 
-	updateUserSQL := `UPDATE users SET first_name = ?, last_name = ?, email = ?, is_member = ?, password = ? WHERE id = ?`
+	updateUserSQL := "UPDATE users SET first_name = $1, last_name = $2, email = $3, is_member = $4, password = $5 WHERE id = $6;"
 
 	statement, err := db.Prepare(updateUserSQL)
 	if err != nil {
@@ -135,7 +135,7 @@ func SelectMemberUsersByID(userList *[]models.User) error {
 	}
 	defer db.Close()
 
-	rows, err := db.Query("SELECT id, first_name, last_name, email FROM users WHERE is_member = TRUE")
+	rows, err := db.Query("SELECT id, first_name, last_name, email FROM users WHERE is_member = TRUE;")
 	if err != nil {
 		log.Fatalln("Database query error:", err)
 	}
@@ -171,7 +171,7 @@ func SelectAllUsers(userList *[]models.User) error {
 	}
 	defer db.Close()
 
-	rows, err := db.Query("SELECT * FROM users")
+	rows, err := db.Query("SELECT * FROM users;")
 	if err != nil {
 		log.Fatalln("Database query error:", err)
 	}
@@ -217,7 +217,7 @@ func UpdateUserMemberStatusByID(ID int) error {
 	}
 	defer db.Close()
 
-	updateUserSQL := "UPDATE users SET is_member = ? WHERE id = ?"
+	updateUserSQL := "UPDATE users SET is_member = $1 WHERE id = $2;"
 
 	statement, err := db.Prepare(updateUserSQL)
 	if err != nil {
@@ -258,7 +258,7 @@ func UpdateUserAdminStatusByID(ID int) error {
 	}
 	defer db.Close()
 
-	updateUserSQL := "UPDATE users SET is_admin = ? WHERE id = ?"
+	updateUserSQL := "UPDATE users SET is_admin = $1 WHERE id = $2;"
 
 	statement, err := db.Prepare(updateUserSQL)
 	if err != nil {
@@ -292,7 +292,7 @@ func DeleteUserByID(id int) error {
 	}
 	defer db.Close()
 
-	deleteHistorySQL := "DELETE FROM users WHERE id = ?"
+	deleteHistorySQL := "DELETE FROM users WHERE id = $1;"
 	statement, err := db.Prepare(deleteHistorySQL)
 	if err != nil {
 		return err

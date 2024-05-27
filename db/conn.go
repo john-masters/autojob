@@ -10,7 +10,6 @@ import (
 
 func conn() (*sql.DB, error) {
 	connStr := os.Getenv("DATABASE_URL")
-	fmt.Println("connStr:", connStr)
 	db, err := sql.Open("postgres", connStr)
 
 	if err != nil {

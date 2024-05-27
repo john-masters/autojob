@@ -11,7 +11,7 @@ func SelectHistoriesByUserID(userID int, histories *[]models.History) error {
 	}
 	defer db.Close()
 
-	rows, err := db.Query("SELECT * FROM history WHERE user_id = ? ORDER BY start DESC", userID)
+	rows, err := db.Query("SELECT * FROM history WHERE user_id = $1 ORDER BY start DESC;", userID)
 	if err != nil {
 		return err
 	}
@@ -40,7 +40,7 @@ func SelectHistoryByIDAndUserID(id int, userID int, history *models.History) err
 	}
 	defer db.Close()
 
-	err = db.QueryRow("SELECT * FROM history WHERE id = ? AND user_id = ?", id, userID).Scan(
+	err = db.QueryRow("SELECT * FROM history WHERE id = $1 AND user_id = $2;", id, userID).Scan(
 		&history.ID,
 		&history.UserID,
 		&history.Name,
@@ -65,7 +65,7 @@ func SelectHistoryCount(user *models.User, count *int) error {
 	}
 	defer db.Close()
 
-	err = db.QueryRow("SELECT COUNT(*) FROM history WHERE user_id = ?", &user.ID).Scan(count)
+	err = db.QueryRow("SELECT COUNT(*) FROM history WHERE user_id = $1;", &user.ID).Scan(count)
 	if err != nil {
 		return err
 	}
@@ -79,7 +79,7 @@ func InsertHistory(history *models.History) error {
 	}
 	defer db.Close()
 
-	insertHistorySQL := `INSERT INTO history (user_id, name, role, start, finish, current, duties) VALUES (?, ?, ?, ?, ?, ?, ?)`
+	insertHistorySQL := "INSERT INTO history (user_id, name, role, start, finish, current, duties) VALUES ($1, $2, $3, $4, $5, $6, $7);"
 	statement, err := db.Prepare(insertHistorySQL)
 	if err != nil {
 		return err
@@ -109,7 +109,7 @@ func UpdateHistory(history *models.History) error {
 	}
 	defer db.Close()
 
-	updateHistorySQL := `UPDATE history SET name = ?, role = ?, start = ?, finish = ?, current = ?, duties = ? WHERE id = ? AND user_id = ?`
+	updateHistorySQL := "UPDATE history SET name = $1, role = $2, start = $3, finish = $4, current = $5, duties = $6 WHERE id = $7 AND user_id = $8;"
 
 	statement, err := db.Prepare(updateHistorySQL)
 	if err != nil {
@@ -146,7 +146,7 @@ func DeleteHistory(id int, userID int) error {
 	}
 	defer db.Close()
 
-	deleteHistorySQL := `DELETE FROM history WHERE id = ? AND user_id = ?`
+	deleteHistorySQL := "DELETE FROM history WHERE id = $1 AND user_id = $2;"
 	statement, err := db.Prepare(deleteHistorySQL)
 	if err != nil {
 		return err

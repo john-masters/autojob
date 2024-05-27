@@ -12,7 +12,7 @@ func SelectLetterByUserID(userID int, letter *models.Letter) error {
 	}
 	defer db.Close()
 
-	err = db.QueryRow("SELECT * FROM letters WHERE user_id = ?", userID).Scan(
+	err = db.QueryRow("SELECT * FROM letters WHERE user_id = $1;", userID).Scan(
 		&letter.ID,
 		&letter.UserID,
 		&letter.Content,
@@ -32,7 +32,7 @@ func InsertLetter(letter *models.Letter) error {
 	}
 	defer db.Close()
 
-	insertHistorySQL := `INSERT INTO letters (user_id, content) VALUES (?, ?)`
+	insertHistorySQL := "INSERT INTO letters (user_id, content) VALUES ($1, $2);"
 	statement, err := db.Prepare(insertHistorySQL)
 	if err != nil {
 		return err
@@ -55,7 +55,7 @@ func DeleteLetterByUserID(userID int) error {
 	}
 	defer db.Close()
 
-	deleteLetterSQL := `DELETE FROM letters WHERE user_id = ?`
+	deleteLetterSQL := "DELETE FROM letters WHERE user_id = $1;"
 	statement, err := db.Prepare(deleteLetterSQL)
 	if err != nil {
 		return err
@@ -76,7 +76,7 @@ func SelectLetterCount(user *models.User, count *int) error {
 	}
 	defer db.Close()
 
-	err = db.QueryRow("SELECT COUNT(*) FROM letters WHERE user_id = ?", &user.ID).Scan(count)
+	err = db.QueryRow("SELECT COUNT(*) FROM letters WHERE user_id = $1;", &user.ID).Scan(count)
 	if err != nil {
 		return err
 	}
