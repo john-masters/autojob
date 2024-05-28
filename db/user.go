@@ -37,14 +37,12 @@ func SelectUserByID(ID int, user *models.User) error {
 	}
 	defer db.Close()
 
-	err = db.QueryRow("SELECT id, first_name, last_name, email, password, is_member, is_admin FROM users WHERE id = $1;", ID).Scan(
+	err = db.QueryRow("SELECT id, first_name, last_name, email, password FROM users WHERE id = $1;", ID).Scan(
 		&user.ID,
 		&user.FirstName,
 		&user.LastName,
 		&user.Email,
 		&user.Password,
-		&user.IsMember,
-		&user.IsAdmin,
 	)
 	if err != nil {
 		if err == sql.ErrNoRows {
@@ -99,7 +97,7 @@ func UpdateUserByID(user *models.User) error {
 	}
 	defer db.Close()
 
-	updateUserSQL := "UPDATE users SET first_name = $1, last_name = $2, email = $3, is_member = $4, password = $5 WHERE id = $6;"
+	updateUserSQL := "UPDATE users SET first_name = $1, last_name = $2, email = $3, password = $4 WHERE id = $5;"
 
 	statement, err := db.Prepare(updateUserSQL)
 	if err != nil {
@@ -111,7 +109,6 @@ func UpdateUserByID(user *models.User) error {
 		user.FirstName,
 		user.LastName,
 		user.Email,
-		user.IsMember,
 		user.Password,
 		user.ID,
 	)

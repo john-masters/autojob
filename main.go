@@ -1,7 +1,6 @@
 package main
 
 import (
-	"autojob/db"
 	"autojob/routes"
 	"autojob/utils"
 	"fmt"
@@ -19,7 +18,7 @@ func main() {
 		log.Fatal("Error loading .env file")
 	}
 
-	db.Init()
+	// db.Init()
 
 	mux := http.NewServeMux()
 

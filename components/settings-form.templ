@@ -9,17 +9,6 @@ templ SettingsForm(user models.User, method string) {
 			@SettingsInput(user.LastName, "text", "last_name", "Last name: ", false)
 			@SettingsInput(user.Email, "email", "email", "Email: ", false)
 			@SettingsInput("", "password", "password", "Password: ", false)
-			<div>
-				<label for="member">Member:</label>
-				<input
-					type="checkbox"
-					id="member"
-					name="member"
-					if user.IsMember == true {
-						checked
-					}
-				/>
-			</div>
 			<button type="submit">
 				<span>Update</span>
 			</button>
@@ -31,18 +20,6 @@ templ SettingsForm(user models.User, method string) {
 			@SettingsInput(user.LastName, "text", "last_name", "Last name: ", true)
 			@SettingsInput(user.Email, "email", "email", "Email: ", true)
 			@SettingsInput("******", "password", "password", "Password: ", true)
-			<div>
-				<label for="member">Member:</label>
-				<input
-					type="checkbox"
-					id="member"
-					name="member"
-					disabled
-					if user.IsMember == true {
-						checked
-					}
-				/>
-			</div>
 			<button type="submit">
 				<span>Edit</span>
 			</button>

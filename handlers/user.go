@@ -46,8 +46,6 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 	lastName := r.FormValue("last_name")
 	email := r.FormValue("email")
 	password := r.FormValue("password")
-	member := r.FormValue("member")
-	isMember := member == "on"
 
 	switch {
 	case firstName == "":
@@ -77,7 +75,6 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 		LastName:  lastName,
 		Email:     email,
 		Password:  string(hash),
-		IsMember:  isMember,
 	})
 	if err != nil {
 		fmt.Println("Error updating user:", err)
