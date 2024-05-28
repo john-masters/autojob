@@ -12,7 +12,7 @@ import (
 )
 
 func main() {
-	db.Init()
+	// db.Init()
 
 	mux := http.NewServeMux()
 
