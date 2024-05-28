@@ -6,8 +6,18 @@ import "strconv"
 templ JobsPage(jobsList *[]models.Job) {
 	@Layout("To Apply", true) {
 		for _, job := range *jobsList {
-			<fieldset>
-				<legend>{ job.Title } - { job.Company }</legend>
+			<details>
+				<summary>
+					<span>{ job.Title } - { job.Company }</span>
+					<button
+						type="submit"
+						hx-delete={ "/job/" + strconv.Itoa(job.ID) }
+						hx-swap="outerHTML"
+						hx-target="closest details"
+					>
+						<span>Delete</span>
+					</button>
+				</summary>
 				<table>
 					<tr>
 						<td>Title: </td>
@@ -30,15 +40,7 @@ templ JobsPage(jobsList *[]models.Job) {
 						<td><a href={ templ.SafeURL(job.Link) }>Seek Ad</a></td>
 					</tr>
 				</table>
-				<button
-					type="submit"
-					hx-delete={ "/job/" + strconv.Itoa(job.ID) }
-					hx-swap="outerHTML"
-					hx-target="closest fieldset"
-				>
-					<span>Delete</span>
-				</button>
-			</fieldset>
+			</details>
 		}
 	}
 }
