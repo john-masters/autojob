@@ -135,7 +135,16 @@ func SelectMemberUsersByID(userList *[]models.User) error {
 	}
 	defer db.Close()
 
-	rows, err := db.Query("SELECT id, first_name, last_name, email FROM users WHERE is_member = TRUE;")
+	query := `
+		SELECT u.id, u.first_name, u.last_name, u.email
+		FROM users u
+		WHERE u.is_member = TRUE
+		AND EXISTS (SELECT 1 FROM letters l WHERE l.user_id = u.id)
+		AND EXISTS (SELECT 1 FROM queries q WHERE q.user_id = u.id)
+		AND EXISTS (SELECT 1 FROM history h WHERE h.user_id = u.id);
+	`
+
+	rows, err := db.Query(query)
 	if err != nil {
 		log.Fatalln("Database query error:", err)
 	}
@@ -171,7 +180,7 @@ func SelectAllUsers(userList *[]models.User) error {
 	}
 	defer db.Close()
 
-	rows, err := db.Query("SELECT * FROM users;")
+	rows, err := db.Query("SELECT * FROM users ORDER BY id ASC;")
 	if err != nil {
 		log.Fatalln("Database query error:", err)
 	}
