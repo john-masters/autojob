@@ -37,11 +37,12 @@ func SelectUserByID(ID int, user *models.User) error {
 	}
 	defer db.Close()
 
-	err = db.QueryRow("SELECT id, first_name, last_name, email, password FROM users WHERE id = $1;", ID).Scan(
+	err = db.QueryRow("SELECT id, first_name, last_name, email, is_admin, password FROM users WHERE id = $1;", ID).Scan(
 		&user.ID,
 		&user.FirstName,
 		&user.LastName,
 		&user.Email,
+		&user.IsAdmin,
 		&user.Password,
 	)
 	if err != nil {
