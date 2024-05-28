@@ -8,8 +8,6 @@ import (
 )
 
 func UpdateToApplyList() {
-	log.Println("updating...")
-
 	var userList []models.User
 
 	err := db.SelectMemberUsersByID(&userList)

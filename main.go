@@ -1,7 +1,6 @@
 package main
 
 import (
-	"autojob/db"
 	"autojob/routes"
 	"autojob/utils"
 	"fmt"
