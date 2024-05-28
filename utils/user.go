@@ -34,7 +34,7 @@ func processUser(user models.User) {
 
 	jsonHistory, err := json.Marshal(jobHistory)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("Error marshalling JSON", err)
 	}
 
 	var jobsList []models.Job
@@ -49,18 +49,18 @@ func processUser(user models.User) {
 
 		jsonData, err := json.Marshal(data)
 		if err != nil {
-			log.Fatal(err)
+			log.Fatal("Error marshalling JSON", err)
 		}
 		jsonResponse, err := askGPT(string(jsonData))
 		if err != nil {
-			log.Fatal(err)
+			log.Fatal("Error asking GPT", err)
 		}
 
 		var response models.Response
 
 		err = json.Unmarshal([]byte(jsonResponse), &response)
 		if err != nil {
-			log.Fatal(err)
+			log.Fatal("Error unmarshalling JSON", err)
 		}
 
 		if response.IsMatch {
@@ -74,6 +74,8 @@ func processUser(user models.User) {
 			})
 		}
 	}
+
+	log.Printf("Found %v jobs for user %v", len(jobsList), user.Email)
 
 	for _, job := range jobsList {
 		var count int
