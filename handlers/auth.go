@@ -3,6 +3,7 @@ package handlers
 import (
 	"autojob/db"
 	"autojob/models"
+	"autojob/utils"
 	"database/sql"
 	"fmt"
 	"net/http"
@@ -101,6 +102,18 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 		return
 	case password == "":
 		fmt.Fprint(w, "Password is required")
+		return
+	}
+
+	isValidPassword := utils.ValidatePassword(password)
+	if !isValidPassword {
+		fmt.Fprint(w, "Password does not meet complexity requirements")
+		return
+	}
+
+	isValidEmail := utils.ValidateEmail(email)
+	if !isValidEmail {
+		fmt.Fprint(w, "Invalid email address")
 		return
 	}
 
