@@ -1,4 +1,4 @@
-# AUTOJOB
+# getjob.xyz
 
 ## IDEA
 
