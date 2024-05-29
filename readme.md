@@ -53,6 +53,6 @@
 - [x] Add web scraping
 - [x] Add GPT-4 integration
 - [x] Add cron job to run daily
-- [ ] Add more robust input validation
-  - [ ] valid email
-  - [ ] password complexity
+- [x] Add more robust input validation
+  - [x] valid email
+  - [x] password complexity
