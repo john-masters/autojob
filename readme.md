@@ -56,3 +56,6 @@
 - [x] Add more robust input validation
   - [x] valid email
   - [x] password complexity
+- [ ] Fix job description scraping bug (no new lines)
+- [ ] Add indeed to scraped sites
+
