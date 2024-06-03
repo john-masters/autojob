@@ -34,7 +34,7 @@ func askGPT(message string) (string, error) {
 	Make sure the cover letter is professional, concise, and highlights the candidate's strengths in relation to the job description.`
 
 	requestBody := models.ChatCompletionRequest{
-		Model: "gpt-3.5-turbo",
+		Model: "gpt-4o",
 		ResponseFormat: map[string]string{
 			"type": "json_object",
 		},
