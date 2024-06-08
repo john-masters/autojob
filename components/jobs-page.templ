@@ -5,42 +5,49 @@ import "strconv"
 
 templ JobsPage(jobsList *[]models.Job) {
 	@Layout("To Apply", true) {
-		for _, job := range *jobsList {
-			<details>
-				<summary>
-					<span>{ job.Title } - { job.Company }</span>
-					<button
-						type="submit"
-						hx-delete={ "/job/" + strconv.Itoa(job.ID) }
-						hx-swap="outerHTML"
-						hx-target="closest details"
-					>
-						<span>Delete</span>
-					</button>
-				</summary>
-				<table>
-					<tr>
-						<td>Title: </td>
-						<td>{ job.Title }</td>
-					</tr>
-					<tr>
-						<td>Company: </td>
-						<td>{ job.Company }</td>
-					</tr>
-					<tr>
-						<td>Description: </td>
-						<td style="white-space: pre-wrap;">{ job.Description }</td>
-					</tr>
-					<tr>
-						<td>Cover Letter: </td>
-						<td style="white-space: pre-wrap;">{ job.CoverLetter }</td>
-					</tr>
-					<tr>
-						<td>Link: </td>
-						<td><a href={ templ.SafeURL(job.Link) }>Seek Ad</a></td>
-					</tr>
-				</table>
-			</details>
+		if len(*jobsList) == 0 {
+			<div>
+				<h3>No Jobs Available</h3>
+				<p>We currently don't have any job listings that match your criteria. Our system scrapes and evaluates new job postings daily, so please check back soon for updates.</p>
+			</div>
+		} else {
+			for _, job := range *jobsList {
+				<details>
+					<summary>
+						<span>{ job.Title } - { job.Company }</span>
+						<button
+							type="submit"
+							hx-delete={ "/job/" + strconv.Itoa(job.ID) }
+							hx-swap="outerHTML"
+							hx-target="closest details"
+						>
+							<span>Delete</span>
+						</button>
+					</summary>
+					<table>
+						<tr>
+							<td>Title: </td>
+							<td>{ job.Title }</td>
+						</tr>
+						<tr>
+							<td>Company: </td>
+							<td>{ job.Company }</td>
+						</tr>
+						<tr>
+							<td>Description: </td>
+							<td style="white-space: pre-wrap;">{ job.Description }</td>
+						</tr>
+						<tr>
+							<td>Cover Letter: </td>
+							<td style="white-space: pre-wrap;">{ job.CoverLetter }</td>
+						</tr>
+						<tr>
+							<td>Link: </td>
+							<td><a href={ templ.SafeURL(job.Link) }>Seek Ad</a></td>
+						</tr>
+					</table>
+				</details>
+			}
 		}
 	}
 }
