@@ -4,6 +4,7 @@ import (
 	"autojob/db"
 	"autojob/middleware"
 	"autojob/models"
+	"autojob/utils"
 	"fmt"
 	"net/http"
 	"strconv"
@@ -52,4 +53,13 @@ func GetJobCount(w http.ResponseWriter, r *http.Request) {
 	}
 
 	fmt.Fprint(w, jobCount)
+}
+
+func TriggerScrape(w http.ResponseWriter, r *http.Request) {
+	go func() {
+		utils.UpdateToApplyList()
+	}()
+
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte("Scraping job triggered"))
 }

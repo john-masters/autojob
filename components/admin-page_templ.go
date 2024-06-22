@@ -26,7 +26,7 @@ func AdminPage(users *[]models.User) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<!doctype html><html lang=\"en\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><script src=\"https://unpkg.com/htmx.org@1.9.12\"></script><link rel=\"icon\" href=\"data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text y=%22.9em%22 font-size=%2290%22&gt;💼&lt;/text&gt;&lt;/svg&gt;\"><style>\n\t\t\tmain, header, footer {\n\t\t\t\twidth: 100%;\n\t\t\t\tmargin-inline: auto;\n\t\t\t\tmax-width: 980px;\n\t\t\t}\n\t\t\ttable, th, td {\n\t\t\t\tborder: 1px solid black;\n\t\t\t}\n\t\t\ttd {\n\t\t\t\tvertical-align: top;\n\t\t\t}\n\t\t\t</style><title>GET JOB - ADMIN</title></head><body><header><h1>🚧 ADMIN ONLY 🚧</h1></header><main><table><thead><tr><th>ID</th><th>First Name</th><th>Last Name</th><th>Email</th><th>Is Member</th><th>Is Admin</th><th>Options</th></tr></thead> <tbody>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<!doctype html><html lang=\"en\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><script src=\"https://unpkg.com/htmx.org@1.9.12\"></script><link rel=\"icon\" href=\"data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text y=%22.9em%22 font-size=%2290%22&gt;💼&lt;/text&gt;&lt;/svg&gt;\"><style>\n\t\t\tmain, header, footer {\n\t\t\t\twidth: 100%;\n\t\t\t\tmargin-inline: auto;\n\t\t\t\tmax-width: 980px;\n\t\t\t}\n\t\t\ttable, th, td {\n\t\t\t\tborder: 1px solid black;\n\t\t\t}\n\t\t\ttd {\n\t\t\t\tvertical-align: top;\n\t\t\t}\n\t\t\t</style><title>GET JOB - ADMIN</title></head><body><header><h1>🚧 ADMIN ONLY 🚧</h1></header><main><div><button hx-post=\"job/scrape\" hx-target=\"#response\" hx-swap=\"innerHTMl\"><span>Trigger scrape</span></button> <span id=\"response\"></span></div><table><thead><tr><th>ID</th><th>First Name</th><th>Last Name</th><th>Email</th><th>Is Member</th><th>Is Admin</th><th>Options</th></tr></thead> <tbody>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -38,7 +38,7 @@ func AdminPage(users *[]models.User) templ.Component {
 			var templ_7745c5c3_Var2 string
 			templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(user.ID))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/admin-page.templ`, Line: 52, Col: 35}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/admin-page.templ`, Line: 58, Col: 35}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 			if templ_7745c5c3_Err != nil {
@@ -51,7 +51,7 @@ func AdminPage(users *[]models.User) templ.Component {
 			var templ_7745c5c3_Var3 string
 			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(user.FirstName)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/admin-page.templ`, Line: 53, Col: 28}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/admin-page.templ`, Line: 59, Col: 28}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 			if templ_7745c5c3_Err != nil {
@@ -64,7 +64,7 @@ func AdminPage(users *[]models.User) templ.Component {
 			var templ_7745c5c3_Var4 string
 			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(user.LastName)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/admin-page.templ`, Line: 54, Col: 27}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/admin-page.templ`, Line: 60, Col: 27}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 			if templ_7745c5c3_Err != nil {
@@ -77,7 +77,7 @@ func AdminPage(users *[]models.User) templ.Component {
 			var templ_7745c5c3_Var5 string
 			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(user.Email)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/admin-page.templ`, Line: 55, Col: 24}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/admin-page.templ`, Line: 61, Col: 24}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 			if templ_7745c5c3_Err != nil {
@@ -90,7 +90,7 @@ func AdminPage(users *[]models.User) templ.Component {
 			var templ_7745c5c3_Var6 string
 			templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.FormatBool(user.IsMember))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/admin-page.templ`, Line: 56, Col: 47}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/admin-page.templ`, Line: 62, Col: 47}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 			if templ_7745c5c3_Err != nil {
@@ -103,7 +103,7 @@ func AdminPage(users *[]models.User) templ.Component {
 			var templ_7745c5c3_Var7 string
 			templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.FormatBool(user.IsAdmin))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/admin-page.templ`, Line: 57, Col: 46}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/admin-page.templ`, Line: 63, Col: 46}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 			if templ_7745c5c3_Err != nil {
@@ -116,7 +116,7 @@ func AdminPage(users *[]models.User) templ.Component {
 			var templ_7745c5c3_Var8 string
 			templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs("user/member/" + strconv.Itoa(user.ID))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/admin-page.templ`, Line: 59, Col: 64}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/admin-page.templ`, Line: 65, Col: 64}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 			if templ_7745c5c3_Err != nil {
@@ -129,7 +129,7 @@ func AdminPage(users *[]models.User) templ.Component {
 			var templ_7745c5c3_Var9 string
 			templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs("user/admin/" + strconv.Itoa(user.ID))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/admin-page.templ`, Line: 60, Col: 63}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/admin-page.templ`, Line: 66, Col: 63}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 			if templ_7745c5c3_Err != nil {
@@ -142,7 +142,7 @@ func AdminPage(users *[]models.User) templ.Component {
 			var templ_7745c5c3_Var10 string
 			templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs("user/" + strconv.Itoa(user.ID))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/admin-page.templ`, Line: 61, Col: 60}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/admin-page.templ`, Line: 67, Col: 60}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
 			if templ_7745c5c3_Err != nil {

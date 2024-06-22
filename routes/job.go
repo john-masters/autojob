@@ -11,6 +11,7 @@ func JobRoutes() *http.ServeMux {
 
 	router.HandleFunc("DELETE /{id}", middleware.RequireAuth(handlers.DeleteSingleJob))
 	router.HandleFunc("GET /count", middleware.RequireAuth(handlers.GetJobCount))
+	router.HandleFunc("POST /scrape", middleware.RequireAuth(middleware.RequireAdmin(handlers.TriggerScrape)))
 
 	return router
 }

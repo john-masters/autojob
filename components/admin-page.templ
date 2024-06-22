@@ -34,6 +34,12 @@ templ AdminPage(users *[]models.User) {
 				<h1>🚧 ADMIN ONLY 🚧</h1>
 			</header>
 			<main>
+				<div>
+					<button hx-post="job/scrape" hx-target="#response" hx-swap="innerHTMl">
+						<span>Trigger scrape</span>
+					</button>
+					<span id="response"></span>
+				</div>
 				<table>
 					<thead>
 						<tr>
