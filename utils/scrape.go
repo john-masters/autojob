@@ -10,7 +10,7 @@ import (
 func scrapeJobData(scrapeData *[]models.ScrapeData, searchTerm string) {
 	c := colly.NewCollector()
 
-	c.OnHTML("[data-automation='normalJob']", func(e *colly.HTMLElement) {
+	c.OnHTML("[data-card-type='JobCard']", func(e *colly.HTMLElement) {
 		title := e.ChildText("a[data-automation='jobTitle']")
 		company := e.ChildText("a[data-automation='jobCompany']")
 		link := e.ChildAttr("a[data-automation='jobTitle']", "href")
