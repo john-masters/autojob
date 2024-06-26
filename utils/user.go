@@ -5,6 +5,7 @@ import (
 	"autojob/models"
 	"encoding/json"
 	"log"
+	"sync"
 )
 
 func processUser(user models.User) {
@@ -15,8 +16,17 @@ func processUser(user models.User) {
 	}
 
 	var scrapeData []models.ScrapeData
+	var wg sync.WaitGroup
+
 	for _, query := range queriesList {
-		scrapeJobData(&scrapeData, query.Query)
+		wg.Add(1)
+
+		go func(query models.Query) {
+			defer wg.Done()
+			scrapeJobData(&scrapeData, query.Query)
+		}(query)
+
+		wg.Wait()
 	}
 
 	var jobHistory []models.History
@@ -52,6 +62,7 @@ func processUser(user models.User) {
 			log.Fatal("Error marshalling JSON", err)
 		}
 		jsonResponse, err := askGPT(string(jsonData))
+		log.Println("jsonResponse: ", jsonResponse)
 		if err != nil {
 			log.Fatal("Error asking GPT", err)
 		}
